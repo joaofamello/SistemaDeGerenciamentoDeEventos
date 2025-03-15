@@ -2,7 +2,7 @@
 /.idea/
 /.git/
 /shelf/
-/pom.xml
+SGE/pom.xml
 /workspace.xml
 # Editor-based HTTP Client requests
 /httpRequests/
