@@ -4,6 +4,9 @@
 /shelf/
 SGE/pom.xml
 /workspace.xml
+SGE/.idea/
+SGE/SGE.iml
+SistemaDeGerenciamentoDeEventos.iml
 # Editor-based HTTP Client requests
 /httpRequests/
 # Datasource local storage ignored files
