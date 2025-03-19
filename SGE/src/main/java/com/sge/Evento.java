@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Evento {
+    private static int numero;
+    private int ID;
     private String titulo;
     private String descricao;
     private Categoria categoria;
@@ -27,6 +29,15 @@ public class Evento {
         this.qtdeIngressos = qtdeIngressos;
         this.anfitriao = anfitriao;
         this.participantes = participantes;
+        this.ID = ++numero;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public static int getNumero() {
+        return numero;
     }
 
     public String getTitulo() {
@@ -45,11 +56,11 @@ public class Evento {
         this.descricao = descricao;
     }
 
-    public String getCategoria() {
+    public Categoria getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(String categoria) {
+    public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 
@@ -97,8 +108,15 @@ public class Evento {
         return anfitriao;
     }
 
-    public List<Usuario> getParticipantes() {
+    public void setAnfitriao(Usuario anfitriao) {
+        this.anfitriao = anfitriao;
+    }
+
+    public ArrayList<Ingresso> getParticipantes() {
         return participantes;
     }
 
+    public void setParticipantes(ArrayList<Ingresso> participantes) {
+        this.participantes = participantes;
+    }
 }

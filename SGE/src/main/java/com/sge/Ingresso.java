@@ -7,7 +7,7 @@ public class Ingresso {
     private int ID;
     private static int numero = 1;
 
-    public Ingresso(Usuario comprador, Evento evento, double valor, int ID) {
+    public Ingresso(Usuario comprador, Evento evento, double valor) {
         this.comprador = comprador;
         this.evento = evento;
         this.valor = valor;
