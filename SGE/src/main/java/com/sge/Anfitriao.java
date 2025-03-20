@@ -4,8 +4,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Anfitriao {
+public class Anfitriao extends Usuario {
     ArrayList<Evento> meusEventos;
+    ArrayList<Evento> eventosParticipando;
+
+    public Anfitriao(String nomeCompleto, String nomeUsuario, String email, String telefone, String senha, ArrayList<Evento> meusEventos, ArrayList<Evento> eventosParticipando) {
+        super(nomeCompleto, nomeUsuario, email, telefone, senha);
+        this.meusEventos = meusEventos;
+        this.eventosParticipando = eventosParticipando;
+    }
 
     //Métodos de Gerenciamento dos Eventos
     public void listarEventos() {
@@ -47,4 +54,28 @@ public class Anfitriao {
         evento.setData(novaData);
     }
 
+    public void mudarHoraMeuEvento(Evento evento, LocalDateTime novoInicio, LocalDateTime novoFim) {
+        evento.setHoraInicio(novoInicio);
+        evento.setHoraFim(novoFim);
+    }
+
+    public void mudarEnderecoMeuEvento(Evento evento, Endereco endereco) {
+        evento.setEndereco(endereco);
+    }
+
+    public void mudarCategoriaMeuEvento(Evento evento, Categoria categoria) {
+        evento.setCategoria(categoria);
+    }
+
+    public void mudarQtdeIngressosMeuEvento(Evento evento, int qtdeIngressos) {
+        evento.setQtdeIngressos(qtdeIngressos);
+    }
+
+    public void excluirMeuEvento(Evento evento) { // pensar melhor nisso aqui
+        meusEventos.remove(evento);
+    }
+
+    public void editarMeuEvento(Evento evento) { // nisso aqui também
+
+    }
 }
