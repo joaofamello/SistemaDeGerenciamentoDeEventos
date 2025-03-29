@@ -1,4 +1,4 @@
-package com.sge;
+package com.sge.negocio.entidade;
 
 public class Usuario {
     private String nomeCompleto;

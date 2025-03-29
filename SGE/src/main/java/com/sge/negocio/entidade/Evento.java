@@ -1,4 +1,4 @@
-package com.sge;
+package com.sge.negocio.entidade;
 
 import java.time.LocalDateTime;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package com.sge;
+package com.sge.negocio.entidade;
 
 public class Ingresso {
     private Usuario comprador;
