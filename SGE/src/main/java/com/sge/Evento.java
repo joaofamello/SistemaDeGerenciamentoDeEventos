@@ -10,7 +10,7 @@ public class Evento {
     private String titulo;
     private String descricao;
     private Categoria categoria;
-    private String local;
+    private Endereco endereco;
     private LocalDate data; //Data do evento
     private LocalDateTime horaInicio; //Horario que comeca
     private LocalDateTime horaFim; //Horario que termina
@@ -18,11 +18,11 @@ public class Evento {
     private Usuario anfitriao;
     private ArrayList<Ingresso> participantes;
 
-    public Evento(String titulo, String descricao, Categoria categoria, String local, LocalDate data, LocalDateTime horaInicio, LocalDateTime horaFim, int qtdeIngressos, Usuario anfitriao, ArrayList<Ingresso> participantes) {
+    public Evento(String titulo, String descricao, Categoria categoria, Endereco endereco, LocalDate data, LocalDateTime horaInicio, LocalDateTime horaFim, int qtdeIngressos, Usuario anfitriao, ArrayList<Ingresso> participantes) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.categoria = categoria;
-        this.local = local;
+        this.endereco = endereco;
         this.data = data;
         this.horaInicio = horaInicio;
         this.horaFim = horaFim;
@@ -64,12 +64,12 @@ public class Evento {
         this.categoria = categoria;
     }
 
-    public String getLocal() {
-        return local;
+    public Endereco getEndereco() {
+        return endereco;
     }
 
-    public void setLocal(String local) {
-        this.local = local;
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
     public LocalDate getData() {
