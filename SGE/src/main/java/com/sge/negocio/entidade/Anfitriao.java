@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class Anfitriao extends Usuario {
     private ArrayList<Evento> meusEventos;
+    private final GerenciadorEntrada entrada = new GerenciadorEntrada();
 
     public Anfitriao(String nomeCompleto, String nomeUsuario, String email, String telefone, String senha, ArrayList<Evento> eventosParticipando) {
         super(nomeCompleto, nomeUsuario, email, telefone, senha);
@@ -23,7 +24,8 @@ public class Anfitriao extends Usuario {
         }
     }
 
-    public Evento buscarMeuEventoNome(String nome) {
+    public Evento buscarMeuEventoNome() {
+        String nome = entrada.recebeString();
         for (Evento evento : meusEventos) {
             if(nome.equals(evento.getTitulo())) {
                 return evento;
@@ -31,7 +33,8 @@ public class Anfitriao extends Usuario {
         }
         return null; // usar o exception de nenhum evento cadastrado
     }
-    public Evento buscarMeuEventoID(int ID) {
+    public Evento buscarMeuEventoID() {
+        int ID = entrada.recebeInt();
         for (Evento evento : meusEventos) {
             if(ID == evento.getID()){
                 return evento;
@@ -74,7 +77,27 @@ public class Anfitriao extends Usuario {
     }
 
     public void editarMeuEvento(Evento evento) { // nisso aqui também
-
+        // criar método que verifica se o evento realmente existe
+        // criar uma tela para edição
+        switch(entrada.recebeInt()){
+            case 1:
+                evento.setTitulo(entrada.recebeString());
+                break;
+            case 2:
+                evento.setDescricao(entrada.recebeString());
+                break;
+            case 3:
+                evento.setCategoria(entrada.recebeString());
+                break;
+            case 4:
+                Endereco novoEnd = entrada.criarEndereco();
+                evento.setEndereco(novoEnd);
+                break;
+            case 5:
+                evento.setQtdeIngressos(entrada.recebeInt());
+                break;
+            // ainda tem coisas para fazer
+        }
     }
 
 
