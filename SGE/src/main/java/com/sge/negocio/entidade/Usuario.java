@@ -3,12 +3,12 @@ package com.sge.negocio.entidade;
 import java.util.ArrayList;
 
 public class Usuario {
-    private String nomeCompleto;
+    private final String nomeCompleto;
     private String nomeUsuario;
     private String email;
     private String telefone;
     private static int qtde = 1;
-    private int ID;
+    private final int ID;
     private String senha;
     private static boolean ehAnfitriao = false;
     ArrayList<Evento> eventosParticipando;
