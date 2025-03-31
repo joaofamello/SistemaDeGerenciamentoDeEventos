@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public interface IRepositorioUsuarios {
 
-    public void botar(Usuario usuario);
+    public void inserir(Usuario usuario);
 
     public Usuario buscar(int id);
 

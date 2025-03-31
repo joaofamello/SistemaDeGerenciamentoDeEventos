@@ -11,7 +11,7 @@ public class RepositorioUsuariosArrayList implements IRepositorioUsuarios {
     private RepositorioUsuariosArrayList() { usuarios = new ArrayList<Usuario>();}
 
     @Override
-    public void botar(Usuario usuario) {
+    public void inserir(Usuario usuario) {
         usuarios.add(usuario);
     }
 
