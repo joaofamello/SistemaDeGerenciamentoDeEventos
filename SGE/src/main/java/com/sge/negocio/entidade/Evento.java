@@ -9,7 +9,7 @@ public class Evento {
     private int ID;
     private String titulo;
     private String descricao;
-    private Categoria categoria;
+    private String categoria;
     private Endereco endereco;
     private LocalDate data; //Data do evento
     private LocalDateTime horaInicio; //Horario que comeca
@@ -18,7 +18,7 @@ public class Evento {
     private Usuario anfitriao;
     private ArrayList<Ingresso> participantes;
 
-    public Evento(String titulo, String descricao, Categoria categoria, Endereco endereco, LocalDate data, LocalDateTime horaInicio, LocalDateTime horaFim, int qtdeIngressos, Usuario anfitriao, ArrayList<Ingresso> participantes) {
+    public Evento(String titulo, String descricao, String categoria, Endereco endereco, LocalDate data, LocalDateTime horaInicio, LocalDateTime horaFim, int qtdeIngressos, Usuario anfitriao) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.categoria = categoria;
@@ -28,7 +28,6 @@ public class Evento {
         this.horaFim = horaFim;
         this.qtdeIngressos = qtdeIngressos;
         this.anfitriao = anfitriao;
-        this.participantes = participantes;
         this.ID = ++numero;
     }
 
@@ -56,11 +55,11 @@ public class Evento {
         this.descricao = descricao;
     }
 
-    public Categoria getCategoria() {
+    public String getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(Categoria categoria) {
+    public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
 
