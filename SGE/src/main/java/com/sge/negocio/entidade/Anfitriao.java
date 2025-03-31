@@ -5,23 +5,21 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Anfitriao extends Usuario {
-    ArrayList<Evento> meusEventos;
-    ArrayList<Evento> eventosParticipando;
+    private ArrayList<Evento> meusEventos;
 
-    public Anfitriao(String nomeCompleto, String nomeUsuario, String email, String telefone, String senha, ArrayList<Evento> meusEventos, ArrayList<Evento> eventosParticipando) {
+    public Anfitriao(String nomeCompleto, String nomeUsuario, String email, String telefone, String senha, ArrayList<Evento> eventosParticipando) {
         super(nomeCompleto, nomeUsuario, email, telefone, senha);
-        this.meusEventos = meusEventos;
         this.eventosParticipando = eventosParticipando;
     }
 
-    //Métodos de Gerenciamento dos Eventos
+    //Métodos Básicos de Gerenciamento dos Eventos
     public void listarEventos() {
         if (meusEventos != null) {
             for (Evento evento : meusEventos) {
                 System.out.println(evento + "\n -------------------------------------");
             }
         } else {
-            System.out.println("Nenhum evento cadastrado!"); // Criar um exception pra isso
+            System.out.println("Nenhum evento cadastrado!"); // Criar um exception para isso
         }
     }
 
@@ -63,7 +61,7 @@ public class Anfitriao extends Usuario {
         evento.setEndereco(endereco);
     }
 
-    public void mudarCategoriaMeuEvento(Evento evento, Categoria categoria) {
+    public void mudarCategoriaMeuEvento(Evento evento, String categoria) {
         evento.setCategoria(categoria);
     }
 
@@ -78,4 +76,6 @@ public class Anfitriao extends Usuario {
     public void editarMeuEvento(Evento evento) { // nisso aqui também
 
     }
+
+
 }

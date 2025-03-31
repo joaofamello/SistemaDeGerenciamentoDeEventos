@@ -1,5 +1,7 @@
 package com.sge.negocio.entidade;
 
+import java.util.ArrayList;
+
 public class Usuario {
     private String nomeCompleto;
     private String nomeUsuario;
@@ -8,7 +10,8 @@ public class Usuario {
     private static int qtde = 1;
     private int ID;
     private String senha;
-
+    private static boolean ehAnfitriao = false;
+    ArrayList<Evento> eventosParticipando;
 
     //Construtor
     public Usuario(String nomeCompleto, String nomeUsuario, String email, String telefone, String senha) {
@@ -65,5 +68,20 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-    
+
+    public ArrayList<Evento> getEventosParticipando() {
+        return eventosParticipando;
+    }
+
+    public void setEventosParticipando(ArrayList<Evento> eventosParticipando) {
+        this.eventosParticipando = eventosParticipando;
+    }
+
+    public static boolean getEhAnfitriao() {
+        return ehAnfitriao;
+    }
+
+    public static void setEhAnfitriao(boolean ehAnfitriao) {
+        Usuario.ehAnfitriao = ehAnfitriao;
+    }
 }
