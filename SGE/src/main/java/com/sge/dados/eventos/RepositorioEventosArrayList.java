@@ -1,5 +1,3 @@
 package com.sge.dados.eventos;
 
-public class RepositorioEventosArrayList implements IRepositorioEventos {
-    
-}
+public class RepositorioEventosArrayList implements IRepositorioEventos {}
