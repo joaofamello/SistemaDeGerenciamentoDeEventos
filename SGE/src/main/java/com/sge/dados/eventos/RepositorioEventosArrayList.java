@@ -1,6 +1,7 @@
 package com.sge.dados.eventos;
 import com.sge.negocio.entidade.Evento;
 import java.util.ArrayList;
+import java.util.List;
 
 public class RepositorioEventosArrayList implements IRepositorioEventos {
 
@@ -25,5 +26,8 @@ public class RepositorioEventosArrayList implements IRepositorioEventos {
         eventos.remove(index);
     }
 
+    public List<Evento> getEventos(){
+        return eventos;
+    }
 
 }
