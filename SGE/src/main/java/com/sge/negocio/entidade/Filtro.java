@@ -8,7 +8,7 @@ public class Filtro {
     private static RepositorioEventosArrayList repositorio;
 
     public Filtro(RepositorioEventosArrayList repositorio) {
-        this.repositorio = repositorio;
+        Filtro.repositorio = repositorio;
     }
     public static Evento buscarPorNome(String nome) {
         for(Evento evento : repositorio.getEventos()){

@@ -21,32 +21,42 @@ public class GerenciadorEntrada {
         System.out.println("Onde será o seu evento?");
         Endereco endereco = criarEndereco();
         System.out.println("Quando será o seu evento?");
-        LocalDate data = LocalDate.parse(sc.nextLine());
+        LocalDate data = recebeData();
         System.out.println("De que horas começará seu evento?");
-        LocalDateTime horaInicio = LocalDateTime.parse(sc.nextLine());
+        LocalDateTime horaInicio = recebeHora();
         System.out.println("De que horas terminará?");
-        LocalDateTime horaFim = LocalDateTime.parse(sc.nextLine());
+        LocalDateTime horaFim = recebeHora();
         System.out.println("Quantas vagas terá o seu evento?");
         int qtdeIngressos = sc.nextInt();
         return new Evento(titulo, descricao, categoria, endereco, data, horaInicio, horaFim, qtdeIngressos, usuario);
     }
 
     public Endereco criarEndereco(){
+        System.out.println("Qual é o nome da rua?");
         String rua = sc.nextLine();
+        System.out.println("Qual é o bairro?");
         String bairro = sc.nextLine();
+        System.out.println("Qual é o número?");
         int numero = sc.nextInt();
+        System.out.println("Qual a cidade?");
         String cidade = sc.nextLine();
+        System.out.println("Qual é o estado?");
         String estado = sc.nextLine();
+        System.out.println("Digite o cep: ");
         String cep = sc.nextLine();
-        String pais = sc.nextLine();
-        return new Endereco (rua, bairro, numero, cep, cidade, estado, pais);
+        return new Endereco (rua, bairro, numero, cep, cidade, estado);
     }
 
     public Usuario cadastrarUsuario(){
+        System.out.println("Digite o seu nome completo:");
         String nomeCompleto = sc.nextLine();
-        String nomeUsuario = sc.nextLine();
+        System.out.println("Qual será o seu nome de usuário?");
+        String nomeUsuario = sc.nextLine(); // criar um método para verificar se o nome de usuário está disponível para uso
+        System.out.println("Digite o seu e-mail:");
         String email = sc.nextLine();
+        System.out.println("Digite o seu telefone:");
         String telefone = sc.nextLine();
+        System.out.println("Escolha uma senha (Sua senha deve ter no mínimo 8 dígitos, podendo conter letras, números e símbolos):");
         String senha = sc.nextLine();
         return new Usuario(nomeCompleto, nomeUsuario, email, telefone, senha);
     }

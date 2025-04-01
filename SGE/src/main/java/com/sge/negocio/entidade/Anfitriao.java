@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Anfitriao extends Usuario {
-    private ArrayList<Evento> meusEventos;
+    private ArrayList<Evento> eventosCriados;
     private final GerenciadorEntrada entrada = new GerenciadorEntrada();
 
     public Anfitriao(String nomeCompleto, String nomeUsuario, String email, String telefone, String senha, ArrayList<Evento> eventosParticipando) {
@@ -15,9 +15,9 @@ public class Anfitriao extends Usuario {
 
     //Métodos Básicos de Gerenciamento dos Eventos
     public void listarEventos() {
-        if (meusEventos != null) {
-            for (Evento evento : meusEventos) {
-                System.out.println(evento + "\n -------------------------------------");
+        if (eventosCriados != null) {
+            for (Evento evento : eventosCriados) {
+                System.out.println(evento + "\n -------------------------------------"); //talvez ele não printe o evento corretamente ou bem formatado, pesquisar e resolver isso aí
             }
         } else {
             System.out.println("Nenhum evento cadastrado!"); // Criar um exception para isso
@@ -26,7 +26,7 @@ public class Anfitriao extends Usuario {
 
     public Evento buscarMeuEventoNome() {
         String nome = entrada.recebeString();
-        for (Evento evento : meusEventos) {
+        for (Evento evento : eventosCriados) {
             if(nome.equals(evento.getTitulo())) {
                 return evento;
             }
@@ -35,7 +35,7 @@ public class Anfitriao extends Usuario {
     }
     public Evento buscarMeuEventoID() {
         int ID = entrada.recebeInt();
-        for (Evento evento : meusEventos) {
+        for (Evento evento : eventosCriados) {
             if(ID == evento.getID()){
                 return evento;
             }
@@ -73,7 +73,7 @@ public class Anfitriao extends Usuario {
     }
 
     public void excluirMeuEvento(Evento evento) { // pensar melhor nisso aqui
-        meusEventos.remove(evento);
+        eventosCriados.remove(evento);
     }
 
     public void editarMeuEvento(Evento evento) { // nisso aqui também
