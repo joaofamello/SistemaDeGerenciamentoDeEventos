@@ -34,4 +34,16 @@ public class GerenciadorDeDados {
             System.err.println("Erro ao criar arquivo: " + caminho.getFileName() + ": " + e.getMessage());
         }
     }
+
+    public static Path getDiretorio() {
+        return Diretorio;
+    }
+
+    public static Path getPasta_Usuarios() {
+        return Pasta_Usuarios;
+    }
+
+    public static Path getPasta_Eventos() {
+        return Pasta_Eventos;
+    }
 }
