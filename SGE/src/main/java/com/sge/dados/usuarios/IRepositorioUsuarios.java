@@ -13,9 +13,10 @@ public interface IRepositorioUsuarios {
 
     public ArrayList<Usuario> listar();
 
-    public void salvarUsuarios(List<Usuario> usuarios){
-        List<Usuario> carregarUsuarios();
-    }
+    void salvarUsuarios(List<Usuario> usuarios);
+
+    List<Usuario> carregarUsuarios();
+
 
 
 }
