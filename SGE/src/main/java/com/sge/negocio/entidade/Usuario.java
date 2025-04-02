@@ -25,6 +25,7 @@ public class Usuario {
     }
 
     public String usuarioFormatado() {
+        System.out.println("--------------------------------------------");
         return ID + " " + nomeCompleto + " " + nomeUsuario + " " + email + " " + telefone + " " + senha;
     }
 

@@ -34,6 +34,7 @@ public class Evento {
 
     //formatação do evento
     public String eventoFormatado(){
+        System.out.println("--------------------------------------------");
         return titulo + "; " + descricao + "; " + categoria + "; " + endereco.enderecoFormatado() + "; " + data + "; " + horaInicio + "; " + horaFim + "; " + qtdeIngressos + "; " + anfitriao.getNomeCompleto() + "; ";
     }
 
