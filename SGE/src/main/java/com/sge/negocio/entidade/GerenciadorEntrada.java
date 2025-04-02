@@ -1,5 +1,6 @@
 package com.sge.negocio.entidade;
-import com.sge.dados.*;
+
+
 import com.sge.negocio.NegocioEvento;
 import com.sge.negocio.NegocioUsuario;
 
@@ -16,7 +17,7 @@ public class GerenciadorEntrada {
     public GerenciadorEntrada() {
     }
 
-    public Evento criarEvento(Usuario usuario){
+    public void criarEvento(Usuario usuario){
         System.out.println("Qual será o título do seu evento?");
         String titulo = sc.nextLine();
         System.out.println("Digite a descrição do seu evento:");
@@ -33,7 +34,8 @@ public class GerenciadorEntrada {
         LocalDateTime horaFim = recebeHora();
         System.out.println("Quantas vagas terá o seu evento?");
         int qtdeIngressos = sc.nextInt();
-        return new Evento(titulo, descricao, categoria, endereco, data, horaInicio, horaFim, qtdeIngressos, usuario);
+        Evento evento = new Evento(titulo, descricao, categoria, endereco, data, horaInicio, horaFim, qtdeIngressos, usuario);
+        negocioEvento.inserir(evento);
     }
 
     public Endereco criarEndereco(){
@@ -54,11 +56,17 @@ public class GerenciadorEntrada {
     }
 
     public void cadastrarUsuario(){
+        System.out.println("Qual seu nome completo: ");
         String nomeCompleto = sc.nextLine();
+        System.out.println("Qual seu nome de usuário: ");
         String nomeUsuario = sc.nextLine();
+        System.out.println("Qual o seu email: ");
         String email = sc.nextLine();
+        System.out.println("Qual o seu número de telefone:");
         String telefone = sc.nextLine();
+        System.out.println("Digite uma senha para sua conta: ");
         String senha = sc.nextLine();
+        //adicionar a condição de conta de 5 digitos ou mais
         Usuario usuario = new Usuario(nomeCompleto,nomeUsuario,email,telefone,senha);
         negocioUsuario.inserir(usuario);
     }
