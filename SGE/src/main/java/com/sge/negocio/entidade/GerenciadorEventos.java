@@ -66,27 +66,4 @@ public class GerenciadorEventos {
         operador.getEventosCriados().remove(evento);
     }
 
-    public void editarEvento(Evento evento) { // nisso aqui também
-        // criar exceção para evento não encontrado
-        // criar uma tela para edição
-        switch(entrada.recebeInt()){
-            case 1:
-                evento.setTitulo(entrada.recebeString());
-                break;
-            case 2:
-                evento.setDescricao(entrada.recebeString());
-                break;
-            case 3:
-                evento.setCategoria(entrada.recebeString());
-                break;
-            case 4:
-                Endereco novoEndereco = entrada.criarEndereco();
-                evento.setEndereco(novoEndereco);
-                break;
-            case 5:
-                evento.setQtdeIngressos(entrada.recebeInt());
-                break;
-            // ainda tem coisas para fazer
-        }
-    }
 }
