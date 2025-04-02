@@ -2,6 +2,7 @@ package com.sge.negocio.entidade;
 
 import java.util.ArrayList;
 
+
 public class Usuario {
     private final String nomeCompleto;
     private String nomeUsuario;
@@ -23,12 +24,6 @@ public class Usuario {
         this.ID = qtde++;
     }
 
-    //Esse metodo vai criar o Usuario com ID
-    public static Usuario criarUsuarioComID(int ID, String nomeCompleto, String nomeUsuario, String email, String telefone, String senha) {
-        Usuario usuario = new Usuario(nomeCompleto, nomeUsuario, email, telefone, senha);
-        usuario.ID = ID;
-        return usuario;
-    }
 
     //getters e setters
     public String getNomeCompleto() {
@@ -91,4 +86,5 @@ public class Usuario {
     public static void setEhAnfitriao(boolean ehAnfitriao) {
         Usuario.ehAnfitriao = ehAnfitriao;
     }
+
 }

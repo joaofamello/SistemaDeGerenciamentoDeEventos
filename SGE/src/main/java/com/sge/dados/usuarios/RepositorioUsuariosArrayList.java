@@ -22,10 +22,10 @@ public class RepositorioUsuariosArrayList implements IRepositorioUsuarios {
     }
 
     @Override
-    public Usuario buscar(int id) {
+    public Usuario buscarUsuariosPorID(int id) {
         Usuario usuario = null;
         for (Usuario usuario1 : usuarios) {
-            if(usuario.getID() == id) {
+            if(usuario1.getID() == id) {
                 usuario = usuario1;
                 break;
             }
@@ -55,24 +55,23 @@ public class RepositorioUsuariosArrayList implements IRepositorioUsuarios {
     public List<Usuario> carregarUsuarios(){
         List<Usuario> usuarios = new ArrayList<>();
         try (BufferedReader leitor = Files.newBufferedReader(GerenciadorDeDados.getPasta_Usuarios())){
-          String linha = leitor.readLine();
-          while ((linha) != null) {
+          String linha;
+          while ((linha = leitor.readLine()) != null) {
               String[] campo = linha.split(";");
-              if (campo.length == 6) { // Verifica se todos os campos estão presentes
-                  int id = Integer.parseInt(campo[0]); // O ID está no primeiro campo
-                  String nomeCompleto = campo[1];
-                  String nomeUsuario = campo[2];
-                  String email = campo[3];
-                  String telefone = campo[4];
-                  String senha = campo[5];
+              if (campo.length == 5) { // Verifica se todos os campos estão presentes
+                  String nomeCompleto = campo[0];
+                  String nomeUsuario = campo[1];
+                  String email = campo[2];
+                  String telefone = campo[3];
+                  String senha = campo[4];
 
-                  // Criando o usuário com o ID
-                  Usuario usuario = Usuario.criarUsuarioComID(id, nomeCompleto, nomeUsuario, email, telefone, senha);
+                  // Criando o usuário e adicionando ao vetor
+                  Usuario usuario = new Usuario(nomeCompleto, nomeUsuario, email, telefone, senha);
                   usuarios.add(usuario);
               }
           }
         } catch (IOException e){
-            e.getMessage();
+            System.err.println("Erro ao carregar Usuarios");
         }
         return usuarios;
     }
