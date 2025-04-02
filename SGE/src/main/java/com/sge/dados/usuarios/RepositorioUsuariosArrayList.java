@@ -14,7 +14,7 @@ public class RepositorioUsuariosArrayList implements IRepositorioUsuarios {
 
     private ArrayList<Usuario> usuarios;
 
-    private RepositorioUsuariosArrayList() { usuarios = new ArrayList<Usuario>();}
+    public RepositorioUsuariosArrayList() { usuarios = new ArrayList<Usuario>();}
 
     @Override
     public void inserir(Usuario usuario) {
@@ -23,14 +23,14 @@ public class RepositorioUsuariosArrayList implements IRepositorioUsuarios {
 
     @Override
     public Usuario buscarUsuariosPorID(int id) {
-        Usuario usuario = null;
-        for (Usuario usuario1 : usuarios) {
-            if(usuario1.getID() == id) {
-                usuario = usuario1;
+        Usuario usuarioProcurado = null;
+        for (Usuario usuario : usuarios) {
+            if(usuario.getID() == id) {
+                usuarioProcurado = usuario;
                 break;
             }
         }
-        return usuario;
+        return usuarioProcurado;
     }
 
     @Override
