@@ -9,7 +9,7 @@ public class NegocioUsuario {
     public NegocioUsuario(IRepositorioUsuarios repositorioUsuarios) {
         this.repositorioUsuarios = repositorioUsuarios;
     }
-    
+
     public void inserir(Usuario usuario) {
         repositorioUsuarios.inserir(usuario);
     }
