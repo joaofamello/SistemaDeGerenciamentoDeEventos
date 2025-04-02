@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Evento {
     private static int numero;
-    private int ID;
+    private final int ID;
     private String titulo;
     private String descricao;
     private String categoria;
@@ -18,6 +18,7 @@ public class Evento {
     private Usuario anfitriao;
     private ArrayList<Ingresso> participantes;
 
+    //construtor
     public Evento(String titulo, String descricao, String categoria, Endereco endereco, LocalDate data, LocalDateTime horaInicio, LocalDateTime horaFim, int qtdeIngressos, Usuario anfitriao) {
         this.titulo = titulo;
         this.descricao = descricao;
@@ -31,6 +32,12 @@ public class Evento {
         this.ID = ++numero;
     }
 
+    //formatação do evento
+    public String eventoFormatado(){
+        return titulo + "; " + descricao + "; " + categoria + "; " + endereco.enderecoFormatado() + "; " + data + "; " + horaInicio + "; " + horaFim + "; " + qtdeIngressos + "; " + anfitriao.getNomeCompleto() + "; " + participantes + "; ";
+    }
+
+    //getters e setters
     public int getID() {
         return ID;
     }

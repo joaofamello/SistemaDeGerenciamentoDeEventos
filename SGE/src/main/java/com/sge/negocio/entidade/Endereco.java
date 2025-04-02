@@ -17,6 +17,11 @@ public class Endereco {
         this.estado = estado;
     }
 
+    public String enderecoFormatado() {
+        return rua + ", " + bairro + ", " + numero + ", " + cidade + ", " + estado + ", " + cep;
+    }
+
+    //getters e setters
     public String getRua() {
         return rua;
     }

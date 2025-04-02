@@ -51,8 +51,7 @@ public class GerenciadorEntrada {
         String rua = sc.nextLine();
         System.out.println("Qual o numero?");
         int numero = sc.nextInt();
-        Endereco endereco = new Endereco(estado, cidade, cep, bairro, rua, numero);
-        return endereco;
+        return new Endereco(estado, cidade, cep, bairro, rua, numero);
     }
 
     public void cadastrarUsuario(){

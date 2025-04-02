@@ -17,7 +17,7 @@ public class Anfitriao extends Usuario {
     public void listarEventos() {
         if (eventosCriados != null) {
             for (Evento evento : eventosCriados) {
-                System.out.println(evento + "\n -------------------------------------"); //talvez ele não printe o evento corretamente ou bem formatado, pesquisar e resolver isso aí
+                System.out.println(evento + "\n -------------------------------------");
             }
         } else {
             System.out.println("Nenhum evento cadastrado!"); // Criar um exception para isso
