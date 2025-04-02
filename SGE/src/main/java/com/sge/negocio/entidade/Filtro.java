@@ -7,12 +7,13 @@ import java.util.List;
 public class Filtro {
     private static RepositorioEventosArrayList repositorio;
 
-    public Filtro(RepositorioEventosArrayList repositorio) {
-        Filtro.repositorio = repositorio;
+    public Filtro() {
+        Filtro.repositorio = new RepositorioEventosArrayList();
     }
-    public static Evento buscarPorNome(String nome) {
+
+    public static Evento buscarPorTitulo(String Titulo) {
         for(Evento evento : repositorio.getEventos()){
-            if(evento.getTitulo().equalsIgnoreCase(nome)){
+            if(evento.getTitulo().equalsIgnoreCase(Titulo)){
                 return evento;
             }
         }
@@ -20,30 +21,13 @@ public class Filtro {
     }
 
     public static List<Evento> buscarPorCategoria(String categoria) {
-        Categoria cat = new Categoria();
-        List<Evento> eventosEncontrados = new ArrayList<>();
-
-        switch (categoria){
-            case "Corporativos":
-                eventosEncontrados = cat.getCorporativos();
-                break;
-            case "Sociais":
-                eventosEncontrados = cat.getSociais();
-                break;
-            case "Culturais":
-                eventosEncontrados = cat.getCulturais();
-                break;
-            case "Esportivos":
-                eventosEncontrados = cat.getEsportivos();
-                break;
-            case "Cientificos":
-                eventosEncontrados = cat.getCientificos();
-                break;
-            default:
-                break;
+        List<Evento> eventos = new ArrayList<>();
+        for(Evento evento : repositorio.getEventos()){
+            if(evento.getCategoria().equalsIgnoreCase(categoria)){
+                eventos.add(evento);
+            }
         }
-
-        return eventosEncontrados;
+        return eventos;
     }
 
     public static List<Evento> buscarPorCidade(String cidade) {

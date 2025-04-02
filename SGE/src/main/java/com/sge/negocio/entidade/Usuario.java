@@ -24,6 +24,10 @@ public class Usuario {
         this.ID = qtde++;
     }
 
+    public String usuarioFormatado() {
+        System.out.println("--------------------------------------------");
+        return ID + " " + nomeCompleto + " " + nomeUsuario + " " + email + " " + telefone + " " + senha;
+    }
 
     //getters e setters
     public String getNomeCompleto() {

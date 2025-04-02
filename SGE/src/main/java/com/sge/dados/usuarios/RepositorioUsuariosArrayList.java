@@ -32,4 +32,15 @@ public class RepositorioUsuariosArrayList implements IRepositorioUsuarios {
         return null;
     }
 
+    @Override
+    public Usuario buscarUsuariosPorNome(String nome) {
+        Usuario usuarioProcurado = null;
+        for (Usuario usuario : usuarios) {
+            if(usuario.getNomeUsuario().equals(nome)) {
+                usuarioProcurado = usuario;
+                break;
+            }
+        }
+        return usuarioProcurado;
+    }
 }
