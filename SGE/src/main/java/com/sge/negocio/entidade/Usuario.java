@@ -23,12 +23,6 @@ public class Usuario {
         this.ID = qtde++;
     }
 
-    //Esse metodo vai criar o Usuario com ID
-    public static Usuario criarUsuarioComID(int ID, String nomeCompleto, String nomeUsuario, String email, String telefone, String senha) {
-        Usuario usuario = new Usuario(nomeCompleto, nomeUsuario, email, telefone, senha);
-        usuario.ID = ID;
-        return usuario;
-    }
 
     //getters e setters
     public String getNomeCompleto() {

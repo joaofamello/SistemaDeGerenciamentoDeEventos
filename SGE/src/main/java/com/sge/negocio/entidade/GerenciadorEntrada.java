@@ -1,4 +1,7 @@
 package com.sge.negocio.entidade;
+import com.sge.dados.*;
+import com.sge.negocio.NegocioEvento;
+import com.sge.negocio.NegocioUsuario;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -7,6 +10,8 @@ import java.util.Scanner;
 public class GerenciadorEntrada {
     private final Scanner sc = new Scanner(System.in);
     private Usuario usuario;
+    private NegocioUsuario negocioUsuario;
+    private NegocioEvento negocioEvento;
 
     public GerenciadorEntrada() {
     }
@@ -47,18 +52,14 @@ public class GerenciadorEntrada {
         return new Endereco (rua, bairro, numero, cep, cidade, estado);
     }
 
-    public Usuario cadastrarUsuario(){
-        System.out.println("Digite o seu nome completo:");
+    public void cadastrarUsuario(){
         String nomeCompleto = sc.nextLine();
-        System.out.println("Qual será o seu nome de usuário?");
-        String nomeUsuario = sc.nextLine(); // criar um método para verificar se o nome de usuário está disponível para uso
-        System.out.println("Digite o seu e-mail:");
+        String nomeUsuario = sc.nextLine();
         String email = sc.nextLine();
-        System.out.println("Digite o seu telefone:");
         String telefone = sc.nextLine();
-        System.out.println("Escolha uma senha (Sua senha deve ter no mínimo 8 dígitos, podendo conter letras, números e símbolos):");
         String senha = sc.nextLine();
-        return new Usuario(nomeCompleto, nomeUsuario, email, telefone, senha);
+        Usuario usuario = new Usuario(nomeCompleto,nomeUsuario,email,telefone,senha);
+        negocioUsuario.inserir(usuario);
     }
 
     public String recebeString(){
