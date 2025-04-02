@@ -12,11 +12,4 @@ public interface IRepositorioUsuarios {
     public Usuario buscarUsuariosPorID(int id);
 
     public ArrayList<Usuario> listar();
-
-    public void salvarUsuarios(List<Usuario> usuarios);
-
-    public List<Usuario> carregarUsuarios();
-
-
-
 }
