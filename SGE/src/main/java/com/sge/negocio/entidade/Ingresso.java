@@ -1,10 +1,10 @@
 package com.sge.negocio.entidade;
 
 public class Ingresso {
-    private Usuario comprador;
-    private Evento evento;
+    private final Usuario comprador;
+    private final Evento evento;
     private double valor;
-    private int ID;
+    private final int ID;
     private static int numero = 1;
 
     public Ingresso(Usuario comprador, Evento evento, double valor) {

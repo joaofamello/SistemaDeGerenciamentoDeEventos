@@ -5,50 +5,32 @@ import java.time.LocalDateTime;
 
 public class GerenciadorEventos {
     private final Anfitriao operador;
-    private GerenciadorEntrada entrada = new GerenciadorEntrada();
+    private final GerenciadorEntrada entrada = new GerenciadorEntrada();
 
     public GerenciadorEventos(Anfitriao operador) {
         this.operador = operador;
     }
 
     //Métodos Básicos de Gerenciamento dos Eventos
-    public void listarEventos() {
+    public String listarEventos() {
         if (operador.getEventosCriados() != null) {
             for (Evento evento : operador.getEventosCriados()) {
-                System.out.println("\nTitulo: " + evento.getTitulo()
-                        + "\nDescrição: " + evento.getDescricao()
-                        + "\nCategoria: " + evento.getCategoria()
-                        + "\nEndereço:  "
-                        + "\nEstado: " + evento.getEndereco().getEstado()
-                        + "\nCidade: " + evento.getEndereco().getCidade()
-                        + "\nCEP: " + evento.getEndereco().getCep()
-                        + "\nBairro: " + evento.getEndereco().getBairro()
-                        + "\nRua: " + evento.getEndereco().getRua()
-                        + "\nNumero: " + evento.getEndereco().getNumero()
-                        + "\nTitulo: " + evento.getTitulo());
+                return evento.eventoFormatado();
             }
         } else {
             System.out.println("Nenhum evento cadastrado!"); // Criar um exception para isso
         }
+        return null;
     }
 
-    public Evento buscarEventoNome() {
+    public String buscarEventoNome() {
         String nome = entrada.recebeString();
         for (Evento evento : operador.getEventosCriados()) {
             if(nome.equals(evento.getTitulo())) {
-                return evento;
+                return evento.eventoFormatado();
             }
         }
         return null; // usar o exception de nenhum evento cadastrado
-    }
-    public Evento buscarEventoID() {
-        int ID = entrada.recebeInt();
-        for (Evento evento : operador.getEventosCriados()) {
-            if(ID == evento.getID()){
-                return evento;
-            }
-        }
-        return null;
     }
 
     public void mudarTituloEvento(Evento evento, String novoTitulo) {
@@ -87,7 +69,6 @@ public class GerenciadorEventos {
     public void editarEvento(Evento evento) { // nisso aqui também
         // criar exceção para evento não encontrado
         // criar uma tela para edição
-
         switch(entrada.recebeInt()){
             case 1:
                 evento.setTitulo(entrada.recebeString());
