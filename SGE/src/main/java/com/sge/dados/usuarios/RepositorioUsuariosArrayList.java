@@ -22,10 +22,10 @@ public class RepositorioUsuariosArrayList implements IRepositorioUsuarios {
     }
 
     @Override
-    public Usuario buscar(int id) {
+    public Usuario buscarUsuariosPorID(int id) {
         Usuario usuario = null;
         for (Usuario usuario1 : usuarios) {
-            if(usuario.getID() == id) {
+            if(usuario1.getID() == id) {
                 usuario = usuario1;
                 break;
             }
@@ -71,7 +71,7 @@ public class RepositorioUsuariosArrayList implements IRepositorioUsuarios {
               }
           }
         } catch (IOException e){
-            e.getMessage();
+            System.err.println("Erro ao carregar Usuarios");
         }
         return usuarios;
     }

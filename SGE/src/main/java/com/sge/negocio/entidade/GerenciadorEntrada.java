@@ -37,19 +37,20 @@ public class GerenciadorEntrada {
     }
 
     public Endereco criarEndereco(){
-        System.out.println("Qual é o nome da rua?");
-        String rua = sc.nextLine();
-        System.out.println("Qual é o bairro?");
-        String bairro = sc.nextLine();
-        System.out.println("Qual é o número?");
-        int numero = sc.nextInt();
-        System.out.println("Qual a cidade?");
-        String cidade = sc.nextLine();
-        System.out.println("Qual é o estado?");
+        System.out.println("Em qual estado será situado o seu evento?");
         String estado = sc.nextLine();
-        System.out.println("Digite o cep: ");
+        System.out.println("Em qual cidade?");
+        String cidade = sc.nextLine();
+        System.out.println("Qual o cep do estabelecimento?");
         String cep = sc.nextLine();
-        return new Endereco (rua, bairro, numero, cep, cidade, estado);
+        System.out.println("Qual o bairro?");
+        String bairro = sc.nextLine();
+        System.out.println("Qual a rua?");
+        String rua = sc.nextLine();
+        System.out.println("Qual o numero?");
+        int numero = sc.nextInt();
+        Endereco endereco = new Endereco(estado, cidade, cep, bairro, rua, numero);
+        return endereco;
     }
 
     public void cadastrarUsuario(){

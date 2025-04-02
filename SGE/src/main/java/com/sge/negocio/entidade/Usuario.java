@@ -2,6 +2,7 @@ package com.sge.negocio.entidade;
 
 import java.util.ArrayList;
 
+
 public class Usuario {
     private final String nomeCompleto;
     private String nomeUsuario;
@@ -85,4 +86,5 @@ public class Usuario {
     public static void setEhAnfitriao(boolean ehAnfitriao) {
         Usuario.ehAnfitriao = ehAnfitriao;
     }
+
 }
