@@ -1,10 +1,10 @@
-package com.sge.dados;
+package com.sge.dados.Arquivos;
 
 import java.io.*;
 import java.nio.file.*;
 
 public class GerenciadorDeDados {
-    private static final Path Diretorio = Paths.get(System.getProperty("user.dir"), "SGE/BancoDeDados");
+    private static final Path Diretorio = Paths.get(System.getProperty("user.dir"), "SGE/src/main/java/com/sge/dados/BancoDeDados");
     private static final Path Pasta_Usuarios = Diretorio.resolve("UsersData.txt");
     private static final Path Pasta_Eventos = Diretorio.resolve("EventsData.txt");
 
