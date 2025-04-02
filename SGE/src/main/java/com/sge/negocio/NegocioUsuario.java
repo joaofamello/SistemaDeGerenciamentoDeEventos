@@ -18,4 +18,9 @@ public class NegocioUsuario {
         return repositorioUsuarios.buscarUsuariosPorID(ID);
     }
 
+    public Usuario buscarUsuariosPorNome(String nome) {
+        Usuario usuario = repositorioUsuarios.buscarUsuariosPorNome(nome);
+        return usuario;
+    }
+
 }
