@@ -1,5 +1,9 @@
 package com.sge.negocio.entidade;
 
+
+import com.sge.negocio.NegocioEvento;
+import com.sge.negocio.NegocioUsuario;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
@@ -7,11 +11,13 @@ import java.util.Scanner;
 public class GerenciadorEntrada {
     private final Scanner sc = new Scanner(System.in);
     private Usuario usuario;
+    private NegocioUsuario negocioUsuario;
+    private NegocioEvento negocioEvento;
 
     public GerenciadorEntrada() {
     }
 
-    public Evento criarEvento(Usuario usuario){
+    public void criarEvento(Usuario usuario){
         System.out.println("Qual será o título do seu evento?");
         String titulo = sc.nextLine();
         System.out.println("Digite a descrição do seu evento:");
@@ -28,37 +34,41 @@ public class GerenciadorEntrada {
         LocalDateTime horaFim = recebeHora();
         System.out.println("Quantas vagas terá o seu evento?");
         int qtdeIngressos = sc.nextInt();
-        return new Evento(titulo, descricao, categoria, endereco, data, horaInicio, horaFim, qtdeIngressos, usuario);
+        Evento evento = new Evento(titulo, descricao, categoria, endereco, data, horaInicio, horaFim, qtdeIngressos, usuario);
+        negocioEvento.inserir(evento);
     }
 
     public Endereco criarEndereco(){
-        System.out.println("Qual é o nome da rua?");
-        String rua = sc.nextLine();
-        System.out.println("Qual é o bairro?");
-        String bairro = sc.nextLine();
-        System.out.println("Qual é o número?");
-        int numero = sc.nextInt();
-        System.out.println("Qual a cidade?");
-        String cidade = sc.nextLine();
-        System.out.println("Qual é o estado?");
+        System.out.println("Em qual estado será situado o seu evento?");
         String estado = sc.nextLine();
-        System.out.println("Digite o cep: ");
+        System.out.println("Em qual cidade?");
+        String cidade = sc.nextLine();
+        System.out.println("Qual o cep do estabelecimento?");
         String cep = sc.nextLine();
-        return new Endereco (rua, bairro, numero, cep, cidade, estado);
+        System.out.println("Qual o bairro?");
+        String bairro = sc.nextLine();
+        System.out.println("Qual a rua?");
+        String rua = sc.nextLine();
+        System.out.println("Qual o numero?");
+        int numero = sc.nextInt();
+        Endereco endereco = new Endereco(estado, cidade, cep, bairro, rua, numero);
+        return endereco;
     }
 
-    public Usuario cadastrarUsuario(){
-        System.out.println("Digite o seu nome completo:");
+    public void cadastrarUsuario(){
+        System.out.println("Qual seu nome completo: ");
         String nomeCompleto = sc.nextLine();
-        System.out.println("Qual será o seu nome de usuário?");
-        String nomeUsuario = sc.nextLine(); // criar um método para verificar se o nome de usuário está disponível para uso
-        System.out.println("Digite o seu e-mail:");
+        System.out.println("Qual seu nome de usuário: ");
+        String nomeUsuario = sc.nextLine();
+        System.out.println("Qual o seu email: ");
         String email = sc.nextLine();
-        System.out.println("Digite o seu telefone:");
+        System.out.println("Qual o seu número de telefone:");
         String telefone = sc.nextLine();
-        System.out.println("Escolha uma senha (Sua senha deve ter no mínimo 8 dígitos, podendo conter letras, números e símbolos):");
+        System.out.println("Digite uma senha para sua conta: ");
         String senha = sc.nextLine();
-        return new Usuario(nomeCompleto, nomeUsuario, email, telefone, senha);
+        //adicionar a condição de conta de 5 digitos ou mais
+        Usuario usuario = new Usuario(nomeCompleto,nomeUsuario,email,telefone,senha);
+        negocioUsuario.inserir(usuario);
     }
 
     public String recebeString(){
