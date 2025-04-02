@@ -12,8 +12,4 @@ public interface IRepositorioEventos {
 
     public void remover(Evento evento);
 
-    public void salvarEventos(List<Evento> eventos);
-
-    public List<Evento> carregarEventos();
-
 }
