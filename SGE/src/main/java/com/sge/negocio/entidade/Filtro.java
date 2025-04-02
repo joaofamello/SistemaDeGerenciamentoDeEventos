@@ -20,29 +20,12 @@ public class Filtro {
     }
 
     public static List<Evento> buscarPorCategoria(String categoria) {
-        Categoria cat = new Categoria();
         List<Evento> eventosEncontrados = new ArrayList<>();
-
-        switch (categoria){
-            case "Corporativos":
-                eventosEncontrados = cat.getCorporativos();
-                break;
-            case "Sociais":
-                eventosEncontrados = cat.getSociais();
-                break;
-            case "Culturais":
-                eventosEncontrados = cat.getCulturais();
-                break;
-            case "Esportivos":
-                eventosEncontrados = cat.getEsportivos();
-                break;
-            case "Cientificos":
-                eventosEncontrados = cat.getCientificos();
-                break;
-            default:
-                break;
+        for(Evento evento : repositorio.getEventos()){
+            if(evento.getCategoria().equalsIgnoreCase(categoria)){
+                eventosEncontrados.add(evento);
+            }
         }
-
         return eventosEncontrados;
     }
 
