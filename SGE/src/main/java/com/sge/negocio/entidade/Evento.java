@@ -34,7 +34,7 @@ public class Evento {
 
     //formatação do evento
     public String eventoFormatado(){
-        return titulo + "; " + descricao + "; " + categoria + "; " + endereco.enderecoFormatado() + "; " + data + "; " + horaInicio + "; " + horaFim + "; " + qtdeIngressos + "; " + anfitriao.getNomeCompleto() + "; " + participantes + "; ";
+        return titulo + "; " + descricao + "; " + categoria + "; " + endereco.enderecoFormatado() + "; " + data + "; " + horaInicio + "; " + horaFim + "; " + qtdeIngressos + "; " + anfitriao.getNomeCompleto() + "; ";
     }
 
     //getters e setters

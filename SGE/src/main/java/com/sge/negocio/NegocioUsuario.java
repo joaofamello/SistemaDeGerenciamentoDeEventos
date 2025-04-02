@@ -25,8 +25,7 @@ public class NegocioUsuario {
     }
 
     public Usuario buscarUsuariosPorID(int ID) {
-        Usuario usuario = repositorioUsuarios.buscarUsuariosPorID(ID);
-        return usuario;
+        return repositorioUsuarios.buscarUsuariosPorID(ID);
     }
 
 }

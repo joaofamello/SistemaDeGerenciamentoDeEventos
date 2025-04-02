@@ -75,30 +75,4 @@ public class Anfitriao extends Usuario {
     public void excluirMeuEvento(Evento evento) { // pensar melhor nisso aqui
         eventosCriados.remove(evento);
     }
-
-    public void editarMeuEvento(Evento evento) { // nisso aqui também
-        // criar método que verifica se o evento realmente existe
-        // criar uma tela para edição
-        switch(entrada.recebeInt()){
-            case 1:
-                evento.setTitulo(entrada.recebeString());
-                break;
-            case 2:
-                evento.setDescricao(entrada.recebeString());
-                break;
-            case 3:
-                evento.setCategoria(entrada.recebeString());
-                break;
-            case 4:
-                Endereco novoEnd = entrada.criarEndereco();
-                evento.setEndereco(novoEnd);
-                break;
-            case 5:
-                evento.setQtdeIngressos(entrada.recebeInt());
-                break;
-            // ainda tem coisas para fazer
-        }
-    }
-
-
 }
