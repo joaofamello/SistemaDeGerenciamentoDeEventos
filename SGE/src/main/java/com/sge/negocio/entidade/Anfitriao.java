@@ -17,14 +17,25 @@ public class Anfitriao extends Usuario {
     public void listarEventos() {
         if (eventosCriados != null) {
             for (Evento evento : eventosCriados) {
-                System.out.println(evento + "\n -------------------------------------"); //talvez ele não printe o evento corretamente ou bem formatado, pesquisar e resolver isso aí
+                System.out.println("\nTitulo: " + evento.getTitulo()
+                        + "\nDescrição: " + evento.getDescricao()
+                        + "\nCategoria: " + evento.getCategoria()
+                        + "\nEndereço:  "
+                            + "\nEstado: " + evento.getEndereco().getEstado()
+                            + "\nCidade: " + evento.getEndereco().getCidade()
+                            + "\nCEP: " + evento.getEndereco().getCep()
+                            + "\nBairro: " + evento.getEndereco().getBairro()
+                            + "\nRua: " + evento.getEndereco().getRua()
+                            + "\nNumero: " + evento.getEndereco().getNumero()
+
+                        + "\nTitulo: " + evento.getTitulo());
             }
         } else {
             System.out.println("Nenhum evento cadastrado!"); // Criar um exception para isso
         }
     }
 
-    public Evento buscarMeuEventoNome() {
+    public Evento buscarEventoNome() {
         String nome = entrada.recebeString();
         for (Evento evento : eventosCriados) {
             if(nome.equals(evento.getTitulo())) {
@@ -33,7 +44,7 @@ public class Anfitriao extends Usuario {
         }
         return null; // usar o exception de nenhum evento cadastrado
     }
-    public Evento buscarMeuEventoID() {
+    public Evento buscarEventoID() {
         int ID = entrada.recebeInt();
         for (Evento evento : eventosCriados) {
             if(ID == evento.getID()){
@@ -43,42 +54,43 @@ public class Anfitriao extends Usuario {
         return null;
     }
 
-    public void mudarTituloMeuEvento(Evento evento, String novoTitulo) {
+    public void mudarTituloEvento(Evento evento, String novoTitulo) {
         evento.setTitulo(novoTitulo);
     }
 
-    public void mudarDescricaoMeuEvento(Evento evento, String novaDescricao) {
+    public void mudarDescricaoEvento(Evento evento, String novaDescricao) {
         evento.setDescricao(novaDescricao);
     }
 
-    public void mudarDataMeuEvento(Evento evento, LocalDate novaData){
+    public void mudarDataEvento(Evento evento, LocalDate novaData){
         evento.setData(novaData);
     }
 
-    public void mudarHoraMeuEvento(Evento evento, LocalDateTime novoInicio, LocalDateTime novoFim) {
+    public void mudarHoraEvento(Evento evento, LocalDateTime novoInicio, LocalDateTime novoFim) {
         evento.setHoraInicio(novoInicio);
         evento.setHoraFim(novoFim);
     }
 
-    public void mudarEnderecoMeuEvento(Evento evento, Endereco endereco) {
+    public void mudarEnderecoEvento(Evento evento, Endereco endereco) {
         evento.setEndereco(endereco);
     }
 
-    public void mudarCategoriaMeuEvento(Evento evento, String categoria) {
+    public void mudarCategoriaEvento(Evento evento, String categoria) {
         evento.setCategoria(categoria);
     }
 
-    public void mudarQtdeIngressosMeuEvento(Evento evento, int qtdeIngressos) {
+    public void mudarQtdeIngressosEvento(Evento evento, int qtdeIngressos) {
         evento.setQtdeIngressos(qtdeIngressos);
     }
 
-    public void excluirMeuEvento(Evento evento) { // pensar melhor nisso aqui
+    public void excluirEvento(Evento evento) { // pensar melhor nisso aqui
         eventosCriados.remove(evento);
     }
 
-    public void editarMeuEvento(Evento evento) { // nisso aqui também
-        // criar método que verifica se o evento realmente existe
+    public void editarEvento(Evento evento) { // nisso aqui também
+        // criar exceção para evento não encontrado
         // criar uma tela para edição
+
         switch(entrada.recebeInt()){
             case 1:
                 evento.setTitulo(entrada.recebeString());
@@ -90,8 +102,8 @@ public class Anfitriao extends Usuario {
                 evento.setCategoria(entrada.recebeString());
                 break;
             case 4:
-                Endereco novoEnd = entrada.criarEndereco();
-                evento.setEndereco(novoEnd);
+                Endereco novoEndereco = entrada.criarEndereco();
+                evento.setEndereco(novoEndereco);
                 break;
             case 5:
                 evento.setQtdeIngressos(entrada.recebeInt());
