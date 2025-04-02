@@ -13,8 +13,11 @@ import java.util.List;
 public class RepositorioUsuariosArrayList implements IRepositorioUsuarios {
 
     private ArrayList<Usuario> usuarios;
+    private static final String Arquivo = "usuarios.txt";
 
-    private RepositorioUsuariosArrayList() { usuarios = new ArrayList<Usuario>();}
+    private RepositorioUsuariosArrayList() {
+        this.usuarios = (ArrayList<Usuario>) carregarUsuarios();
+    }
 
     @Override
     public void inserir(Usuario usuario) {

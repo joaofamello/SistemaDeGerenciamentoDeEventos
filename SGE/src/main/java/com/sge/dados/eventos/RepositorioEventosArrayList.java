@@ -20,9 +20,10 @@ import java.util.List;
 public class RepositorioEventosArrayList implements IRepositorioEventos {
 
     private ArrayList<Evento> eventos;
+    private static final String Arquivo = "eventos.txt";
 
     public RepositorioEventosArrayList() {
-        eventos = new ArrayList<Evento>();
+        this.eventos = (ArrayList<Evento>) carregarEventos();
     }
 
     @Override
@@ -84,7 +85,7 @@ public class RepositorioEventosArrayList implements IRepositorioEventos {
                     int anfitriaoID = Integer.parseInt(campo[14]);
 
 
-                    Usuario anfitriao = RepositorioUsuariosArrayList.buscarUsuariosPorID(anfitriaoID);
+                    //Usuario anfitriao = RepositorioUsuariosArrayList.buscarUsuariosPorID(anfitriaoID);
 
                     Evento evento = new Evento(Titulo, Descricao, Categoria, endereco, data, horaInicio, horaFim, qtdeIngressos, anfitriao);
                     eventos.add(evento);
