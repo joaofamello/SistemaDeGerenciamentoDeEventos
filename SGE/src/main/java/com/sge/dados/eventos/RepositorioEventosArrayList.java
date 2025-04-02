@@ -65,7 +65,6 @@ public class RepositorioEventosArrayList implements IRepositorioEventos {
     @Override
     public List<Evento> carregarEventos() {
         List<Evento> eventos = new ArrayList<>();
-        RepositorioUsuariosArrayList repositorioUsuarios = new RepositorioUsuariosArrayList();
         try (BufferedReader leitor = Files.newBufferedReader(GerenciadorDeDados.getPasta_Eventos())) {
             String linha;
             while ((linha = leitor.readLine()) != null) {
@@ -85,7 +84,7 @@ public class RepositorioEventosArrayList implements IRepositorioEventos {
                     int anfitriaoID = Integer.parseInt(campo[14]);
 
 
-                    Usuario anfitriao = repositorioUsuarios.buscarUsuariosPorID(anfitriaoID);
+                    Usuario anfitriao = RepositorioUsuariosArrayList.buscarUsuariosPorID(anfitriaoID);
 
                     Evento evento = new Evento(Titulo, Descricao, Categoria, endereco, data, horaInicio, horaFim, qtdeIngressos, anfitriao);
                     eventos.add(evento);
