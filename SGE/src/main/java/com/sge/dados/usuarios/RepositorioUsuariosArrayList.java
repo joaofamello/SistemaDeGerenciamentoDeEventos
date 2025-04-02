@@ -1,23 +1,14 @@
 package com.sge.dados.usuarios;
 
 import com.sge.negocio.entidade.Usuario;
-import com.sge.dados.GerenciadorDeDados;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class RepositorioUsuariosArrayList implements IRepositorioUsuarios {
 
     private ArrayList<Usuario> usuarios;
-    private static final String Arquivo = "usuarios.txt";
 
-    private RepositorioUsuariosArrayList() {
-        this.usuarios = (ArrayList<Usuario>) carregarUsuarios();
-    }
+    public RepositorioUsuariosArrayList() { usuarios = new ArrayList<Usuario>();}
 
     @Override
     public void inserir(Usuario usuario) {
@@ -26,14 +17,14 @@ public class RepositorioUsuariosArrayList implements IRepositorioUsuarios {
 
     @Override
     public Usuario buscarUsuariosPorID(int id) {
-        Usuario usuario = null;
-        for (Usuario usuario1 : usuarios) {
-            if(usuario1.getID() == id) {
-                usuario = usuario1;
+        Usuario usuarioProcurado = null;
+        for (Usuario usuario : usuarios) {
+            if(usuario.getID() == id) {
+                usuarioProcurado = usuario;
                 break;
             }
         }
-        return usuario;
+        return usuarioProcurado;
     }
 
     @Override
@@ -41,41 +32,4 @@ public class RepositorioUsuariosArrayList implements IRepositorioUsuarios {
         return null;
     }
 
-    @Override
-    public void salvarUsuarios(List<Usuario> usuarios){
-        try (BufferedWriter escritor = Files.newBufferedWriter(Paths.get("usuarios.txt"))) {
-            for (Usuario usuario : usuarios) {
-                String linha = usuario.getID()+ ";" + usuario.getNomeCompleto() + ";" + usuario.getNomeUsuario() + ";" + usuario.getEmail() + ";" + usuario.getTelefone() + ";" + usuario.getSenha();
-                escritor.write(usuario.toString());
-                escritor.newLine();
-            }
-        } catch (IOException e){
-            System.err.println("Erro ao salvar usuarios: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public List<Usuario> carregarUsuarios(){
-        List<Usuario> usuarios = new ArrayList<>();
-        try (BufferedReader leitor = Files.newBufferedReader(GerenciadorDeDados.getPasta_Usuarios())){
-          String linha;
-          while ((linha = leitor.readLine()) != null) {
-              String[] campo = linha.split(";");
-              if (campo.length == 5) { // Verifica se todos os campos estão presentes
-                  String nomeCompleto = campo[0];
-                  String nomeUsuario = campo[1];
-                  String email = campo[2];
-                  String telefone = campo[3];
-                  String senha = campo[4];
-
-                  // Criando o usuário e adicionando ao vetor
-                  Usuario usuario = new Usuario(nomeCompleto, nomeUsuario, email, telefone, senha);
-                  usuarios.add(usuario);
-              }
-          }
-        } catch (IOException e){
-            System.err.println("Erro ao carregar Usuarios");
-        }
-        return usuarios;
-    }
 }
