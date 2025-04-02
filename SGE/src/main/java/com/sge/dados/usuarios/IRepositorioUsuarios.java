@@ -9,13 +9,13 @@ public interface IRepositorioUsuarios {
 
     public void inserir(Usuario usuario);
 
-    public Usuario buscar(int id);
+    public Usuario buscarUsuariosPorID(int id);
 
     public ArrayList<Usuario> listar();
 
-    void salvarUsuarios(List<Usuario> usuarios);
+    public void salvarUsuarios(List<Usuario> usuarios);
 
-    List<Usuario> carregarUsuarios();
+    public List<Usuario> carregarUsuarios();
 
 
 
