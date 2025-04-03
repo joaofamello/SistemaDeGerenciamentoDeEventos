@@ -35,23 +35,23 @@ public class RepositorioUsuariosArrayList implements IRepositorioUsuarios {
         System.out.println("\nSelecione entre: ");
         System.out.println("\nUsername, email, telefone ou senha");
         String op;
-        switch (op = sc.nextLine()){
-            case "Username":
-                usuario.setNomeUsuario(usuario.getNomeUsuario());
-                break;
-            case "Email":
-                usuario.setEmail(usuario.getEmail());
-                break;
+                switch (op = sc.nextLine()){
+                    case "Username":
+                        usuario.setNomeUsuario(usuario.getNomeUsuario());
+                        break;
+                    case "Email":
+                        usuario.setEmail(usuario.getEmail());
+                        break;
 
-            case "Senha":
-                usuario.setSenha(usuario.getSenha());
-                break;
+                    case "Senha":
+                        usuario.setSenha(usuario.getSenha());
+                        break;
 
-            case "Telefone":
-                usuario.setTelefone(usuario.getTelefone());
-                break;
-        }
-    }
+                    case "Telefone":
+                        usuario.setTelefone(usuario.getTelefone());
+                        break;
+                }
+            }
 
     @Override
     public ArrayList<Usuario> listar() {
