@@ -1,36 +1,44 @@
 package com.sge.negocio.entidade;
 
+import com.sge.dados.eventos.IRepositorioEventos;
+import com.sge.negocio.excecao.*;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GerenciadorEventos {
-    private final Anfitriao operador;
-    private final GerenciadorEntrada entrada = new GerenciadorEntrada();
+    private final IRepositorioEventos repositorio;
+    private static final int limiteDeTempoParaCancelamento = 48;
 
-    public GerenciadorEventos(Anfitriao operador) {
-        this.operador = operador;
+
+    public GerenciadorEventos(IRepositorioEventos repositorio) {
+        this.repositorio = repositorio;
     }
 
-    //Métodos Básicos de Gerenciamento dos Eventos
-    public String listarEventos() {
-        if (operador.getEventosCriados() != null) {
-            for (Evento evento : operador.getEventosCriados()) {
-                return evento.eventoFormatado();
-            }
-        } else {
-            System.out.println("Nenhum evento cadastrado!"); // Criar um exception para isso
-        }
-        return null;
+    //Metodo para listar os eventos de um anfitriao.
+    public ArrayList<Evento> listarEventos(Anfitriao anfitriao) throws NenhumEventoCriadoException {
+       List<Evento> eventos = new ArrayList<>();
+       eventos = anfitriao.getEventosCriados();
+       return (ArrayList<Evento>) eventos;
     }
 
-    public String buscarEventoNome() {
-        String nome = entrada.recebeString();
-        for (Evento evento : operador.getEventosCriados()) {
-            if(nome.equals(evento.getTitulo())) {
-                return evento.eventoFormatado();
+    //Metodo para o anfitriao buscar um de seus eventos por nome.
+    public Evento buscarEventoNome(String Titulo, Anfitriao anfitriao) throws EventoNaoEncontradoException, NenhumEventoCriadoException, TituloVazioException {
+        if(Titulo == null || Titulo.trim().equals("")){
+            throw new TituloVazioException();
+        }
+        if(anfitriao.getEventosCriados() == null){
+            throw new NenhumEventoCriadoException();
+        }
+        for(Evento evento : anfitriao.getEventosCriados()){
+            if(evento.getTitulo().equals(Titulo)){
+                return evento;
             }
         }
-        return null; // usar o exception de nenhum evento cadastrado
+        throw new EventoNaoEncontradoException(Titulo);
     }
 
     public void mudarTituloEvento(Evento evento, String novoTitulo) {
@@ -45,7 +53,11 @@ public class GerenciadorEventos {
         evento.setData(novaData);
     }
 
-    public void mudarHoraEvento(Evento evento, LocalDateTime novoInicio, LocalDateTime novoFim) {
+    public void mudarHoraEvento(Evento evento, LocalDateTime novoInicio, LocalDateTime novoFim) throws CancelamentoProibidoException {
+        long horasRestantes = ChronoUnit.HOURS.between(LocalDateTime.now(), evento.getHoraInicio());
+        if(horasRestantes < limiteDeTempoParaCancelamento){
+            throw new CancelamentoProibidoException(evento.getHoraInicio());
+        }
         evento.setHoraInicio(novoInicio);
         evento.setHoraFim(novoFim);
     }
@@ -62,8 +74,26 @@ public class GerenciadorEventos {
         evento.setQtdeIngressos(qtdeIngressos);
     }
 
-    public void cancelarEvento(Evento evento) { // pensar melhor nisso aqui
-        evento.setEstado(false);
+    public void cancelarEvento(Evento evento) {
+        evento.setEstado(false); // Marca como inativo
+        repositorio.alterar(evento);
     }
+
+    public void validarCancelamento(Evento evento) throws CancelamentoProibidoException {
+        long horasRestantes = ChronoUnit.HOURS.between(LocalDateTime.now(), evento.getHoraInicio());
+        if (horasRestantes < limiteDeTempoParaCancelamento) {
+            throw new CancelamentoProibidoException(evento.getHoraInicio());
+        }
+    }
+
+    public void validarEvento(Evento evento) throws FormularioEventoInvalidoException {
+        if (evento.getTitulo() == null || evento.getTitulo().trim().isEmpty()) {
+            throw new FormularioEventoInvalidoException("titulo", "Título não pode ser vazio");
+        }
+        if (evento.getHoraInicio().isBefore(LocalDateTime.now())) {
+            throw new FormularioEventoInvalidoException("data", "Data/hora deve ser futura");
+        }
+    }
+
 
 }
