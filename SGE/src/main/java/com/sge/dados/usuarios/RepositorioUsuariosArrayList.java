@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class RepositorioUsuariosArrayList implements IRepositorioUsuarios {
 
-    private ArrayList<Usuario> usuarios;
+    private final ArrayList<Usuario> usuarios;
 
     public RepositorioUsuariosArrayList() { usuarios = new ArrayList<Usuario>();}
 

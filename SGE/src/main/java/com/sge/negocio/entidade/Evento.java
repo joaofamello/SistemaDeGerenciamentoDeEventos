@@ -18,6 +18,7 @@ public class Evento {
     private int qtdeIngressos;
     private Usuario anfitriao;
     private ArrayList<Ingresso> participantes;
+    private boolean estado;
 
     //construtor
     public Evento(String titulo, String descricao, String categoria, Endereco endereco, LocalDate data, LocalDateTime horaInicio, LocalDateTime horaFim, int qtdeIngressos, Usuario anfitriao) {
@@ -31,6 +32,7 @@ public class Evento {
         this.qtdeIngressos = qtdeIngressos;
         this.anfitriao = anfitriao;
         this.ID = ++numero;
+        this.estado = true;
     }
 
     //formatação do evento
@@ -127,11 +129,17 @@ public class Evento {
     public void setParticipantes(ArrayList<Ingresso> participantes) {
         this.participantes = participantes;
     }
-<<<<<<< Updated upstream
 
     public LocalDateTime getDataHoraInicio() {
         return horaInicio;
     }
-=======
->>>>>>> Stashed changes
+
+    public boolean getEstado() {
+        return estado;
+    }
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
+
 }

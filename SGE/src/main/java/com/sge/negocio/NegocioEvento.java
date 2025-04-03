@@ -4,8 +4,14 @@ import com.sge.dados.eventos.IRepositorioEventos;
 import com.sge.dados.eventos.RepositorioEventosArrayList;
 import com.sge.negocio.entidade.Evento;
 import com.sge.negocio.entidade.Filtro;
+
 import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.excecao.*;
+
+import com.sge.negocio.excecao.CategoriaNaoEncontradaException;
+import com.sge.negocio.excecao.CidadeSemEventosException;
+import com.sge.negocio.excecao.EventoNaoEncontradoException;
+
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -15,6 +21,7 @@ import java.util.List;
 
 public class NegocioEvento {
     private IRepositorioEventos repositorioEventos;
+    private Filtro filtro;
 
     private Filtro filtro;
 
@@ -22,6 +29,7 @@ public class NegocioEvento {
 
     public NegocioEvento(IRepositorioEventos repositorioEventos) {
         this.repositorioEventos = repositorioEventos;
+        this.filtro = new Filtro((RepositorioEventosArrayList) repositorioEventos);
     }
 
 
@@ -42,6 +50,7 @@ public class NegocioEvento {
     }
 
     public List<Evento> buscarPorTitulo(String Titulo) throws EventoNaoEncontradoException{
+
     Filtro filtro = new Filtro();
     List<Evento> eventosEncontrados =(List<Evento>) filtro.buscarPorTitulo(Titulo);
 
@@ -54,6 +63,16 @@ public class NegocioEvento {
 
     public List<Evento> buscarPorCidade(String cidade) throws CidadeSemEventosException {
         Filtro filtro = new Filtro();
+
+    List<Evento> eventosPorTitulo = filtro.buscarPorTitulo(Titulo);
+    if(eventosPorTitulo.isEmpty()){
+        throw new EventoNaoEncontradoException(Titulo);
+    }
+    return eventosPorTitulo;
+    }
+
+    public List<Evento> buscarPorCidade(String cidade) throws CidadeSemEventosException {
+
         List<Evento> eventosEncontrados = filtro.buscarPorCidade(cidade);
         if(eventosEncontrados.isEmpty()){
             throw new CidadeSemEventosException(cidade);
@@ -62,8 +81,12 @@ public class NegocioEvento {
     }
 
     public List<Evento> buscarPorCategoria(String categoria) throws CategoriaNaoEncontradaException {
+
         Filtro filtro = new Filtro();
         List<Evento> eventos = filtro.buscarPorCidade(categoria);
+
+        List<Evento> eventos = filtro.buscarPorCategoria(categoria);
+
         if(eventos.isEmpty()){
             throw new CategoriaNaoEncontradaException(categoria);
         }
