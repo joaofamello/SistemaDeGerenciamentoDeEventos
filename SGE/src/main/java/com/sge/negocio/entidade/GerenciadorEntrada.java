@@ -3,6 +3,11 @@ package com.sge.negocio.entidade;
 
 import com.sge.negocio.NegocioEvento;
 import com.sge.negocio.NegocioUsuario;
+import com.sge.negocio.excecao.FormularioEventoInvalidoException;
+<<<<<<< Updated upstream
+=======
+import com.sge.negocio.excecao.FormularioUsuarioInvalidoException;
+>>>>>>> Stashed changes
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,7 +22,7 @@ public class GerenciadorEntrada {
     public GerenciadorEntrada() {
     }
 
-    public void criarEvento(Usuario usuario){
+    public void criarEvento(Usuario usuario) throws FormularioEventoInvalidoException {
         System.out.println("Qual será o título do seu evento?");
         String titulo = sc.nextLine();
         System.out.println("Digite a descrição do seu evento:");
@@ -54,7 +59,7 @@ public class GerenciadorEntrada {
         return new Endereco(estado, cidade, cep, bairro, rua, numero);
     }
 
-    public void cadastrarUsuario(){
+    public void cadastrarUsuario() throws FormularioUsuarioInvalidoException {
         System.out.println("Qual seu nome completo: ");
         String nomeCompleto = sc.nextLine();
         System.out.println("Qual seu nome de usuário: ");

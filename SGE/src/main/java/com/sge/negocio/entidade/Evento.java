@@ -1,5 +1,6 @@
 package com.sge.negocio.entidade;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class Evento {
     private int qtdeIngressos;
     private Usuario anfitriao;
     private ArrayList<Ingresso> participantes;
+    private boolean estado;
 
     //construtor
     public Evento(String titulo, String descricao, String categoria, Endereco endereco, LocalDate data, LocalDateTime horaInicio, LocalDateTime horaFim, int qtdeIngressos, Usuario anfitriao) {
@@ -30,6 +32,7 @@ public class Evento {
         this.qtdeIngressos = qtdeIngressos;
         this.anfitriao = anfitriao;
         this.ID = ++numero;
+        this.estado = true;
     }
 
     //formatação do evento
@@ -126,5 +129,17 @@ public class Evento {
     public void setParticipantes(ArrayList<Ingresso> participantes) {
         this.participantes = participantes;
     }
+
+    public LocalDateTime getDataHoraInicio() {
+        return horaInicio;
+    }
+
+    public boolean getEstado() {
+        return estado;
+    }
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
 
 }

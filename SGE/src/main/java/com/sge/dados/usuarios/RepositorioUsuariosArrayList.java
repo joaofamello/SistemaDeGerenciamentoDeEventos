@@ -7,8 +7,12 @@ import java.util.Scanner;
 
 public class RepositorioUsuariosArrayList implements IRepositorioUsuarios {
 
+<<<<<<< HEAD
     private final Scanner sc = new Scanner(System.in);
     private ArrayList<Usuario> usuarios;
+=======
+    private final ArrayList<Usuario> usuarios;
+>>>>>>> bfb19b61bcba399023c56989b33314d64602657e
 
     public RepositorioUsuariosArrayList() { usuarios = new ArrayList<Usuario>();}
 
