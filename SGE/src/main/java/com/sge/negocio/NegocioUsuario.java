@@ -18,6 +18,10 @@ public class NegocioUsuario {
         return repositorioUsuarios.buscarUsuariosPorID(ID);
     }
 
+    public void alterar(Usuario usuario) {
+        repositorioUsuarios.alterar(usuario);
+    }
+
     public Usuario buscarUsuariosPorNome(String nome) {
         Usuario usuario = repositorioUsuarios.buscarUsuariosPorNome(nome);
         return usuario;

@@ -14,4 +14,6 @@ public interface IRepositorioUsuarios {
     public ArrayList<Usuario> listar();
 
     public Usuario buscarUsuariosPorNome(String nome);
+
+    public void alterar(Usuario usuario);
 }
