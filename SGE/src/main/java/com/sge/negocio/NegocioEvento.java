@@ -15,10 +15,9 @@ import java.util.List;
 
 public class NegocioEvento {
     private IRepositorioEventos repositorioEventos;
-<<<<<<< Updated upstream
-=======
+
     private Filtro filtro;
->>>>>>> Stashed changes
+
     private static final int limiteDeTempoParaCancelamento = 48;
 
     public NegocioEvento(IRepositorioEventos repositorioEventos) {
@@ -30,10 +29,7 @@ public class NegocioEvento {
         validarEvento(evento);
         repositorioEventos.inserir(evento);
     }
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
     public void alterar(Evento evento) throws FormularioEventoInvalidoException {
         validarEvento(evento);
         repositorioEventos.alterar(evento);
@@ -41,28 +37,7 @@ public class NegocioEvento {
 
     public void cancelar(Evento evento) throws CancelamentoProibidoException {
         validarCancelamento(evento);
-<<<<<<< Updated upstream
-        repositorioEventos.remover(evento);
-    }
 
-    private void validarEvento(Evento evento) throws FormularioEventoInvalidoException {
-        if (evento.getTitulo() == null || evento.getTitulo().trim().isEmpty()) {
-            throw new FormularioEventoInvalidoException("titulo", "Título não pode ser vazio");
-        }
-        if (evento.getDataHoraInicio().isBefore(LocalDateTime.now())) {
-            throw new FormularioEventoInvalidoException("data", "Data/hora deve ser futura");
-        }
-
-    }
-
-    public void cancelarEvento(Evento evento, Usuario solicitante)
-            throws CancelamentoProibidoException, PermissaoNegadaException {
-        if (!evento.getAnfitriao().equals(solicitante)) {
-            throw new PermissaoNegadaException("Cancelamento de evento");
-        }
-        validarCancelamento(evento);
-=======
->>>>>>> Stashed changes
         repositorioEventos.remover(evento);
     }
 
