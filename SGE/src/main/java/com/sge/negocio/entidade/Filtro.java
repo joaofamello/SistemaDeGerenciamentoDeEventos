@@ -7,19 +7,19 @@ import java.util.List;
 public class Filtro {
     private static RepositorioEventosArrayList repositorio;
 
-    public Filtro() {
-        Filtro.repositorio = new RepositorioEventosArrayList();
+    public Filtro(RepositorioEventosArrayList repositorio) {
+        Filtro.repositorio = repositorio;
     }
 
-    public static Evento buscarPorTitulo(String Titulo) {
+    public static List<Evento> buscarPorTitulo(String Titulo) {
+        List<Evento> eventosPorTitulo = new ArrayList<>();
         for(Evento evento : repositorio.getEventos()){
-            if(evento.getTitulo().equalsIgnoreCase(Titulo)){
-                return evento;
+            if(evento.getCategoria().equalsIgnoreCase(Titulo)){
+                eventosPorTitulo.add(evento);
             }
         }
-        return null;
+        return eventosPorTitulo;
     }
-
     public static List<Evento> buscarPorCategoria(String categoria) {
         List<Evento> eventos = new ArrayList<>();
         for(Evento evento : repositorio.getEventos()){

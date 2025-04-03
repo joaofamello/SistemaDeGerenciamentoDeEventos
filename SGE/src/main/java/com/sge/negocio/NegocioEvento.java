@@ -4,6 +4,9 @@ import com.sge.dados.eventos.IRepositorioEventos;
 import com.sge.dados.eventos.RepositorioEventosArrayList;
 import com.sge.negocio.entidade.Evento;
 import com.sge.negocio.entidade.Filtro;
+import com.sge.negocio.excecao.CategoriaNaoEncontradaException;
+import com.sge.negocio.excecao.CidadeSemEventosException;
+import com.sge.negocio.excecao.EventoNaoEncontradoException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +14,11 @@ import java.util.List;
 
 public class NegocioEvento {
     private IRepositorioEventos repositorioEventos;
+    private Filtro filtro;
 
     public NegocioEvento(IRepositorioEventos repositorioEventos) {
         this.repositorioEventos = repositorioEventos;
+        this.filtro = new Filtro((RepositorioEventosArrayList) repositorioEventos);
     }
     private static final int limiteDeTempoParaCancelamento = 48;
 
@@ -27,29 +32,26 @@ public class NegocioEvento {
         repositorioEventos.remover(evento);
     }
 
-    public Evento buscarPorTitulo(String Titulo) throws EventoNaoEncontradoException{
-    Filtro filtro = new Filtro();
-    Evento evento = filtro.buscarPorTitulo(Titulo);
-    if(evento == null){
-        throw new EventoNaoEncontradoException();
+    public List<Evento> buscarPorTitulo(String Titulo) throws EventoNaoEncontradoException{
+    List<Evento> eventosPorTitulo = filtro.buscarPorTitulo(Titulo);
+    if(eventosPorTitulo.isEmpty()){
+        throw new EventoNaoEncontradoException(Titulo);
     }
-    return evento;
+    return eventosPorTitulo;
     }
 
-    public List<Evento> buscarPorCidade(String cidade) throws CidadeSemEventosException{
-        Filtro filtro = new Filtro();
+    public List<Evento> buscarPorCidade(String cidade) throws CidadeSemEventosException {
         List<Evento> eventosEncontrados = filtro.buscarPorCidade(cidade);
         if(eventosEncontrados.isEmpty()){
-            throw new CidadeSemEventosException();
+            throw new CidadeSemEventosException(cidade);
         }
         return eventosEncontrados;
     }
 
-    public List<Evento> buscarPorCategoria(String categoria) throws CategoriaNaoEncontradaException{
-        Filtro filtro = new Filtro();
-        List<Evento> eventos = filtro.buscarPorCidade(categoria);
+    public List<Evento> buscarPorCategoria(String categoria) throws CategoriaNaoEncontradaException {
+        List<Evento> eventos = filtro.buscarPorCategoria(categoria);
         if(eventos.isEmpty()){
-            throw new CategoriaNaoEncontradaException();
+            throw new CategoriaNaoEncontradaException(categoria);
         }
         return eventos;
     }
