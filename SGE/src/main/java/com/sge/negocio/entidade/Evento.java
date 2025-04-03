@@ -127,8 +127,11 @@ public class Evento {
     public void setParticipantes(ArrayList<Ingresso> participantes) {
         this.participantes = participantes;
     }
+<<<<<<< Updated upstream
 
     public LocalDateTime getDataHoraInicio() {
         return horaInicio;
     }
+=======
+>>>>>>> Stashed changes
 }
