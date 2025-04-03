@@ -4,10 +4,7 @@ package com.sge.negocio.entidade;
 import com.sge.negocio.NegocioEvento;
 import com.sge.negocio.NegocioUsuario;
 import com.sge.negocio.excecao.FormularioEventoInvalidoException;
-<<<<<<< Updated upstream
-=======
 import com.sge.negocio.excecao.FormularioUsuarioInvalidoException;
->>>>>>> Stashed changes
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

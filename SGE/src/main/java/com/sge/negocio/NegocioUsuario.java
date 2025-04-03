@@ -19,7 +19,7 @@ public class NegocioUsuario {
 
     public void alterar(Usuario usuario) throws FormularioUsuarioInvalidoException {
         validarUsuario(usuario);
-        //repositorioUsuarios.alterar(usuario);
+        repositorioUsuarios.alterar(usuario);
     }
 
     public Usuario buscarUsuariosPorID(int ID) {
