@@ -15,32 +15,28 @@ import com.sge.negocio.excecao.EventoNaoEncontradoException;
 
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 
 public class NegocioEvento {
+    private final GerenciadorEventos gerenciador;
     private IRepositorioEventos repositorioEventos;
     private Filtro filtro;
-
-
-    private static final int limiteDeTempoParaCancelamento = 48;
 
     public NegocioEvento(IRepositorioEventos repositorioEventos) {
         this.repositorioEventos = repositorioEventos;
         this.filtro = new Filtro((RepositorioEventosArrayList) repositorioEventos);
+        this.gerenciador = new GerenciadorEventos(repositorioEventos);
     }
 
 
     public void inserir(Evento evento) throws FormularioEventoInvalidoException {
-        validarEvento(evento);
+        gerenciador.validarEvento(evento);
         repositorioEventos.inserir(evento);
     }
 
     public List<Evento> buscarPorTitulo(String Titulo) throws EventoNaoEncontradoException{
-
         List<Evento> eventosEncontrados = filtro.buscarPorTitulo(Titulo);
-
         if(eventosEncontrados.isEmpty()){
             throw new EventoNaoEncontradoException(Titulo);
         }
@@ -65,30 +61,23 @@ public class NegocioEvento {
         return eventos;
     }
 
-    private void validarEvento(Evento evento) throws FormularioEventoInvalidoException {
-        if (evento.getTitulo() == null || evento.getTitulo().trim().isEmpty()) {
-            throw new FormularioEventoInvalidoException("titulo", "Título não pode ser vazio");
-        }
-        if (evento.getHoraInicio().isBefore(LocalDateTime.now())) {
-            throw new FormularioEventoInvalidoException("data", "Data/hora deve ser futura");
-        }
-    }
 
-    public void cancelarEvento(Evento evento, Usuario solicitante)
+    public void cancelarEvento(Evento evento, Usuario solicitante) //Lembrar de passar o usuario que esta requisitando o metodo.
             throws CancelamentoProibidoException, PermissaoNegadaException {
-        GerenciadorEventos gerenciadorEventos = new GerenciadorEventos(); //Precisa passar um anfitrião como parametro, consultar a logica e ver se faz sentido
+
         if (!evento.getAnfitriao().equals(solicitante)) {
-            throw new PermissaoNegadaException("Cancelamento de evento");
+            throw new PermissaoNegadaException("Permissão Negada!");
         }
-        validarCancelamento(evento);
-        gerenciadorEventos.cancelarEvento(evento);
+        gerenciador.validarCancelamento(evento); // Valida as 48h
+        gerenciador.cancelarEvento(evento);
     }
 
-    private void validarCancelamento(Evento evento) throws CancelamentoProibidoException {
-        long horasRestantes = ChronoUnit.HOURS.between(LocalDateTime.now(), evento.getHoraInicio());
-        if (horasRestantes < limiteDeTempoParaCancelamento) {
-            throw new CancelamentoProibidoException(evento.getHoraInicio());
+    public void mudarHoraEvento(Evento evento, LocalDateTime novoInicio, LocalDateTime novoFim, Usuario solicitante) throws PermissaoNegadaException, CancelamentoProibidoException {
+        if(!evento.getAnfitriao().equals(solicitante)){
+            throw new PermissaoNegadaException("Permissão Negada!");
         }
+        gerenciador.mudarHoraEvento(evento, novoInicio, novoFim);
+
     }
 
 }
