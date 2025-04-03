@@ -39,13 +39,13 @@ public class NegocioEvento {
 
     public List<Evento> buscarPorTitulo(String Titulo) throws EventoNaoEncontradoException{
 
-    List<Evento> eventosEncontrados = filtro.buscarPorTitulo(Titulo);
+        List<Evento> eventosEncontrados = filtro.buscarPorTitulo(Titulo);
 
-    if(eventosEncontrados.isEmpty()){
-        throw new EventoNaoEncontradoException(Titulo);
-    }
+        if(eventosEncontrados.isEmpty()){
+            throw new EventoNaoEncontradoException(Titulo);
+        }
 
-    return eventosEncontrados;
+        return eventosEncontrados;
     }
 
     public List<Evento> buscarPorCidade(String cidade) throws CidadeSemEventosException {
