@@ -62,8 +62,8 @@ public class GerenciadorEventos {
         evento.setQtdeIngressos(qtdeIngressos);
     }
 
-    public void excluirEvento(Evento evento) { // pensar melhor nisso aqui
-        operador.getEventosCriados().remove(evento);
+    public void cancelarEvento(Evento evento) { // pensar melhor nisso aqui
+        evento.setEstado(false);
     }
 
 }
