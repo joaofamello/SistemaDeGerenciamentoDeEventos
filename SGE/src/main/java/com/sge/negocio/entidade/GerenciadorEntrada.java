@@ -3,6 +3,7 @@ package com.sge.negocio.entidade;
 
 import com.sge.negocio.NegocioEvento;
 import com.sge.negocio.NegocioUsuario;
+import com.sge.negocio.excecao.FormularioEventoInvalidoException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ public class GerenciadorEntrada {
     public GerenciadorEntrada() {
     }
 
-    public void criarEvento(Usuario usuario){
+    public void criarEvento(Usuario usuario) throws FormularioEventoInvalidoException {
         System.out.println("Qual será o título do seu evento?");
         String titulo = sc.nextLine();
         System.out.println("Digite a descrição do seu evento:");

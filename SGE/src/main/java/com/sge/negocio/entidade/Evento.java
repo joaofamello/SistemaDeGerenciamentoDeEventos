@@ -1,5 +1,6 @@
 package com.sge.negocio.entidade;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -127,4 +128,7 @@ public class Evento {
         this.participantes = participantes;
     }
 
+    public LocalDateTime getDataHoraInicio() {
+        return horaInicio;
+    }
 }
