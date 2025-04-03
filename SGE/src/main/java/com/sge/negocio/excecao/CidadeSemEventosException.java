@@ -9,6 +9,6 @@ public class CidadeSemEventosException extends SGEException {
 
     //Sugerir para o usuario a busca por evento proximos da cidade que nao possui eventos
     public String getSugestoes(){
-        return "Verifique eventos em cidades próximas a: " + this.cidade;
+        return "Verifique eventos em cidades próximas a: " + cidade;
     }
 }
