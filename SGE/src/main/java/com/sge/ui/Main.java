@@ -1,16 +1,10 @@
 package com.sge.ui;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
+import com.sge.dados.arquivos.GerenciadorDeDados;
 
-public class Main extends Application {
+public class Main {
 
     public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) {
-
+        GerenciadorDeDados gd = new GerenciadorDeDados();
     }
 }
