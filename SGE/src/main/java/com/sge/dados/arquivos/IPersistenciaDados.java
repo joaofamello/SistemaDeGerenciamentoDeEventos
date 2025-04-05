@@ -1,4 +1,4 @@
-package com.sge.dados.Arquivos;
+package com.sge.dados.arquivos;
 
 import com.sge.negocio.entidade.Evento;
 import com.sge.negocio.entidade.Usuario;

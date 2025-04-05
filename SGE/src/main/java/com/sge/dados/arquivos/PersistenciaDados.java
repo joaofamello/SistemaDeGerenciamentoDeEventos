@@ -1,4 +1,4 @@
-package com.sge.dados.Arquivos;
+package com.sge.dados.arquivos;
 
 import com.sge.dados.eventos.RepositorioEventosArrayList;
 import com.sge.dados.usuarios.RepositorioUsuariosArrayList;
@@ -17,15 +17,15 @@ import java.util.ArrayList;
 
 public class PersistenciaDados implements IPersistenciaDados {
 
-    private NegocioUsuario negocioUsuario;
-    private NegocioEvento negocioEvento;
+    private final NegocioUsuario negocioUsuario;
+    private final NegocioEvento negocioEvento;
 
     public PersistenciaDados() {
         negocioUsuario = new NegocioUsuario(new RepositorioUsuariosArrayList());
         negocioEvento = new NegocioEvento(new RepositorioEventosArrayList());
     }
 
-    //Salvar os usuarios no arquivo .txt
+    //Salvar os usuários no arquivo .txt
     @Override
     public void salvarUsuarios(ArrayList<Usuario> usuarios){
         try (BufferedWriter escritor = Files.newBufferedWriter(Paths.get("usuarios.txt"))) {
@@ -35,7 +35,7 @@ public class PersistenciaDados implements IPersistenciaDados {
                 escritor.newLine();
             }
         } catch (IOException e){
-            System.err.println("Erro ao salvar usuarios: " + e.getMessage());
+            System.err.println("Erro ao salvar usuários: " + e.getMessage());
         }
     }
 
@@ -60,21 +60,17 @@ public class PersistenciaDados implements IPersistenciaDados {
                 }
             }
         } catch (IOException e){
-            System.err.println("Erro ao carregar Usuarios");
+            System.err.println("Erro ao carregar Usuários");
         }
         return usuarios;
     }
-
-
-
-
 
    //Salvar os eventos no arquivo .txt
    @Override
     public void salvarEventos(ArrayList<Evento> eventos) {
         try (BufferedWriter escritor = Files.newBufferedWriter(Paths.get("eventos.txt"))) {
             for (Evento evento : eventos) {
-                //Formantando o endereco em uma unica string
+                // Formantando o endereco em uma unica string
                 String enderecoFormatado = evento.getEndereco().getEstado() + "," + evento.getEndereco().getCidade() + "," + evento.getEndereco().getCep() + "," + evento.getEndereco().getBairro() + "," + evento.getEndereco().getRua() + "," + evento.getEndereco().getNumero();
 
                 String linha = evento.getTitulo() + ";" + evento.getDescricao() + ";" + evento.getCategoria() + ";" + enderecoFormatado + ";" + evento.getData() + ";" + evento.getHoraInicio() + ";" + evento.getHoraFim() + ";" + evento.getQtdeIngressos() + ";" + evento.getAnfitriao().getID();
