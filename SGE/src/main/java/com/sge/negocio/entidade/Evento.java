@@ -16,12 +16,14 @@ public class Evento {
     private LocalDateTime horaInicio; //Horario que comeca
     private LocalDateTime horaFim; //Horario que termina
     private int qtdeIngressos;
+    private int qtdeIngressosVendidos;
     private Usuario anfitriao;
+    private double valorIngresso;
     private ArrayList<Ingresso> participantes;
     private boolean estado;
 
     //construtor
-    public Evento(String titulo, String descricao, String categoria, Endereco endereco, LocalDate data, LocalDateTime horaInicio, LocalDateTime horaFim, int qtdeIngressos, Usuario anfitriao) {
+    public Evento(String titulo, String descricao, String categoria, Endereco endereco, LocalDate data, LocalDateTime horaInicio, LocalDateTime horaFim, int qtdeIngressos, double valorIngresso, Usuario anfitriao) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.categoria = categoria;
@@ -30,9 +32,17 @@ public class Evento {
         this.horaInicio = horaInicio;
         this.horaFim = horaFim;
         this.qtdeIngressos = qtdeIngressos;
+        this.valorIngresso = valorIngresso;
         this.anfitriao = anfitriao;
         this.ID = ++numero;
         this.estado = true;
+    }
+
+    // preenche o vetor com ingressos sem compradores
+    public void inicializaIngressos(Evento evento) {
+        for(int i = 0; i < qtdeIngressos; i++) {
+            participantes.add(new Ingresso(evento, evento.getValorIngresso()));
+        }
     }
 
     //formatação do evento
@@ -137,9 +147,24 @@ public class Evento {
     public boolean getEstado() {
         return estado;
     }
+
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
 
+    public int getQtdeIngressosVendidos() {
+        return qtdeIngressosVendidos;
+    }
 
+    public void setQtdeIngressosVendidos(int qtdeIngressosVendidos) {
+        this.qtdeIngressosVendidos = qtdeIngressosVendidos;
+    }
+
+    public double getValorIngresso() {
+        return valorIngresso;
+    }
+
+    public void setValorIngresso(double valorIngresso) {
+        this.valorIngresso = valorIngresso;
+    }
 }

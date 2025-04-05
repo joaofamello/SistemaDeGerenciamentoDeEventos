@@ -1,21 +1,39 @@
 package com.sge.negocio.entidade;
 
 public class Ingresso {
-    private final Usuario comprador;
+    private Usuario participante;
     private final Evento evento;
     private double valor;
     private final int ID;
     private static int numero = 1;
+    private boolean vendido = false;
 
-    public Ingresso(Usuario comprador, Evento evento, double valor) {
-        this.comprador = comprador;
+    public Ingresso(Evento evento, double valor){
+        this.participante = null;
         this.evento = evento;
         this.valor = valor;
         this.ID = numero++;
     }
 
-    public Usuario getComprador() {
-        return comprador;
+    public Ingresso(Usuario comprador, Evento evento, double valor) {
+        this.participante = comprador;
+        this.evento = evento;
+        this.valor = valor;
+        this.ID = numero++;
+    }
+
+
+    public void exibeIngresso(Usuario usuario, Evento evento) {
+
+    }
+
+    public Usuario getParticipante() {
+        return participante;
+    }
+
+    public void setParticipante(Usuario participante) {
+        this.participante = participante;
+        this.vendido = true;
     }
 
     public Evento getEvento() {
@@ -37,4 +55,9 @@ public class Ingresso {
     public static int getNumero() {
         return numero;
     }
+
+    public boolean isVendido() {
+        return vendido;
+    }
+
 }
