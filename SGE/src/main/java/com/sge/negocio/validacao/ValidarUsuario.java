@@ -15,7 +15,7 @@ public class ValidarUsuario {
         validarSenha(usuario.getSenha());
     }
 
-    private void validarNomeCompleto(String nomeCompleto) throws FormularioUsuarioInvalidoException {
+    public void validarNomeCompleto(String nomeCompleto) throws FormularioUsuarioInvalidoException {
         if (nomeCompleto == null || nomeCompleto.trim().isEmpty()) {
             throw new FormularioUsuarioInvalidoException("nomeCompleto", "Nome completo obrigatório");
         }
@@ -24,7 +24,7 @@ public class ValidarUsuario {
         }
     }
 
-    private void validarNomeUsuario(String nomeUsuario) throws FormularioUsuarioInvalidoException {
+    public void validarNomeUsuario(String nomeUsuario) throws FormularioUsuarioInvalidoException {
         if (nomeUsuario == null || nomeUsuario.trim().isEmpty()) {
             throw new FormularioUsuarioInvalidoException("nomeUsuario", "Nome de usuário obrigatório");
         }
@@ -38,7 +38,7 @@ public class ValidarUsuario {
         }
     }
 
-    private void validarEmail(String email) throws FormularioUsuarioInvalidoException {
+    public void validarEmail(String email) throws FormularioUsuarioInvalidoException {
         if (email == null || email.trim().isEmpty()) {
             throw new FormularioUsuarioInvalidoException("email", "E-mail obrigatório");
         }
@@ -60,7 +60,7 @@ public class ValidarUsuario {
         }
     }
 
-    private void validarSenha(String senha) throws FormularioUsuarioInvalidoException {
+    public void validarSenha(String senha) throws FormularioUsuarioInvalidoException {
         if (senha == null || senha.length() < tamanhoMinimoSenha) {
             throw new FormularioUsuarioInvalidoException("senha",
                     "Senha deve ter no mínimo " + tamanhoMinimoSenha + " caracteres");

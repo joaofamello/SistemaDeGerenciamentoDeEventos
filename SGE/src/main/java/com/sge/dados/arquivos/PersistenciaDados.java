@@ -90,7 +90,7 @@ public class PersistenciaDados implements IPersistenciaDados {
             String linha;
             while ((linha = leitor.readLine()) != null) {
                 String[] campo = linha.split(";");
-                if (campo.length == 10) {
+                if (campo.length == 16) {
                     String Titulo = campo[0];
                     String Descricao = campo[1];
                     String Categoria = campo[2];
