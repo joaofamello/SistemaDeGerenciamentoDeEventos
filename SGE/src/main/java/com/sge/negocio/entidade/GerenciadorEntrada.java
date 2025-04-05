@@ -1,11 +1,12 @@
 package com.sge.negocio.entidade;
 
 
+import com.sge.dados.eventos.IRepositorioEventos;
+import com.sge.dados.eventos.RepositorioEventosArrayList;
 import com.sge.negocio.NegocioEvento;
 import com.sge.negocio.NegocioUsuario;
 import com.sge.negocio.excecao.FormularioEventoInvalidoException;
 import com.sge.negocio.excecao.FormularioUsuarioInvalidoException;
-import com.sge.negocio.entidade.GerenciadorEventos;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
@@ -21,32 +22,42 @@ public class GerenciadorEntrada {
     public void criarEvento(Usuario usuario, NegocioEvento evento) throws FormularioEventoInvalidoException {
         System.out.println("Qual será o título do seu evento?");
         String titulo = sc.nextLine();
-        sc.nextLine();
+
         System.out.println("Digite a descrição do seu evento:");
         String descricao = sc.nextLine();
-        sc.nextLine();
+
         System.out.println("Qual é a categoria do evento?");
         String categoria = sc.nextLine();
-        sc.nextLine();
+
         System.out.println("Onde será o seu evento?");
         Endereco endereco = criarEndereco();
-        sc.nextLine();
+
         System.out.println("Quando será o seu evento?");
         LocalDate data = recebeData();
-        sc.nextLine();
+
         System.out.println("De que horas começará seu evento?");
         LocalDateTime horaInicio = recebeHora();
-        sc.nextLine();
+
         System.out.println("De que horas terminará?");
         LocalDateTime horaFim = recebeHora();
-        sc.nextLine();
-        System.out.println("Quantas vagas terá o seu evento?");
+
+        System.out.println("Qual o valor base do ingresso?");
+        double valorBase = sc.nextDouble();
+        sc.nextLine(); // Limpar buffer
+
+        System.out.println("Quantos ingressos estarão disponíveis?");
         int qtdeIngressos = sc.nextInt();
-        sc.nextLine();
-        System.out.println("Qual será o valor do ingresso do seu evento?");
-        double valorIngresso = sc.nextDouble();
-        Evento eventoNovo = new Evento(titulo, descricao, categoria, endereco, data, horaInicio, horaFim, qtdeIngressos, valorIngresso, usuario);
+        sc.nextLine(); // Limpar buffer
+
+        // Verifique se o usuário é um Anfitriao se necessário
+        Evento eventoNovo = new Evento(
+                titulo, descricao, categoria, endereco,
+                data, horaInicio, horaFim,
+                qtdeIngressos, valorBase, usuario
+        );
+
         evento.inserir(eventoNovo);
+
     }
 
     public void AlterarEvento(Evento evento, NegocioEvento repositorio) throws FormularioEventoInvalidoException {
@@ -74,7 +85,6 @@ public class GerenciadorEntrada {
                     repositorio.alterarTitulo(evento, novoTitulo);
                     System.out.println("Título alterado com sucesso!");
                     break;
-
                 case 2:
                     System.out.print("Nova descrição: ");
                     String novaDescricao = sc.nextLine();
@@ -82,7 +92,6 @@ public class GerenciadorEntrada {
                     repositorio.alterarDescricao(evento, novaDescricao);
                     System.out.println("Descrição alterada com sucesso!");
                     break;
-
                 case 3:
                     System.out.print("Nova data (AAAA-MM-DD): ");
                     LocalDate novaData = LocalDate.parse(sc.nextLine());
@@ -90,7 +99,6 @@ public class GerenciadorEntrada {
                     repositorio.alterarData(evento, novaData);
                     System.out.println("Data alterada com sucesso!");
                     break;
-
                 case 4:
                     System.out.println("Novo endereço:");
                     System.out.print("Estado: ");
@@ -106,12 +114,10 @@ public class GerenciadorEntrada {
                     System.out.print("Número: ");
                     int numero = sc.nextInt();
                     sc.nextLine();
-
                     Endereco novoEndereco = new Endereco(estado, cidade, cep, bairro, rua, numero);
                     repositorio.alterarEndereco(evento, novoEndereco);
                     System.out.println("Endereço alterado com sucesso!");
                     break;
-
                 case 5:
                     System.out.print("Nova categoria: ");
                     String novaCategoria = sc.nextLine();
@@ -119,7 +125,6 @@ public class GerenciadorEntrada {
                     repositorio.alterarCategoria(evento, novaCategoria);
                     System.out.println("Categoria alterada com sucesso!");
                     break;
-
                 case 6:
                     System.out.print("Nova quantidade de ingressos: ");
                     int novaQtde = sc.nextInt();
@@ -127,15 +132,12 @@ public class GerenciadorEntrada {
                     repositorio.alterarQtdeIngressos(evento, novaQtde);
                     System.out.println("Quantidade de ingressos alterada com sucesso!");
                     break;
-
                 case 0:
                     System.out.println("Saindo do menu de alteração...");
                     break;
-
                 default:
                     System.out.println("Opção inválida!");
             }
-
         } while(opcao != 0);
     }
 

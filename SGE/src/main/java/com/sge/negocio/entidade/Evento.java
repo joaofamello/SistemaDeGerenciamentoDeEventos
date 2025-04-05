@@ -1,6 +1,7 @@
 package com.sge.negocio.entidade;
 
-import java.time.Instant;
+import com.sge.negocio.entidade.ingresso.Ingresso;
+
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class Evento {
     private int qtdeIngressos;
     private int qtdeIngressosVendidos;
     private Usuario anfitriao;
-    private double valorIngresso;
+    private double valorBaseIngresso;
     private ArrayList<Ingresso> participantes;
     private boolean estado;
 
@@ -40,9 +41,10 @@ public class Evento {
      * @param horaFim Hora do fim do evento.
      * @param qtdeIngressos Quantidade de ingreços do evento.
      * @param anfitriao Anfitrião do evento.
+     * @param valorBase Valor base para o ingresso.
      */
     //construtor
-    public Evento(String titulo, String descricao, String categoria, Endereco endereco, LocalDate data, LocalDateTime horaInicio, LocalDateTime horaFim, int qtdeIngressos, double valorIngresso, Usuario anfitriao) {
+    public Evento(String titulo, String descricao, String categoria, Endereco endereco, LocalDate data, LocalDateTime horaInicio, LocalDateTime horaFim, int qtdeIngressos, double valorBase ,Usuario anfitriao) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.categoria = categoria;
@@ -51,18 +53,11 @@ public class Evento {
         this.horaInicio = horaInicio;
         this.horaFim = horaFim;
         this.qtdeIngressos = qtdeIngressos;
-        this.valorIngresso = valorIngresso;
         this.anfitriao = anfitriao;
         this.ID = ++numero;
         this.estado = true;
-    }
-
-
-    // preenche o vetor com ingressos sem compradores
-    public void inicializaIngressos(Evento evento) {
-        for(int i = 0; i < qtdeIngressos; i++) {
-            participantes.add(new Ingresso(evento, evento.getValorIngresso()));
-        }
+        this.valorBaseIngresso = valorBase;
+        this.qtdeIngressosVendidos = 0;
     }
 
     /**
@@ -182,15 +177,11 @@ public class Evento {
         return qtdeIngressosVendidos;
     }
 
+    public int getIngressosDisponiveis() {
+        return qtdeIngressos - qtdeIngressosVendidos;
+    }
+
     public void setQtdeIngressosVendidos(int qtdeIngressosVendidos) {
         this.qtdeIngressosVendidos = qtdeIngressosVendidos;
-    }
-
-    public double getValorIngresso() {
-        return valorIngresso;
-    }
-
-    public void setValorIngresso(double valorIngresso) {
-        this.valorIngresso = valorIngresso;
     }
 }

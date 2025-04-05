@@ -102,12 +102,13 @@ public class PersistenciaDados implements IPersistenciaDados {
                     LocalDateTime horaInicio = LocalDateTime.parse(campo[11]);
                     LocalDateTime horaFim = LocalDateTime.parse(campo[12]);
                     int qtdeIngressos = Integer.parseInt(campo[13]);
-                    int anfitriaoID = Integer.parseInt(campo[14]);
+                    double valorBase = Double.parseDouble(campo[14]);
+                    int anfitriaoID = Integer.parseInt(campo[15]);
 
 
                     Usuario anfitriao = negocioUsuario.buscarUsuariosPorID(anfitriaoID);
 
-                    Evento evento = new Evento(Titulo, Descricao, Categoria, endereco, data, horaInicio, horaFim, qtdeIngressos, anfitriao);
+                    Evento evento = new Evento(Titulo, Descricao, Categoria, endereco, data, horaInicio, horaFim, qtdeIngressos, valorBase, anfitriao);
                     eventos.add(evento);
                 }
             }

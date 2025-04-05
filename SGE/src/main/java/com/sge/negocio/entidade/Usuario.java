@@ -1,5 +1,6 @@
 package com.sge.negocio.entidade;
 
+import com.sge.negocio.entidade.ingresso.Ingresso;
 import com.sge.negocio.excecao.NenhumEventoCriadoException;
 
 import java.util.ArrayList;
@@ -63,15 +64,6 @@ public class Usuario {
             throw new NenhumEventoCriadoException();
         }
         return eventosCriados;
-    }
-
-    public void comprarIngresso(Evento evento, Usuario usuario) {
-        for(Ingresso ingresso : evento.getParticipantes()){
-            if(!ingresso.isVendido()){
-                ingresso.setParticipante(usuario);
-                break;
-            }
-        }
     }
 
     //getters e setters

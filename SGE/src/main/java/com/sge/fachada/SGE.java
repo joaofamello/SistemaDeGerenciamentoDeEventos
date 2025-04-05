@@ -15,6 +15,8 @@ import com.sge.negocio.NegocioUsuario;
 import com.sge.negocio.entidade.Evento;
 import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.excecao.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class SGE {
@@ -85,9 +87,26 @@ public class SGE {
         persistenciaDados.salvarEventos(repositorioEvento.listarTodosEventos());
     }
 
-    public void CarregarArquivos(){
-        persistenciaDados.carregarUsuarios();
-        persistenciaDados.carregarEventos();
+    public void CarregarArquivos() {
+            ArrayList<Usuario> usuarios = persistenciaDados.carregarUsuarios();
+            ArrayList<Evento> eventos = persistenciaDados.carregarEventos();
+        usuarios.forEach(usuario -> {
+            try {
+                repositorioUsuario.inserir(usuario);
+            } catch (FormularioUsuarioInvalidoException e) {
+                System.err.println("Erro ao carregar usuário " + usuario.getNomeUsuario() + ": " + e.getMessage());
+                // Ou use um logger: logger.error("Erro ao carregar usuário", e);
+            }
+        });
+
+        eventos.forEach(evento -> {
+            try {
+                repositorioEvento.inserir(evento);
+            } catch (FormularioEventoInvalidoException e) {
+                System.err.println("Erro ao carregar evento " + evento.getTitulo() + ": " + e.getMessage());
+            }
+        });
+    }
     }
 
-}
+
