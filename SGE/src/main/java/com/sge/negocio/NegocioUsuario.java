@@ -4,12 +4,26 @@ import com.sge.dados.usuarios.IRepositorioUsuarios;
 import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.excecao.FormularioUsuarioInvalidoException;
 
+
+/**
+ * Classe representa os negocios de um usuario.
+ * Contém repositorioUsuarios, tamMinSenha.
+ *
+ * @author Jurandir e Guilherme Henrique.
+ */
+
 import java.util.ArrayList;
 
+ main
 public class NegocioUsuario {
     private IRepositorioUsuarios repositorioUsuarios;
     private static final int tamMinSenha = 5;
 
+    /**
+     * Construtor da classe NegocioUsuarios.
+     *
+     * @param repositorioUsuarios Repositorio de ususarios cadastrados.
+     */
     public NegocioUsuario(IRepositorioUsuarios repositorioUsuarios) {
         this.repositorioUsuarios = repositorioUsuarios;
     }
@@ -38,6 +52,13 @@ public class NegocioUsuario {
         return usuario;
     }
 
+    /**
+     *
+     * @param usuario Usuario que vai ser analizado.
+     * @throws FormularioUsuarioInvalidoException Se ocorre algum dado foi passado incorretamente.
+     *
+     * Esse metodo valida se as informações passadas na criação do usuario estão corretas.
+     */
     private void validarUsuario(Usuario usuario) throws FormularioUsuarioInvalidoException {
         if (usuario.getNomeCompleto() == null || usuario.getNomeCompleto().trim().isEmpty()) {
             throw new FormularioUsuarioInvalidoException("nomeCompleto", "Nome completo obrigatório");

@@ -5,6 +5,12 @@ import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * Classe que representa um evento.
+ * Contém numero, ID, titulo, descrição, categoria, endereço, data, horaInicio, horaFim, qtdIngreços, Anfritrião, participantes e estado.
+ *
+ * @author João Francisco
+ */
 public class Evento {
     private static int numero;
     private final int ID;
@@ -20,6 +26,19 @@ public class Evento {
     private ArrayList<Ingresso> participantes;
     private boolean estado;
 
+    /**
+     *Construtor da classe evento.
+     *
+     * @param titulo Titulo do evento.
+     * @param descricao Descrição do evento.
+     * @param categoria Categoria do evento.
+     * @param endereco Endereço do evento.
+     * @param data Data do evento.
+     * @param horaInicio Hora de inicio do evento.
+     * @param horaFim Hora do fim do evento.
+     * @param qtdeIngressos Quantidade de ingreços do evento.
+     * @param anfitriao Anfitrião do evento.
+     */
     //construtor
     public Evento(String titulo, String descricao, String categoria, Endereco endereco, LocalDate data, LocalDateTime horaInicio, LocalDateTime horaFim, int qtdeIngressos, Usuario anfitriao) {
         this.titulo = titulo;
@@ -35,11 +54,17 @@ public class Evento {
         this.estado = true;
     }
 
+    /**
+     * Retorna o evento formatado em uma unica string.
+     *
+     * @return Evento completo formatado.
+     */
     //formatação do evento
     public String getEventoFormatado(){
         System.out.println("--------------------------------------------");
         return titulo + "; " + descricao + "; " + categoria + "; " + endereco.enderecoFormatado() + "; " + data + "; " + horaInicio + "; " + horaFim + "; " + qtdeIngressos + "; " + anfitriao.getNomeCompleto() + "; ";
     }
+
 
     //getters e setters
     public int getID() {
