@@ -65,6 +65,15 @@ public class Usuario {
         return eventosCriados;
     }
 
+    public void comprarIngresso(Evento evento, Usuario usuario) {
+        for(Ingresso ingresso : evento.getParticipantes()){
+            if(!ingresso.isVendido()){
+                ingresso.setParticipante(usuario);
+                break;
+            }
+        }
+    }
+
     //getters e setters
     public String getNomeCompleto() {
         return nomeCompleto;
