@@ -29,6 +29,10 @@ public class RepositorioEventosArrayList implements IRepositorioEventos {
         eventos.remove(index);
     }
 
+    public ArrayList<Evento> listar() {
+        return new ArrayList<>(eventos);
+    }
+
     public List<Evento> getEventos() {
         return eventos;
     }

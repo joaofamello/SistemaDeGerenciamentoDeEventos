@@ -1,26 +1,37 @@
 package com.sge.fachada;
 
+//import java.util.Scanner;
+import com.sge.negocio.entidade.GerenciadorEventos;
+import com.sge.dados.arquivos.GerenciadorDeDados;
+import com.sge.dados.arquivos.PersistenciaDados;
 import com.sge.dados.eventos.IRepositorioEventos;
 import com.sge.dados.usuarios.RepositorioUsuariosArrayList;
 import com.sge.dados.eventos.RepositorioEventosArrayList;
+import com.sge.dados.usuarios.RepositorioUsuariosArrayList;
+import com.sge.negocio.entidade.GerenciadorEntrada;
+import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.NegocioEvento;
 import com.sge.negocio.NegocioUsuario;
 import com.sge.negocio.entidade.Evento;
 import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.excecao.*;
-
 import java.util.List;
 
 public class SGE {
-
+    private PersistenciaDados persistenciaDados;
+    private GerenciadorEntrada gerenciadorEntrada;
+    //private final Scanner sc = new Scanner(System.in);
+    private GerenciadorDeDados gerenciadorDeDados;
     private static SGE instancia;
-    private NegocioUsuario negocioUsuario;
-    private NegocioEvento negocioEvento;
+    private NegocioUsuario repositorioUsuario;
+    private NegocioEvento repositorioEvento;
 
     private SGE(){
-        RepositorioUsuariosArrayList repositorio = new RepositorioUsuariosArrayList();
-        this.negocioUsuario = new NegocioUsuario(repositorio);
-        this.negocioEvento = new NegocioEvento((IRepositorioEventos) repositorio);
+        persistenciaDados = new PersistenciaDados();
+        gerenciadorEntrada = new GerenciadorEntrada();
+        gerenciadorDeDados = new GerenciadorDeDados();
+        repositorioUsuario = new NegocioUsuario(new RepositorioUsuariosArrayList());
+        repositorioEvento = new NegocioEvento(new RepositorioEventosArrayList());
     }
 
     public static SGE getInstancia(){
@@ -29,43 +40,54 @@ public class SGE {
         }
         return instancia;
     }
-    public void cadastrarUsuario(Usuario usuario) throws FormularioUsuarioInvalidoException {
-        negocioUsuario.inserir(usuario);
+    public void cadastrarUsuario() throws FormularioUsuarioInvalidoException {
+        gerenciadorEntrada.cadastrarUsuario(repositorioUsuario);
     }
 
     public void alterarUsuario(Usuario usuario) throws FormularioUsuarioInvalidoException {
-        negocioUsuario.alterar(usuario);
+        repositorioUsuario.alterar(usuario);
     }
 
     public Usuario buscarUsuarioPorId(int id) throws UsuarioNaoEncontradoException {
-        return negocioUsuario.buscarUsuariosPorID(id);
+        return repositorioUsuario.buscarUsuariosPorID(id);
     }
 
     public Usuario buscarUsuarioPorNome(String nome) throws UsuarioNaoEncontradoException {
-        return negocioUsuario.buscarUsuariosPorNome(nome);
+        return repositorioUsuario.buscarUsuariosPorNome(nome);
     }
 
-    public void cadastrarEvento(Evento evento) throws FormularioEventoInvalidoException {
-        negocioEvento.inserir(evento);
+    public void cadastrarEvento(Usuario usuario) throws FormularioEventoInvalidoException {
+        gerenciadorEntrada.criarEvento(usuario, repositorioEvento);
     }
 
     public void alterarEvento(Evento evento) throws FormularioEventoInvalidoException {
-        negocioEvento.alterar(evento);
+        gerenciadorEntrada.AlterarEvento(evento, repositorioEvento);
     }
 
     public void cancelarEvento(Evento evento, Usuario usuario) throws PermissaoNegadaException, CancelamentoProibidoException {
-        negocioEvento.cancelarEvento(evento, usuario);
+        repositorioEvento.cancelarEvento(evento, usuario);
     }
 
     public List<Evento> buscarEventoPortitulo(String titulo) throws EventoNaoEncontradoException {
-        return negocioEvento.buscarPorTitulo(titulo);
+        return repositorioEvento.buscarPorTitulo(titulo);
     }
 
     public List<Evento> buscarEventoPorCidade(String cidade) throws CidadeSemEventosException {
-        return negocioEvento.buscarPorCidade(cidade);
+        return repositorioEvento.buscarPorCidade(cidade);
     }
 
     public List<Evento> buscarEventoPorCategoria(String categoria) throws CategoriaNaoEncontradaException {
-        return negocioEvento.buscarPorCategoria(categoria);
+        return repositorioEvento.buscarPorCategoria(categoria);
     }
+
+    public void SalvarArquivos(){
+        persistenciaDados.salvarUsuarios(repositorioUsuario.listarTodosUsuarios());
+        persistenciaDados.salvarEventos(repositorioEvento.listarTodosEventos());
+    }
+
+    public void CarregarArquivos(){
+        persistenciaDados.carregarUsuarios();
+        persistenciaDados.carregarEventos();
+    }
+
 }

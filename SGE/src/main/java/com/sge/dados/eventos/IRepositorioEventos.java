@@ -1,7 +1,9 @@
 package com.sge.dados.eventos;
 
 import com.sge.negocio.entidade.Evento;
+import com.sge.negocio.entidade.Usuario;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface IRepositorioEventos {
@@ -12,4 +14,7 @@ public interface IRepositorioEventos {
 
     public void remover(Evento evento);
 
+    public ArrayList<Evento> listar();
+
+    public List<Evento> getEventos();
 }
