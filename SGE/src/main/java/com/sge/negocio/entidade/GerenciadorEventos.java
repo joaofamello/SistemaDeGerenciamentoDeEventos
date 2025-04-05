@@ -19,21 +19,21 @@ public class GerenciadorEventos {
     }
 
     //Metodo para listar os eventos de um anfitriao.
-    public ArrayList<Evento> listarEventos(Anfitriao anfitriao) throws NenhumEventoCriadoException {
+    public ArrayList<Evento> listarEventosCriados(Usuario usuario) throws NenhumEventoCriadoException {
        List<Evento> eventos = new ArrayList<>();
-       eventos = Anfitriao.getEventosCriados();
+       eventos = Usuario.getEventosCriados();
        return (ArrayList<Evento>) eventos;
     }
 
     //Metodo para o anfitriao buscar um de seus eventos por nome.
-    public Evento buscarEventoNome(String Titulo, Anfitriao anfitriao) throws EventoNaoEncontradoException, NenhumEventoCriadoException, TituloVazioException {
+    public Evento buscarEventoNome(String Titulo, Usuario usuario) throws EventoNaoEncontradoException, NenhumEventoCriadoException, TituloVazioException {
         if(Titulo == null || Titulo.trim().isEmpty()){
             throw new TituloVazioException();
         }
-        if(Anfitriao.getEventosCriados() == null){
+        if(Usuario.getEventosCriados() == null){
             throw new NenhumEventoCriadoException();
         }
-        for(Evento evento : Anfitriao.getEventosCriados()){
+        for(Evento evento : Usuario.getEventosCriados()){
             if(evento.getTitulo().equals(Titulo)){
                 return evento;
             }
