@@ -60,7 +60,7 @@ public class Evento {
      * @return Evento completo formatado.
      */
     //formatação do evento
-    public String eventoFormatado(){
+    public String getEventoFormatado(){
         System.out.println("--------------------------------------------");
         return titulo + "; " + descricao + "; " + categoria + "; " + endereco.enderecoFormatado() + "; " + data + "; " + horaInicio + "; " + horaFim + "; " + qtdeIngressos + "; " + anfitriao.getNomeCompleto() + "; ";
     }

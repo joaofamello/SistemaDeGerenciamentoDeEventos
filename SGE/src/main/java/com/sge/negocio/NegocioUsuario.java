@@ -4,12 +4,17 @@ import com.sge.dados.usuarios.IRepositorioUsuarios;
 import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.excecao.FormularioUsuarioInvalidoException;
 
+
 /**
  * Classe representa os negocios de um usuario.
  * Contém repositorioUsuarios, tamMinSenha.
  *
  * @author Jurandir e Guilherme Henrique.
  */
+
+import java.util.ArrayList;
+
+ main
 public class NegocioUsuario {
     private IRepositorioUsuarios repositorioUsuarios;
     private static final int tamMinSenha = 5;
@@ -21,6 +26,11 @@ public class NegocioUsuario {
      */
     public NegocioUsuario(IRepositorioUsuarios repositorioUsuarios) {
         this.repositorioUsuarios = repositorioUsuarios;
+    }
+
+
+    public ArrayList<Usuario> listarTodosUsuarios() {
+        return repositorioUsuarios.listar();
     }
 
     public void inserir(Usuario usuario) throws FormularioUsuarioInvalidoException {

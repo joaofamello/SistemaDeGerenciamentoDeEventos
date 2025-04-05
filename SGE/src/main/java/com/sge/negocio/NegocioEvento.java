@@ -2,11 +2,8 @@ package com.sge.negocio;
 
 import com.sge.dados.eventos.IRepositorioEventos;
 import com.sge.dados.eventos.RepositorioEventosArrayList;
-import com.sge.negocio.entidade.Evento;
-import com.sge.negocio.entidade.Filtro;
+import com.sge.negocio.entidade.*;
 
-import com.sge.negocio.entidade.GerenciadorEventos;
-import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.excecao.*;
 
 import com.sge.negocio.excecao.CategoriaNaoEncontradaException;
@@ -14,8 +11,10 @@ import com.sge.negocio.excecao.CidadeSemEventosException;
 import com.sge.negocio.excecao.EventoNaoEncontradoException;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Classe  representa os Negocios do evento.
@@ -39,13 +38,14 @@ public class NegocioEvento {
         this.gerenciador = new GerenciadorEventos(repositorioEventos);
     }
 
+    public ArrayList<Evento> listarTodosEventos() {
+        return repositorioEventos.listar();
+    }
+
 
     public void inserir(Evento evento) throws FormularioEventoInvalidoException {
         gerenciador.validarEvento(evento);
         repositorioEventos.inserir(evento);
-    }
-    public void alterar(Evento evento) {
-        repositorioEventos.alterar(evento);
     }
 
     public List<Evento> buscarPorTitulo(String Titulo) throws EventoNaoEncontradoException{
@@ -97,6 +97,30 @@ public class NegocioEvento {
         }
         gerenciador.mudarHoraEvento(evento, novoInicio, novoFim);
 
+    }
+
+    public void alterarTitulo(Evento evento, String titulo) throws FormularioEventoInvalidoException {
+        gerenciador.mudarTituloEvento(evento, titulo);
+    }
+
+    public void alterarDescricao(Evento evento, String descricao) throws FormularioEventoInvalidoException {
+        gerenciador.mudarDescricaoEvento(evento, descricao);
+    }
+
+    public void alterarData(Evento evento, LocalDate novaData) throws FormularioEventoInvalidoException {
+        gerenciador.mudarDataEvento(evento, novaData);
+    }
+
+    public void alterarEndereco(Evento evento, Endereco endereco) throws FormularioEventoInvalidoException {
+        gerenciador.mudarEnderecoEvento(evento, endereco);
+    }
+
+    public void alterarCategoria(Evento evento, String novaCategoria) throws FormularioEventoInvalidoException {
+        gerenciador.mudarCategoriaEvento(evento, novaCategoria);
+    }
+
+    public void alterarQtdeIngressos(Evento evento, int NovaQtdeIngressos) throws FormularioEventoInvalidoException {
+        gerenciador.mudarQtdeIngressosEvento(evento, NovaQtdeIngressos);
     }
 
 }

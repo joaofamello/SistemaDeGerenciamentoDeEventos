@@ -1,6 +1,6 @@
 package com.sge.ui;
 
-import javafx.application.Application;
+/*import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -9,8 +9,8 @@ public class Main extends Application {
         launch(args);
     }
 
-    @Override
+    /*@Override
     public void start(Stage primaryStage) {
 
     }
-}
+}*/

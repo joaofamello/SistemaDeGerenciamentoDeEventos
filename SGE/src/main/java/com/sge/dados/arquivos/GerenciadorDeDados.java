@@ -7,12 +7,14 @@ public class GerenciadorDeDados {
     private static final Path Diretorio = Paths.get(System.getProperty("user.dir"), "SGE/src/main/java/com/sge/dados/bancoDeDados");
     private static final Path Pasta_Usuarios = Diretorio.resolve("UsersData.txt");
     private static final Path Pasta_Eventos = Diretorio.resolve("EventsData.txt");
+    private static final Path Pasta_Avaliacoes = Diretorio.resolve("AvaliacoesData.txt");
 
     //Bloco para inicializar estaticamente os arquivos
     static {
         criarDiretorio();
         criarArquivo(Pasta_Usuarios);
         criarArquivo(Pasta_Eventos);
+        criarArquivo(Pasta_Avaliacoes);
     }
 
     private static void criarDiretorio() {
@@ -45,5 +47,9 @@ public class GerenciadorDeDados {
 
     public static Path getPasta_Eventos() {
         return Pasta_Eventos;
+    }
+
+    public static Path getPasta_Avaliacoes() {
+        return Pasta_Avaliacoes;
     }
 }
