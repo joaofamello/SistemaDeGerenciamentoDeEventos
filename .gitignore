@@ -6,6 +6,7 @@ SGE/pom.xml
 /workspace.xml
 SGE/.idea/
 SGE/SGE.iml
+SGE/target/
 SistemaDeGerenciamentoDeEventos.iml
 # Editor-based HTTP Client requests
 /httpRequests/
