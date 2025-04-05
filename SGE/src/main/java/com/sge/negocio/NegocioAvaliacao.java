@@ -6,7 +6,7 @@ import com.sge.negocio.entidade.Avaliacao;
 import com.sge.negocio.entidade.Evento;
 import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.excecao.AvaliacaoInvalidaException;
-import com.sge.negocio.entidade.ValidarAvaliacao;
+import com.sge.negocio.validacao.ValidarAvaliacao;
 
 import java.io.IOException;
 import java.nio.file.Files;

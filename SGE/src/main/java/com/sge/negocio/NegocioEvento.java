@@ -9,7 +9,7 @@ import com.sge.negocio.excecao.*;
 import com.sge.negocio.excecao.CategoriaNaoEncontradaException;
 import com.sge.negocio.excecao.CidadeSemEventosException;
 import com.sge.negocio.excecao.EventoNaoEncontradoException;
-
+import com.sge.negocio.validacao.ValidarEvento;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,12 +20,14 @@ import java.util.ArrayList;
 public class NegocioEvento {
     private final GerenciadorEventos gerenciador;
     private IRepositorioEventos repositorioEventos;
+    private final ValidarEvento validador;
     private Filtro filtro;
 
     public NegocioEvento(IRepositorioEventos repositorioEventos) {
         this.repositorioEventos = repositorioEventos;
         this.filtro = new Filtro((RepositorioEventosArrayList) repositorioEventos);
         this.gerenciador = new GerenciadorEventos(repositorioEventos);
+        this.validador = new ValidarEvento();
     }
 
     public ArrayList<Evento> listarTodosEventos() {
@@ -34,7 +36,7 @@ public class NegocioEvento {
 
 
     public void inserir(Evento evento) throws FormularioEventoInvalidoException {
-        gerenciador.validarEvento(evento);
+        validador.validar(evento);
         repositorioEventos.inserir(evento);
     }
 

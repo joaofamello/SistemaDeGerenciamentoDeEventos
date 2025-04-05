@@ -86,14 +86,6 @@ public class GerenciadorEventos {
         }
     }
 
-    public void validarEvento(Evento evento) throws FormularioEventoInvalidoException {
-        if (evento.getTitulo() == null || evento.getTitulo().trim().isEmpty()) {
-            throw new FormularioEventoInvalidoException("titulo", "Título não pode ser vazio");
-        }
-        if (evento.getHoraInicio().isBefore(LocalDateTime.now())) {
-            throw new FormularioEventoInvalidoException("data", "Data/hora deve ser futura");
-        }
-    }
 
 
 }

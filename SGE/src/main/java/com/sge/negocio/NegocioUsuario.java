@@ -2,16 +2,18 @@ package com.sge.negocio;
 
 import com.sge.dados.usuarios.IRepositorioUsuarios;
 import com.sge.negocio.entidade.Usuario;
+import com.sge.negocio.validacao.ValidarUsuario;
 import com.sge.negocio.excecao.FormularioUsuarioInvalidoException;
 
 import java.util.ArrayList;
 
 public class NegocioUsuario {
     private IRepositorioUsuarios repositorioUsuarios;
-    private static final int tamMinSenha = 5;
+    private final ValidarUsuario validador;
 
     public NegocioUsuario(IRepositorioUsuarios repositorioUsuarios) {
         this.repositorioUsuarios = repositorioUsuarios;
+        this.validador = new ValidarUsuario();
     }
 
 
@@ -20,12 +22,12 @@ public class NegocioUsuario {
     }
 
     public void inserir(Usuario usuario) throws FormularioUsuarioInvalidoException {
-        validarUsuario(usuario);
+        validador.validar(usuario);
         repositorioUsuarios.inserir(usuario);
     }
 
     public void alterar(Usuario usuario) throws FormularioUsuarioInvalidoException {
-        validarUsuario(usuario);
+        validador.validar(usuario);
         repositorioUsuarios.alterar(usuario);
     }
 
@@ -38,21 +40,4 @@ public class NegocioUsuario {
         return usuario;
     }
 
-    private void validarUsuario(Usuario usuario) throws FormularioUsuarioInvalidoException {
-        if (usuario.getNomeCompleto() == null || usuario.getNomeCompleto().trim().isEmpty()) {
-            throw new FormularioUsuarioInvalidoException("nomeCompleto", "Nome completo obrigatório");
-        }
-        if (usuario.getNomeUsuario() == null || usuario.getNomeUsuario().trim().isEmpty()) {
-            throw new FormularioUsuarioInvalidoException("nomeUsuario", "Nome de usuário obrigatório");
-        }
-        if (usuario.getSenha() == null || usuario.getSenha().length() < tamMinSenha) {
-            throw new FormularioUsuarioInvalidoException("senha", "Senha deve ter no mínimo " + tamMinSenha + " caracteres");
-        }
-        if (usuario.getTelefone() == null || usuario.getTelefone().trim().isEmpty()) {
-            throw new FormularioUsuarioInvalidoException("telefone", "Telefone obrigatório");
-        }
-        if(usuario.getEmail() == null || usuario.getEmail().trim().isEmpty()) {
-            throw new FormularioUsuarioInvalidoException("e-mail", "e-mail obrigatório");
-        }
-    }
 }

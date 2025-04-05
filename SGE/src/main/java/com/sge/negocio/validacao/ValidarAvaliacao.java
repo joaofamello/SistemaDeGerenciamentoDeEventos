@@ -1,9 +1,7 @@
-package com.sge.negocio.entidade;
+package com.sge.negocio.validacao;
 
-//import com.sge.dados.avaliacao.RepositorioParticipacao;
+
 import com.sge.dados.avaliacao.IRepositorioParticipacao;
-import com.sge.dados.avaliacao.RepositorioParticipacao;
-import com.sge.negocio.entidade.Avaliacao;
 import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.entidade.Evento;
 import com.sge.negocio.excecao.AvaliacaoInvalidaException;
