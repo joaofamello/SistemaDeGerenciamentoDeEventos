@@ -1,6 +1,9 @@
 package com.sge.negocio.entidade;
 
+import com.sge.negocio.excecao.NenhumEventoCriadoException;
+
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Usuario {
@@ -12,6 +15,7 @@ public class Usuario {
     private final int ID;
     private String senha;
     private static boolean ehAnfitriao = false;
+    private static ArrayList<Evento> eventosCriados;
     ArrayList<Evento> eventosParticipando;
 
     //Construtor
@@ -27,6 +31,13 @@ public class Usuario {
     public String usuarioFormatado() {
         System.out.println("--------------------------------------------");
         return ID + " " + nomeCompleto + " " + nomeUsuario + " " + email + " " + telefone + " " + senha;
+    }
+
+    public static List<Evento> getEventosCriados() throws NenhumEventoCriadoException {
+        if (eventosCriados == null){
+            throw new NenhumEventoCriadoException();
+        }
+        return eventosCriados;
     }
 
     //getters e setters
@@ -90,5 +101,6 @@ public class Usuario {
     public static void setEhAnfitriao(boolean ehAnfitriao) {
         Usuario.ehAnfitriao = ehAnfitriao;
     }
+
 
 }

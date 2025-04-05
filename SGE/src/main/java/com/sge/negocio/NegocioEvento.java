@@ -34,6 +34,9 @@ public class NegocioEvento {
         gerenciador.validarEvento(evento);
         repositorioEventos.inserir(evento);
     }
+    public void alterar(Evento evento) {
+        repositorioEventos.alterar(evento);
+    }
 
     public List<Evento> buscarPorTitulo(String Titulo) throws EventoNaoEncontradoException{
         List<Evento> eventosEncontrados = filtro.buscarPorTitulo(Titulo);
