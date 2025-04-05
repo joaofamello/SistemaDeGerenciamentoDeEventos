@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 /**
  * Classe que representa um evento.
- * Contém numero, ID, titulo, descrição, categoria, endereço, data, horaInicio, horaFim, qtdIngreços, Anfritrião, participantes e estado.
+ * Contém numero, ID, titulo, descrição, categoria, endereço, data, horaInicio, horaFim, qtdIngressos, valorIngresso, Anfritrião, participantes e estado.
  *
  * @author João Francisco
  */
