@@ -1,5 +1,11 @@
 package com.sge.negocio.entidade;
 
+/**
+ * Classe que representa o endereço de um evento.
+ * Contém rua, bairro, numero, cep, cidade e estado.
+ *
+ * @author João Francisco
+ */
 public class Endereco {
     private String rua;
     private String bairro;
@@ -8,6 +14,16 @@ public class Endereco {
     private String cidade;
     private String estado;
 
+    /**
+     *Construtor da classe endereço.
+     *
+     * @param estado Estado do endereço.
+     * @param cidade Cidade do endereço.
+     * @param cep   CEP do endereço.
+     * @param bairro Bairro do endereço.
+     * @param rua Rua do endereço.
+     * @param numero Numero do endereço.
+     */
     public Endereco(String estado, String cidade, String cep, String bairro, String rua, int numero) {
         this.rua = rua;
         this.bairro = bairro;
@@ -17,6 +33,11 @@ public class Endereco {
         this.estado = estado;
     }
 
+    /**
+     * Retorna o endereço formatado em uma única string.
+     *
+     * @return Endreço completp formatado.
+     */
     public String enderecoFormatado() {
         return rua + ", " + bairro + ", " + numero + ", " + cidade + ", " + estado + ", " + cep;
     }

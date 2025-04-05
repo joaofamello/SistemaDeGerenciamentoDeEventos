@@ -2,18 +2,29 @@ package com.sge.negocio;
 
 import com.sge.dados.usuarios.IRepositorioUsuarios;
 import com.sge.negocio.entidade.Usuario;
-import com.sge.negocio.validacao.ValidarUsuario;
 import com.sge.negocio.excecao.FormularioUsuarioInvalidoException;
+
+
+/**
+ * Classe representa os negocios de um usuario.
+ * Contém repositorioUsuarios, tamMinSenha.
+ *
+ * @author Jurandir e Guilherme Henrique.
+ */
 
 import java.util.ArrayList;
 
 public class NegocioUsuario {
     private IRepositorioUsuarios repositorioUsuarios;
-    private final ValidarUsuario validador;
+    private static final int tamMinSenha = 5;
 
+    /**
+     * Construtor da classe NegocioUsuarios.
+     *
+     * @param repositorioUsuarios Repositorio de ususarios cadastrados.
+     */
     public NegocioUsuario(IRepositorioUsuarios repositorioUsuarios) {
         this.repositorioUsuarios = repositorioUsuarios;
-        this.validador = new ValidarUsuario();
     }
 
 
@@ -22,12 +33,12 @@ public class NegocioUsuario {
     }
 
     public void inserir(Usuario usuario) throws FormularioUsuarioInvalidoException {
-        validador.validar(usuario);
+        validarUsuario(usuario);
         repositorioUsuarios.inserir(usuario);
     }
 
     public void alterar(Usuario usuario) throws FormularioUsuarioInvalidoException {
-        validador.validar(usuario);
+        validarUsuario(usuario);
         repositorioUsuarios.alterar(usuario);
     }
 
@@ -40,4 +51,28 @@ public class NegocioUsuario {
         return usuario;
     }
 
+    /**
+     *
+     * @param usuario Usuario que vai ser analizado.
+     * @throws FormularioUsuarioInvalidoException Se ocorre algum dado foi passado incorretamente.
+     *
+     * Esse metodo valida se as informações passadas na criação do usuario estão corretas.
+     */
+    private void validarUsuario(Usuario usuario) throws FormularioUsuarioInvalidoException {
+        if (usuario.getNomeCompleto() == null || usuario.getNomeCompleto().trim().isEmpty()) {
+            throw new FormularioUsuarioInvalidoException("nomeCompleto", "Nome completo obrigatório");
+        }
+        if (usuario.getNomeUsuario() == null || usuario.getNomeUsuario().trim().isEmpty()) {
+            throw new FormularioUsuarioInvalidoException("nomeUsuario", "Nome de usuário obrigatório");
+        }
+        if (usuario.getSenha() == null || usuario.getSenha().length() < tamMinSenha) {
+            throw new FormularioUsuarioInvalidoException("senha", "Senha deve ter no mínimo " + tamMinSenha + " caracteres");
+        }
+        if (usuario.getTelefone() == null || usuario.getTelefone().trim().isEmpty()) {
+            throw new FormularioUsuarioInvalidoException("telefone", "Telefone obrigatório");
+        }
+        if(usuario.getEmail() == null || usuario.getEmail().trim().isEmpty()) {
+            throw new FormularioUsuarioInvalidoException("e-mail", "e-mail obrigatório");
+        }
+    }
 }

@@ -43,7 +43,9 @@ public class GerenciadorEntrada {
         System.out.println("Quantas vagas terá o seu evento?");
         int qtdeIngressos = sc.nextInt();
         sc.nextLine();
-        Evento eventoNovo = new Evento(titulo, descricao, categoria, endereco, data, horaInicio, horaFim, qtdeIngressos, usuario);
+        System.out.println("Qual será o valor do ingresso do seu evento?");
+        double valorIngresso = sc.nextDouble();
+        Evento eventoNovo = new Evento(titulo, descricao, categoria, endereco, data, horaInicio, horaFim, qtdeIngressos, valorIngresso, usuario);
         evento.inserir(eventoNovo);
     }
 
