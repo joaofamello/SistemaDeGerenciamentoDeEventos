@@ -14,7 +14,6 @@ import com.sge.negocio.excecao.FormularioUsuarioInvalidoException;
 
 import java.util.ArrayList;
 
- main
 public class NegocioUsuario {
     private IRepositorioUsuarios repositorioUsuarios;
     private static final int tamMinSenha = 5;
