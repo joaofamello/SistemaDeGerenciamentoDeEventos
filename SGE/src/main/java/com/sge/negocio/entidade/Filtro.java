@@ -4,13 +4,29 @@ import com.sge.dados.eventos.RepositorioEventosArrayList;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe que representa um filtro onde acontece a busca por eventos.
+ * Contém repositorio.
+ *
+ * @author José Gustavo
+ */
 public class Filtro {
     private static RepositorioEventosArrayList repositorio;
 
+    /**
+     *Construtor da classe filtro.
+     *
+     * @param repositorio Repositorio com os eventos.
+     */
     public Filtro(RepositorioEventosArrayList repositorio) {
         Filtro.repositorio = repositorio;
     }
 
+    /**
+     *
+     * @param Titulo Titulo do evento.
+     * @return Lista de eventos com o titulo recebido.
+     */
     public static List<Evento> buscarPorTitulo(String Titulo) {
         List<Evento> eventosPorTitulo = new ArrayList<>();
         for(Evento evento : repositorio.getEventos()){
@@ -20,6 +36,12 @@ public class Filtro {
         }
         return eventosPorTitulo;
     }
+
+    /**
+     *
+     * @param categoria Categoria do evento.
+     * @return Lista com os eventos da categoria recebida.
+     */
     public static List<Evento> buscarPorCategoria(String categoria) {
         List<Evento> eventos = new ArrayList<>();
         for(Evento evento : repositorio.getEventos()){
@@ -30,6 +52,11 @@ public class Filtro {
         return eventos;
     }
 
+    /**
+     *
+     * @param cidade Cidade do evento.
+     * @return Lista com os eventos na cidade recebida.
+     */
     public static List<Evento> buscarPorCidade(String cidade) {
         List<Evento> eventosEncontrados = new ArrayList<>();
         for(Evento evento : repositorio.getEventos()){

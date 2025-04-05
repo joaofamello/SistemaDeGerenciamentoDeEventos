@@ -17,12 +17,22 @@ import com.sge.negocio.excecao.EventoNaoEncontradoException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
+/**
+ * Classe  representa os Negocios do evento.
+ * Contém gerenciador, repositorioEventos e filtro.
+ *
+ * @author José Gustavo e Jurandir
+ */
 public class NegocioEvento {
     private final GerenciadorEventos gerenciador;
     private IRepositorioEventos repositorioEventos;
     private Filtro filtro;
 
+    /**
+     *Construtor da classe NegocioEvento.
+     *
+     * @param repositorioEventos repositorio com os eventos cadastrados.
+     */
     public NegocioEvento(IRepositorioEventos repositorioEventos) {
         this.repositorioEventos = repositorioEventos;
         this.filtro = new Filtro((RepositorioEventosArrayList) repositorioEventos);
@@ -64,7 +74,13 @@ public class NegocioEvento {
         return eventos;
     }
 
-
+    /**
+     *
+     * @param evento Evento que será cancelado.
+     * @param solicitante Usuario criador do evento.
+     * @throws CancelamentoProibidoException  Se tentar cancelar um evento com menos de 48 horas para o dia da realização.
+     * @throws PermissaoNegadaException Se o usuario não for o criador do evento.
+     */
     public void cancelarEvento(Evento evento, Usuario solicitante) //Lembrar de passar o usuario que esta requisitando o metodo.
             throws CancelamentoProibidoException, PermissaoNegadaException {
 
