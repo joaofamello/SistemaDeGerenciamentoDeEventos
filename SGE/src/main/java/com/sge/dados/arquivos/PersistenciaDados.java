@@ -13,12 +13,13 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class PersistenciaDados implements IPersistenciaDados {
-
     private final NegocioUsuario negocioUsuario;
     private final NegocioEvento negocioEvento;
+
 
     public PersistenciaDados() {
         negocioUsuario = new NegocioUsuario(new RepositorioUsuariosArrayList());
@@ -27,14 +28,22 @@ public class PersistenciaDados implements IPersistenciaDados {
 
     //Salvar os usuários no arquivo .txt
     @Override
-    public void salvarUsuarios(ArrayList<Usuario> usuarios){
-        try (BufferedWriter escritor = Files.newBufferedWriter(Paths.get("usuarios.txt"))) {
+    public void salvarUsuarios(List<Usuario> usuarios) {
+        try (BufferedWriter escritor = Files.newBufferedWriter(Paths.get("SGE/src/main/java/com/sge/dados/bancoDeDados/UsersData.txt"))) {
             for (Usuario usuario : usuarios) {
-                String linha = usuario.getID()+ ";" + usuario.getNomeCompleto() + ";" + usuario.getNomeUsuario() + ";" + usuario.getEmail() + ";" + usuario.getTelefone() + ";" + usuario.getSenha();
-                escritor.write(usuario.toString());
+                String linha = String.join(";",
+                        String.valueOf(usuario.getID()),
+                        usuario.getNomeCompleto(),
+                        usuario.getNomeUsuario(),
+                        usuario.getEmail(),
+                        usuario.getTelefone(),
+                        usuario.getSenha()
+                );
+                escritor.write(linha);
                 escritor.newLine();
+
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             System.err.println("Erro ao salvar usuários: " + e.getMessage());
         }
     }
@@ -46,13 +55,18 @@ public class PersistenciaDados implements IPersistenciaDados {
         try (BufferedReader leitor = Files.newBufferedReader(GerenciadorDeDados.getPasta_Usuarios())){
             String linha;
             while ((linha = leitor.readLine()) != null) {
-                String[] campo = linha.split(";");
-                if (campo.length == 5) { // Verifica se todos os campos estão presentes
-                    String nomeCompleto = campo[0];
-                    String nomeUsuario = campo[1];
-                    String email = campo[2];
-                    String telefone = campo[3];
-                    String senha = campo[4];
+                String[] campos = linha.split(";");
+                // Agora esperando 6 campos (ID + 5 informações)
+                if (campos.length == 6) {
+                    int id = Integer.parseInt(campos[0].trim());
+                    String nomeCompleto = campos[1];
+                    String nomeUsuario = campos[2];
+                    String email = campos[3];
+                    String telefone = campos[4];
+                    String senha = campos[5];
+
+                    // Registra o ID antes de criar o usuário
+                    Usuario.registrarIDExistente(id);
 
                     // Criando o usuário e adicionando ao vetor
                     Usuario usuario = new Usuario(nomeCompleto, nomeUsuario, email, telefone, senha);
@@ -68,7 +82,7 @@ public class PersistenciaDados implements IPersistenciaDados {
    //Salvar os eventos no arquivo .txt
    @Override
     public void salvarEventos(ArrayList<Evento> eventos) {
-        try (BufferedWriter escritor = Files.newBufferedWriter(Paths.get("eventos.txt"))) {
+        try (BufferedWriter escritor = Files.newBufferedWriter(Paths.get("SGE/src/main/java/com/sge/dados/bancoDeDados/EventsData.txt"))) {
             for (Evento evento : eventos) {
                 // Formantando o endereco em uma unica string
                 String enderecoFormatado = evento.getEndereco().getEstado() + "," + evento.getEndereco().getCidade() + "," + evento.getEndereco().getCep() + "," + evento.getEndereco().getBairro() + "," + evento.getEndereco().getRua() + "," + evento.getEndereco().getNumero();

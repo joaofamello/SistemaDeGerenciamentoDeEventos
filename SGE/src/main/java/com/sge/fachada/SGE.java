@@ -1,19 +1,15 @@
 package com.sge.fachada;
 
-//import java.util.Scanner;
-import com.sge.negocio.entidade.GerenciadorEventos;
+
 import com.sge.dados.arquivos.GerenciadorDeDados;
 import com.sge.dados.arquivos.PersistenciaDados;
-import com.sge.dados.eventos.IRepositorioEventos;
 import com.sge.dados.usuarios.RepositorioUsuariosArrayList;
 import com.sge.dados.eventos.RepositorioEventosArrayList;
-import com.sge.dados.usuarios.RepositorioUsuariosArrayList;
 import com.sge.negocio.entidade.GerenciadorEntrada;
 import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.NegocioEvento;
 import com.sge.negocio.NegocioUsuario;
 import com.sge.negocio.entidade.Evento;
-import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.excecao.*;
 
 import java.util.ArrayList;
@@ -22,7 +18,6 @@ import java.util.List;
 public class SGE {
     private PersistenciaDados persistenciaDados;
     private GerenciadorEntrada gerenciadorEntrada;
-    //private final Scanner sc = new Scanner(System.in);
     private GerenciadorDeDados gerenciadorDeDados;
     private static SGE instancia;
     private NegocioUsuario repositorioUsuario;
@@ -42,11 +37,31 @@ public class SGE {
         }
         return instancia;
     }
-    public void cadastrarUsuario() throws FormularioUsuarioInvalidoException {
-        gerenciadorEntrada.cadastrarUsuario(repositorioUsuario);
+    public void cadastrarUsuario(String nomeCompleto, String nomeUsuario, String email, String telefone, String senha) throws FormularioUsuarioInvalidoException{
+        //gerenciadorEntrada.cadastrarUsuario(repositorioUsuario);
+        Usuario usuario = new Usuario(nomeCompleto,nomeUsuario,email,telefone,senha);
+        repositorioUsuario.inserir(usuario);
     }
 
-    public void alterarUsuario(Usuario usuario) throws FormularioUsuarioInvalidoException {
+    public Usuario LoginUsuario(String nomeUsuario, String senha) throws LoginFalhouException {
+        List<Usuario> usuarios = repositorioUsuario.listarTodosUsuarios();
+
+        for (Usuario usuarioExistente : usuarios) {
+            if(usuarioExistente.getNomeUsuario().equalsIgnoreCase(nomeUsuario)) {
+                if(usuarioExistente.getSenha().equals(senha)) {
+                    return usuarioExistente;
+                }
+            }
+        }
+
+        throw new LoginFalhouException();
+    }
+
+    public List<Usuario> ListarUsuarios(){
+        return repositorioUsuario.listarTodosUsuarios();
+    }
+
+    public void alterarUsuario(Usuario usuario) throws FormularioUsuarioInvalidoException, EmailJaExistenteException {
         repositorioUsuario.alterar(usuario);
     }
 
@@ -84,7 +99,7 @@ public class SGE {
 
     public void SalvarArquivos(){
         persistenciaDados.salvarUsuarios(repositorioUsuario.listarTodosUsuarios());
-        persistenciaDados.salvarEventos(repositorioEvento.listarTodosEventos());
+        //persistenciaDados.salvarEventos(repositorioEvento.listarTodosEventos());
     }
 
     public void CarregarArquivos() {
@@ -95,7 +110,7 @@ public class SGE {
                 repositorioUsuario.inserir(usuario);
             } catch (FormularioUsuarioInvalidoException e) {
                 System.err.println("Erro ao carregar usuário " + usuario.getNomeUsuario() + ": " + e.getMessage());
-                // Ou use um logger: logger.error("Erro ao carregar usuário", e);
+
             }
         });
 
@@ -106,6 +121,19 @@ public class SGE {
                 System.err.println("Erro ao carregar evento " + evento.getTitulo() + ": " + e.getMessage());
             }
         });
+    }
+
+    public void existeSistema(String email, String nome) throws EmailJaExistenteException, UsernameJaExisteException {
+        List<Usuario> usuarios = repositorioUsuario.listarTodosUsuarios();
+
+        for (Usuario usuarioExistente : usuarios) {
+            if (usuarioExistente.getEmail().equalsIgnoreCase(email)){
+                throw new EmailJaExistenteException();
+            }
+            if (usuarioExistente.getNomeUsuario().equalsIgnoreCase(nome)){
+                throw new UsernameJaExisteException();
+            }
+        }
     }
     }
 
