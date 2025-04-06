@@ -5,6 +5,10 @@ import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.excecao.FormularioEventoInvalidoException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import com.sge.negocio.excecao.EventoDuplicadoException;
+
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 
 public class ValidarEvento {
@@ -90,6 +94,17 @@ public class ValidarEvento {
         // Validação para horarios de inicio e fim iguais
         if (horaInicio.equals(horaFim)) {
             throw new FormularioEventoInvalidoException("horaFim", "Hora de término deve ser diferente da hora de início");
+        }
+    }
+
+    public void validarEventoUnicoNoDia(LocalDate dataEvento, List<Evento> eventosExistentes)
+            throws EventoDuplicadoException {
+
+        for (Evento evento : eventosExistentes) {
+            if (evento.getData().isEqual(dataEvento)) {
+                throw new EventoDuplicadoException("Já existe um evento agendado para esta data: "
+                        + dataEvento.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            }
         }
     }
 

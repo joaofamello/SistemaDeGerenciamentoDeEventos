@@ -4,6 +4,7 @@ import com.sge.negocio.entidade.ingresso.Ingresso;
 import com.sge.negocio.excecao.NenhumEventoCriadoException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,7 +24,9 @@ public class Usuario {
     private String senha;
     private static boolean ehAnfitriao = false;
     private static ArrayList<Evento> eventosCriados;
-    ArrayList<Evento> eventosParticipando;
+    private ArrayList<Ingresso> ingressos;
+    private ArrayList<Evento> eventosParticipados;
+
 
     /**
      *Construtor da classe usuario.
@@ -42,6 +45,9 @@ public class Usuario {
         this.telefone = telefone;
         this.senha = senha;
         this.ID = qtde++;
+        this.eventosCriados = new ArrayList<>();
+        this.eventosParticipados = new ArrayList<>();
+        this.ingressos = new ArrayList<>();
     }
 
     /**
@@ -110,12 +116,12 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public ArrayList<Evento> getEventosParticipando() {
-        return eventosParticipando;
+    public ArrayList<Ingresso> getMeusIngressos() {
+        return ingressos;
     }
 
-    public void setEventosParticipando(ArrayList<Evento> eventosParticipando) {
-        this.eventosParticipando = eventosParticipando;
+    public  ArrayList<Evento> getEventosParticipados(){
+        return eventosParticipados;
     }
 
     public static boolean getEhAnfitriao() {
@@ -131,5 +137,8 @@ public class Usuario {
         Usuario.ehAnfitriao = ehAnfitriao;
     }
 
+    public boolean temIngressoValido(Evento evento){
+        return this.ingressos.stream().anyMatch(ingresso -> ingresso.pertenceAoEvento(evento) && ingresso.ehValido());
+    }
 
 }

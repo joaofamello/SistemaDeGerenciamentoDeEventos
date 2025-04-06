@@ -81,16 +81,17 @@ public class CriarEvento extends Application {
 
                 ValidarEvento.validar(titulo, descricao, categoria,
                         endereco, dataEvento, horaInicio, horaFim,
-                        qtdeIngressos, valorBase,usuarioLogado);
+                        qtdeIngressos, valorBase, usuarioLogado);
                 fachada.cadastrarEvento(titulo, descricao, categoria,
                         endereco, dataEvento, horaInicio, horaFim,
-                        qtdeIngressos, valorBase,usuarioLogado);
+                        qtdeIngressos, valorBase, usuarioLogado);
+                ValidarEvento.validarEventoUnicoNoDia(dataEvento, eventos);
 
                 //Feedback ao usuário
-                List<Evento> eventos = fachada.ListarEventos();
+                eventos = fachada.ListarEventos();
                 System.out.println("Eventos cadastrados:");
                 for (Evento ev : eventos) {
-                    System.out.println(ev.getTitulo() + " - " + ev.getDescricao() + " - " + ev.getID() + " - " + usuarioLogado.getNomeUsuario());
+                    System.out.println(ev.getID() + "-" + ev.getTitulo() + " - " + ev.getDescricao() + " - " + ev.getID() + " - " + usuarioLogado.getNomeUsuario());
                 }
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Evento Criado");
@@ -98,9 +99,9 @@ public class CriarEvento extends Application {
                 alert.setContentText("Evento '" + titulo + "' criado com sucesso!");
                 alert.showAndWait();
             } catch (FormularioEventoInvalidoException ex) {
-                    Alert error = new Alert(Alert.AlertType.ERROR);
-                    error.setContentText(ex.getMessage());
-                    error.showAndWait();
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setContentText(ex.getMessage());
+                error.showAndWait();
             }
             fachada.SalvarArquivoEvento();
         });
@@ -147,7 +148,7 @@ public class CriarEvento extends Application {
         primaryStage.show();
     }
 
-        public static void main(String[] args) {
-            launch(args);
-        }
+    public static void main(String[] args) {
+        launch(args);
+    }
 }

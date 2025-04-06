@@ -1,61 +1,123 @@
 package com.sge.ui;
 
+import com.sge.negocio.entidade.Evento;
 import com.sge.negocio.entidade.Usuario;
-import com.sge.negocio.excecao.EmailJaExistenteException;
-import com.sge.negocio.excecao.FormularioUsuarioInvalidoException;
-import com.sge.negocio.excecao.LoginFalhouException;
-import com.sge.negocio.excecao.UsernameJaExisteException;
+import com.sge.negocio.excecao.*;
 import com.sge.negocio.validacao.ValidarUsuario;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import com.sge.fachada.SGE;
-import com.sge.ui.*;
 
 import java.util.List;
 
 public class LoginCadastro extends Application {
     private SGE fachada = SGE.getInstancia();
     private ValidarUsuario ValidarU = new ValidarUsuario();
-    private Scene loginScene; // Variável de instância para a cena de login
-
+    private Scene loginScene;
 
     @Override
     public void start(Stage primaryStage) {
         fachada.CarregarArquivos();
-        primaryStage.setTitle("Login");
 
-        // Criando o GridPane para a tela de login
+        List<Evento> eventos = fachada.ListarEventos();
+        System.out.println("Eventos cadastrados:");
+        for (Evento ev : eventos) {
+            System.out.println(ev.getID() + "-" + ev.getTitulo() + " - " + ev.getDescricao() + " - " + ev.getID() + " - ");
+        }
+
+        primaryStage.setTitle("Sistema de Gerenciamento de Eventos");
+
+        // ========== TELA DE LOGIN ==========
         GridPane loginGrid = new GridPane();
-        loginGrid.setPadding(new Insets(10, 10, 10, 10));
-        loginGrid.setVgap(8);
+        loginGrid.setAlignment(Pos.CENTER);
+        loginGrid.setPadding(new Insets(25, 25, 25, 25));
         loginGrid.setHgap(10);
+        loginGrid.setVgap(10);
+        loginGrid.setStyle("-fx-background-color: #f5f5f5;");
 
-        // Criando os Labels e TextFields para login
-        Label usuarioLabel = new Label("Nome de Usuário:");
+        // Título
+        Label tituloLabel = new Label("Login");
+        tituloLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        tituloLabel.setTextFill(Color.DARKBLUE);
+        GridPane.setColumnSpan(tituloLabel, 2);
+        loginGrid.add(tituloLabel, 0, 0);
+
+        // Campos de Login
+        Label usuarioLabel = new Label("Usuário:");
+        usuarioLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
         TextField usuarioField = new TextField();
+        usuarioField.setPromptText("Digite seu nome de usuário");
+
         Label senhaLabel = new Label("Senha:");
+        senhaLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
         PasswordField senhaField = new PasswordField();
-        Button loginButton = new Button("Login");
+        senhaField.setPromptText("Digite sua senha");
+
+        // Botões
+        HBox buttonBox = new HBox(10);
+        buttonBox.setAlignment(Pos.CENTER);
+        Button loginButton = new Button("Entrar");
+        loginButton.setStyle("-fx-base: #4CAF50; -fx-text-fill: white;");
         Button cadastrarButton = new Button("Cadastrar");
+        cadastrarButton.setStyle("-fx-base: #2196F3; -fx-text-fill: white;");
+        buttonBox.getChildren().addAll(loginButton, cadastrarButton);
 
-        // Adicionando os elementos ao GridPane de login
-        loginGrid.add(usuarioLabel, 0, 0);
-        loginGrid.add(usuarioField, 1, 0);
-        loginGrid.add(senhaLabel, 0, 1);
-        loginGrid.add(senhaField, 1, 1);
-        loginGrid.add(loginButton, 0, 2);
-        loginGrid.add(cadastrarButton, 1, 2);
+        // Adicionando elementos ao grid
+        loginGrid.add(usuarioLabel, 0, 1);
+        loginGrid.add(usuarioField, 1, 1);
+        loginGrid.add(senhaLabel, 0, 2);
+        loginGrid.add(senhaField, 1, 2);
+        loginGrid.add(buttonBox, 0, 3, 2, 1);
 
-        // Configurando a cena de login
-        loginScene = new Scene(loginGrid, 300, 200); // Atribuindo à variável de instância
+        loginScene = new Scene(loginGrid, 400, 300);
         primaryStage.setScene(loginScene);
         primaryStage.show();
 
-        // Ação do botão de login
+        // ========== TELA DE CADASTRO ==========
+        GridPane cadastroGrid = new GridPane();
+        cadastroGrid.setAlignment(Pos.CENTER);
+        cadastroGrid.setPadding(new Insets(25, 25, 25, 25));
+        cadastroGrid.setHgap(10);
+        cadastroGrid.setVgap(10);
+        cadastroGrid.setStyle("-fx-background-color: #f5f5f5;");
+
+        // Título
+        Label cadastroTitulo = new Label("Cadastro de Usuário");
+        cadastroTitulo.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        cadastroTitulo.setTextFill(Color.DARKBLUE);
+        GridPane.setColumnSpan(cadastroTitulo, 2);
+        cadastroGrid.add(cadastroTitulo, 0, 0);
+
+        // Campos de Cadastro
+        addFormField(cadastroGrid, "Nome Completo:", new TextField(), 1);
+        addFormField(cadastroGrid, "Nome de Usuário:", new TextField(), 2);
+        addFormField(cadastroGrid, "E-mail:", new TextField(), 3);
+        addFormField(cadastroGrid, "Telefone:", new TextField(), 4);
+        addFormField(cadastroGrid, "Senha:", new PasswordField(), 5);
+
+        // Botões
+        HBox cadastroButtonBox = new HBox(10);
+        cadastroButtonBox.setAlignment(Pos.CENTER);
+        Button confirmarCadastroButton = new Button("Confirmar");
+        confirmarCadastroButton.setStyle("-fx-base: #4CAF50; -fx-text-fill: white;");
+        Button voltarButton = new Button("Voltar");
+        voltarButton.setStyle("-fx-base: #f44336; -fx-text-fill: white;");
+        cadastroButtonBox.getChildren().addAll(confirmarCadastroButton, voltarButton);
+        cadastroGrid.add(cadastroButtonBox, 0, 6, 2, 1);
+
+        Scene cadastroScene = new Scene(cadastroGrid, 500, 400);
+
+        // ========== MANTENDO AS AÇÕES ORIGINAIS ==========
+        // Ação do botão de login (mantido igual)
         loginButton.setOnAction(e -> {
             String nome = usuarioField.getText();
             String senha = senhaField.getText();
@@ -64,117 +126,104 @@ public class LoginCadastro extends Application {
                 Usuario usuario = fachada.LoginUsuario(nome, senha);
                 abrirTelaMenu(primaryStage, usuario);
             } catch (LoginFalhouException ex) {
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setContentText(ex.getMessage());
-                error.showAndWait();
+                showErrorAlert(ex.getMessage());
             }
-
         });
 
-        // Chama o metodo para abrir a tela de cadastro
+        // Ação do botão de cadastro (abre tela de cadastro)
         cadastrarButton.setOnAction(e -> {
-            abrirTelaCadastro(primaryStage);
+            primaryStage.setScene(cadastroScene);
         });
-    }
 
-    private void abrirTelaCadastro(Stage primaryStage) {
-        // Criando o GridPane para a tela de cadastro
-        GridPane cadastroGrid = new GridPane();
-        cadastroGrid.setPadding(new Insets(10, 10, 10, 10));
-        cadastroGrid.setVgap(8);
-        cadastroGrid.setHgap(10);
-
-        // Criando os Labels e TextFields para cadastro
-        Label nomeCompletoLabel = new Label("Nome Completo:");
-        TextField nomeCompletoField = new TextField();
-        Label usuarioLabel = new Label("Nome de Usuário:");
-        TextField usuarioField = new TextField();
-        Label emailLabel = new Label("E-mail:");
-        TextField emailField = new TextField();
-        Label telefoneLabel = new Label("Telefone:");
-        TextField telefoneField = new TextField();
-        Label senhaLabel = new Label("Senha:");
-        PasswordField senhaField = new PasswordField();
-        Button cadastrarButton = new Button("Cadastrar");
-        Button voltarButton = new Button("Voltar");
-
-        // Adicionando os elementos ao GridPane de cadastro
-        cadastroGrid.add(nomeCompletoLabel, 0, 0);
-        cadastroGrid.add(nomeCompletoField, 1, 0);
-        cadastroGrid.add(usuarioLabel, 0, 1);
-        cadastroGrid.add(usuarioField, 1, 1);
-        cadastroGrid.add(emailLabel, 0, 2);
-        cadastroGrid.add(emailField, 1, 2);
-        cadastroGrid.add(telefoneLabel, 0, 3);
-        cadastroGrid.add(telefoneField, 1, 3);
-        cadastroGrid.add(senhaLabel, 0, 4);
-        cadastroGrid.add(senhaField, 1, 4);
-        cadastroGrid.add(cadastrarButton, 0, 5);
-        cadastroGrid.add(voltarButton, 1, 5);
-
-        // Configurando a cena de cadastro
-        Scene cadastroScene = new Scene(cadastroGrid, 400, 300);
-        primaryStage.setScene(cadastroScene);
-
-        // Ação do botão de cadastrar na tela de cadastro
-        cadastrarButton.setOnAction(e -> {
+        // Ação do botão de confirmar cadastro (mantido igual)
+        confirmarCadastroButton.setOnAction(e -> {
             try {
-                String nomeCompleto = nomeCompletoField.getText();
-                String nomeUsuario = usuarioField.getText();
-                String email = emailField.getText();
-                String telefone = telefoneField.getText();
-                String Senha = senhaField.getText();
+                TextField nomeCompletoField = (TextField) getNodeFromGrid(cadastroGrid, 1, 1);
+                TextField usuarioFieldCad = (TextField) getNodeFromGrid(cadastroGrid, 1, 2);
+                TextField emailField = (TextField) getNodeFromGrid(cadastroGrid, 1, 3);
+                TextField telefoneField = (TextField) getNodeFromGrid(cadastroGrid, 1, 4);
+                PasswordField senhaFieldCad = (PasswordField) getNodeFromGrid(cadastroGrid, 1, 5);
 
-                ValidarU.validar(nomeCompleto, nomeUsuario, email, telefone, Senha);
-                fachada.existeSistema(email, nomeUsuario);
-                // Chama o metodo de cadastro com os valores extraídos
-                fachada.cadastrarUsuario(
-                        nomeCompleto,
-                        nomeUsuario,
-                        email,
-                        telefone,
-                        Senha
+                ValidarU.validar(
+                        nomeCompletoField.getText(),
+                        usuarioFieldCad.getText(),
+                        emailField.getText(),
+                        telefoneField.getText(),
+                        senhaFieldCad.getText()
                 );
 
-                // Lista todos os usuários para verificação
-                List<Usuario> usuarios = fachada.ListarUsuarios();
-                System.out.println("Usuários cadastrados:");
-                for (Usuario u : usuarios) {
-                    System.out.println(u.getNomeUsuario() + " - " + u.getEmail() + " - " + u.getID());
-                }
+                fachada.existeSistema(emailField.getText(), usuarioFieldCad.getText());
+                fachada.cadastrarUsuario(
+                        nomeCompletoField.getText(),
+                        usuarioFieldCad.getText(),
+                        emailField.getText(),
+                        telefoneField.getText(),
+                        senhaFieldCad.getText()
+                );
 
-            } catch (FormularioUsuarioInvalidoException ex) {
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setContentText(ex.getMessage());
-                error.showAndWait();
+                // Limpa os campos após cadastro
+                nomeCompletoField.clear();
+                usuarioFieldCad.clear();
+                emailField.clear();
+                telefoneField.clear();
+                senhaFieldCad.clear();
 
-            } catch (EmailJaExistenteException ex) {
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setContentText(ex.getMessage());
-                error.showAndWait();
-            } catch (UsernameJaExisteException ex) {
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setContentText(ex.getMessage());
-                error.showAndWait();
+                showSuccessAlert("Cadastro realizado com sucesso!");
+
+            } catch (FormularioUsuarioInvalidoException |
+                     EmailJaExistenteException |
+                     UsernameJaExisteException ex) {
+                showErrorAlert(ex.getMessage());
             }
             fachada.SalvarArquivoUsuario();
         });
 
-        // Volta para a tela de login
+        // Ação do botão voltar (mantido igual)
         voltarButton.setOnAction(e -> {
             primaryStage.setScene(loginScene);
         });
     }
 
-    // Novo metodo para abrir a tela de menu
+    // ========== MÉTODOS AUXILIARES ==========
+    private void addFormField(GridPane grid, String labelText, Control field, int row) {
+        Label label = new Label(labelText);
+        label.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        grid.add(label, 0, row);
+        grid.add(field, 1, row);
+    }
+
+    private Node getNodeFromGrid(GridPane grid, int col, int row) {
+        for (Node node : grid.getChildren()) {
+            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    private void showErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erro");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showSuccessAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Sucesso");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     private void abrirTelaMenu(Stage primaryStage, Usuario usuario) {
         Menu menuApp = new Menu();
         try {
-            menuApp.start(primaryStage); // Reutiliza o mesmo Stage
-            // Se quiser passar o usuário para o menu:
-         menuApp.setUsuarioLogado(usuario); // Você precisará criar este metodo na classe Menu
+            menuApp.start(primaryStage);
+            menuApp.setUsuarioLogado(usuario);
         } catch (Exception e) {
-            //e.printStackTrace();
+            showErrorAlert("Erro ao abrir o menu: " + e.getMessage());
         }
     }
 
@@ -182,4 +231,3 @@ public class LoginCadastro extends Application {
         launch(args);
     }
 }
-

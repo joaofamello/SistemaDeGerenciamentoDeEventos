@@ -26,7 +26,7 @@ public class Evento {
     private int qtdeIngressosVendidos;
     private Usuario anfitriao;
     private double valorBaseIngresso;
-    private ArrayList<Ingresso> participantes;
+    private ArrayList<Usuario> participantes;
     private boolean estado;
 
     /**
@@ -55,9 +55,10 @@ public class Evento {
         this.qtdeIngressos = qtdeIngressos;
         this.anfitriao = anfitriao;
         this.ID = ++numero;
-        this.estado = true;
         this.valorBaseIngresso = valorBase;
         this.qtdeIngressosVendidos = 0;
+        this.estado = true;
+        this.participantes = new ArrayList<>();
     }
 
     /**
@@ -149,16 +150,8 @@ public class Evento {
         return anfitriao;
     }
 
-    public void setAnfitriao(Usuario anfitriao) {
-        this.anfitriao = anfitriao;
-    }
-
-    public ArrayList<Ingresso> getParticipantes() {
+    public ArrayList<Usuario> getParticipantes() {
         return participantes;
-    }
-
-    public void setParticipantes(ArrayList<Ingresso> participantes) {
-        this.participantes = participantes;
     }
 
     public LocalDateTime getDataHoraInicio() {
@@ -181,10 +174,37 @@ public class Evento {
         return qtdeIngressos - qtdeIngressosVendidos;
     }
 
-    public void setQtdeIngressosVendidos(int qtdeIngressosVendidos) {
-        this.qtdeIngressosVendidos = qtdeIngressosVendidos;
-    }
     public double getValorBase(){
         return valorBaseIngresso;
+    }
+    public String RetornarEstado(){
+        boolean estado = getEstado();
+        int ingressosDisponiveis = getIngressosDisponiveis();
+        if (!estado) {
+            return "Inativo";
+        } else if (ingressosDisponiveis == 0) {
+            return "Lotado";
+        } else {
+            return "Ativo";
+        }
+    }
+
+    public void participarDoEvento(Usuario usuario) {
+        if (!this.estado) {
+            throw new IllegalStateException("Evento inativo. Participação cancelada.");
+        }
+
+        if (this.getIngressosDisponiveis() <= 0) {
+            throw new IllegalStateException("Evento lotado!");
+        }
+
+        // Verifica se o usuario tem um ingresso valido para este evento
+        if (!usuario.temIngressoValido(this)) {
+            throw new IllegalArgumentException("Usuário não possui ingresso válido para este evento.");
+        }
+
+        this.participantes.add(usuario);
+        this.qtdeIngressosVendidos++; // Atualiza a contagem
+
     }
 }
