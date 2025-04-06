@@ -1,18 +1,22 @@
 package com.sge.negocio.validacao;
 
+import com.sge.fachada.SGE;
 import com.sge.negocio.entidade.Usuario;
+import com.sge.negocio.excecao.EmailJaExistenteException;
 import com.sge.negocio.excecao.FormularioUsuarioInvalidoException;
+
+import java.util.List;
 
 public class ValidarUsuario {
     private static final int tamanhoMinimoSenha= 6;
     private static final int tamanhoMaximoNomeUsuario = 20;
 
-    public void validar(Usuario usuario) throws FormularioUsuarioInvalidoException {
-        validarNomeCompleto(usuario.getNomeCompleto());
-        validarNomeUsuario(usuario.getNomeUsuario());
-        validarEmail(usuario.getEmail());
-        validarTelefone(usuario.getTelefone());
-        validarSenha(usuario.getSenha());
+    public void validar(String nomeCompleto, String nomeUsuario, String email, String telefone, String senha) throws FormularioUsuarioInvalidoException{
+        validarNomeCompleto(nomeCompleto);
+        validarNomeUsuario(nomeUsuario);
+        validarEmail(email);
+        validarTelefone(telefone);
+        validarSenha(senha);
     }
 
     public void validarNomeCompleto(String nomeCompleto) throws FormularioUsuarioInvalidoException {
@@ -38,7 +42,7 @@ public class ValidarUsuario {
         }
     }
 
-    public void validarEmail(String email) throws FormularioUsuarioInvalidoException {
+    public void validarEmail(String email) throws FormularioUsuarioInvalidoException{
         if (email == null || email.trim().isEmpty()) {
             throw new FormularioUsuarioInvalidoException("email", "E-mail obrigatório");
         }
@@ -47,9 +51,11 @@ public class ValidarUsuario {
         if (partes.length != 2 || partes[0].isEmpty() || partes[1].isEmpty()) {
             throw new FormularioUsuarioInvalidoException("email", "Formato inválido (exemplo: usuario@dominio.com)");
         }
+        //fachada.existeEmail(email);
+
     }
 
-    private void validarTelefone(String telefone) throws FormularioUsuarioInvalidoException {
+    public void validarTelefone(String telefone) throws FormularioUsuarioInvalidoException {
         if (telefone == null || telefone.trim().isEmpty()) {
             throw new FormularioUsuarioInvalidoException("telefone", "Telefone obrigatório");
         }
@@ -66,4 +72,6 @@ public class ValidarUsuario {
                     "Senha deve ter no mínimo " + tamanhoMinimoSenha + " caracteres");
         }
     }
+
+
 }

@@ -5,6 +5,7 @@ import com.sge.dados.eventos.IRepositorioEventos;
 import com.sge.dados.eventos.RepositorioEventosArrayList;
 import com.sge.negocio.NegocioEvento;
 import com.sge.negocio.NegocioUsuario;
+import com.sge.negocio.excecao.EmailJaExistenteException;
 import com.sge.negocio.excecao.FormularioEventoInvalidoException;
 import com.sge.negocio.excecao.FormularioUsuarioInvalidoException;
 import java.time.LocalDate;
@@ -163,7 +164,7 @@ public class GerenciadorEntrada {
         return new Endereco(estado, cidade, cep, bairro, rua, numero);
     }
 
-    public void cadastrarUsuario(NegocioUsuario usuario) throws FormularioUsuarioInvalidoException {
+    public void cadastrarUsuario(NegocioUsuario usuario) throws FormularioUsuarioInvalidoException, EmailJaExistenteException {
         System.out.println("Qual seu nome completo: ");
         String nomeCompleto = sc.nextLine();
         sc.nextLine();
@@ -181,18 +182,6 @@ public class GerenciadorEntrada {
         sc.nextLine();
         Usuario usuarioNovo = new Usuario(nomeCompleto,nomeUsuario,email,telefone,senha);
         usuario.inserir(usuarioNovo);
-    }
-
-    public String recebeString(){
-        return sc.nextLine();
-    }
-
-    public double recebeDouble(){
-        return sc.nextDouble();
-    }
-
-    public int recebeInt(){
-        return sc.nextInt();
     }
 
     public LocalDate recebeData(){
