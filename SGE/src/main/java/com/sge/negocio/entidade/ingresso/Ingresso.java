@@ -9,12 +9,27 @@ public abstract class Ingresso {
     private double valorBase;
     private final int ID;
     private static int numero = 1;
-    private boolean vendido = false;
+    private boolean vendido;
 
     public Ingresso(Evento evento, double valorBase) {
         this.evento = evento;
         this.valorBase = valorBase;
         this.ID = numero++;
+        this.vendido = false;
+    }
+
+    public abstract boolean ehValido();
+
+    public boolean pertenceAoEvento(Evento evento) {
+        return this.evento.equals(evento) && !vendido;
+    }
+
+    public boolean isUsado(){
+        return vendido;
+    }
+
+    public void usarIngresso(){
+        this.vendido = true;
     }
 
     public abstract double calcularValorFinal();

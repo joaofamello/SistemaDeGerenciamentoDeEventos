@@ -12,9 +12,9 @@ public interface IPersistenciaDados {
 
     public ArrayList<Usuario> carregarUsuarios();
 
-    public void salvarEventos(ArrayList<Evento> eventos);
+    public void salvarEventos(List<Evento> eventos);
 
-    public ArrayList<Evento> carregarEventos();
+    public ArrayList<Evento> carregarEventos(ArrayList<Usuario> usuarios);
 
 
 }

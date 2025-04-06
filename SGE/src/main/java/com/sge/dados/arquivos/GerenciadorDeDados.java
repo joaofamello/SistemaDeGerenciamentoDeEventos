@@ -46,7 +46,7 @@ public class GerenciadorDeDados {
     }
 
     public static Path getPasta_Eventos() {
-        return Pasta_Eventos;
+        return Paths.get("SGE/src/main/java/com/sge/dados/bancoDeDados/EventsData.txt");
     }
 
     public static Path getPasta_Avaliacoes() {

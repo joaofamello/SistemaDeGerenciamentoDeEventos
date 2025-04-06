@@ -1,106 +1,143 @@
 package com.sge.ui;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import com.sge.ui.*;
-import com.sge.negocio.entidade.*;
+import com.sge.negocio.entidade.Usuario;
 
 public class Menu extends Application {
     private Usuario usuarioLogado;
-    private Scene Menu;
+    private Scene menuScene;
 
-    // Metodo para receber o usuário logado
     public void setUsuarioLogado(Usuario usuario) {
         this.usuarioLogado = usuario;
         atualizarTitulo();
     }
 
     private void atualizarTitulo() {
-        if (usuarioLogado != null) {
-            Stage stage = (Stage) Menu.getWindow();
-            stage.setTitle("Menu de Eventos - Bem-vindo, " + usuarioLogado.getNomeUsuario());
+        if (usuarioLogado != null && menuScene != null) {
+            Stage stage = (Stage) menuScene.getWindow();
+            if (stage != null) {
+                stage.setTitle("SGE - Menu Principal (" + usuarioLogado.getNomeUsuario() + ")");
+            }
         }
     }
 
     @Override
     public void start(Stage primaryStage) {
-        // Criação da barra de menu
+        // Configuração da janela principal
+        primaryStage.setMinWidth(600);
+        primaryStage.setMinHeight(400);
+
+        // Barra de menu estilizada
         MenuBar menuBar = new MenuBar();
+        menuBar.setStyle("-fx-background-color: #2c3e50; -fx-text-fill: white;");
 
-        // Menu "Eventos"
+        // Menu Eventos
         javafx.scene.control.Menu menuEventos = new javafx.scene.control.Menu("Eventos");
+        menuEventos.setStyle("-fx-text-fill: white;");
 
-        // Menu "Usuário"
-        javafx.scene.control.Menu menuUsuario = new javafx.scene.control.Menu("Usuário");
-        MenuItem logoutItem = new MenuItem("Sair");
-        logoutItem.setOnAction(e -> fazerLogout(primaryStage));
-
-        menuUsuario.getItems().add(logoutItem);
-
-        // Itens do menu
         MenuItem criarEvento = new MenuItem("Criar Evento");
-        MenuItem participarEvento = new MenuItem("Participar de Evento");
+        criarEvento.setStyle("-fx-font-weight: bold;");
+        MenuItem participarEvento = new MenuItem("Participar de Eventos");
+        participarEvento.setStyle("-fx-font-weight: bold;");
 
-        // Adicionando ações aos itens do menu
+        // Menu Usuário
+        javafx.scene.control.Menu menuUsuario = new javafx.scene.control.Menu("Usuário");
+        menuUsuario.setStyle("-fx-text-fill: white;");
+
+        MenuItem logoutItem = new MenuItem("Sair");
+        logoutItem.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
+
+        // Adicionando ações (mantidas as originais)
         criarEvento.setOnAction(e -> criarEvento());
         participarEvento.setOnAction(e -> participarEvento());
+        logoutItem.setOnAction(e -> fazerLogout(primaryStage));
 
-        // Adicionando itens ao menu
+        // Montando os menus
         menuEventos.getItems().addAll(criarEvento, participarEvento);
+        menuUsuario.getItems().add(logoutItem);
         menuBar.getMenus().addAll(menuEventos, menuUsuario);
+
+        // Painel de boas-vindas
+        Label welcomeLabel = new Label();
+        welcomeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        welcomeLabel.setTextFill(Color.web("#3498db"));
+
+        if (usuarioLogado != null) {
+            welcomeLabel.setText("Bem-vindo, " + usuarioLogado.getNomeCompleto() + "!");
+        } else {
+            welcomeLabel.setText("Bem-vindo ao SGE!");
+        }
+
+        Label infoLabel = new Label("Selecione uma opção no menu superior");
+        infoLabel.setFont(Font.font("Arial", 14));
+        infoLabel.setTextFill(Color.GRAY);
+
+        VBox centerBox = new VBox(20, welcomeLabel, infoLabel);
+        centerBox.setAlignment(Pos.CENTER);
+        centerBox.setPadding(new Insets(50));
 
         // Layout principal
         BorderPane root = new BorderPane();
+        root.setStyle("-fx-background-color: #ecf0f1;");
         root.setTop(menuBar);
+        root.setCenter(centerBox);
 
         // Configuração da cena
-        Scene scene = new Scene(root, 400, 300);
-        primaryStage.setTitle("Menu de Eventos");
-        primaryStage.setScene(scene);
+        menuScene = new Scene(root);
+        primaryStage.setScene(menuScene);
         primaryStage.show();
     }
+
     private void fazerLogout(Stage primaryStage) {
-        // Volta para a tela de login
         LoginCadastro loginApp = new LoginCadastro();
-        loginApp.start(primaryStage);
+        try {
+            loginApp.start(new Stage());
+            primaryStage.close();
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Erro", "Não foi possível fazer logout");
+        }
     }
 
-    // Metodo para criar evento
     private void criarEvento() {
         if (usuarioLogado == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText(null);
-            alert.setContentText("Nenhum usuário logado. Faça login novamente.");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.ERROR, "Erro", "Nenhum usuário logado. Faça login novamente.");
             return;
         }
 
         Stage criarEventoStage = new Stage();
         CriarEvento criarEventoApp = new CriarEvento();
-
-        // Passa o usuário logado para a tela de criar evento
         criarEventoApp.setUsuarioLogado(usuarioLogado);
-
         criarEventoApp.start(criarEventoStage);
     }
 
-    // Metodo para participar de evento
     private void participarEvento() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Participar de Evento");
-        alert.setHeaderText(null);
-        alert.setContentText("Aqui você pode participar de um evento existente.");
-        alert.showAndWait();
+        if (usuarioLogado == null) {
+            showAlert(Alert.AlertType.ERROR, "Erro", "Nenhum usuário logado. Faça login novamente.");
+            return;
+        }
+
+        Stage participarEventoStage = new Stage();
+        ParticiparEvento participarEventoApp = new ParticiparEvento();
+        participarEventoApp.setUsuarioLogado(usuarioLogado);
+        participarEventoApp.start(participarEventoStage);
     }
 
-    public Scene getMenu() {
-        return Menu;
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     public static void main(String[] args) {

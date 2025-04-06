@@ -102,6 +102,10 @@ public class SGE {
         return repositorioEvento.buscarPorCategoria(categoria);
     }
 
+    public void participarEvento(Usuario usuario, Evento evento){
+
+    }
+
     public void SalvarArquivoUsuario(){
         persistenciaDados.salvarUsuarios(repositorioUsuario.listarTodosUsuarios());
     }
@@ -112,7 +116,7 @@ public class SGE {
 
     public void CarregarArquivos() {
             ArrayList<Usuario> usuarios = persistenciaDados.carregarUsuarios();
-            ArrayList<Evento> eventos = persistenciaDados.carregarEventos();
+            ArrayList<Evento> eventos = persistenciaDados.carregarEventos(usuarios);
         usuarios.forEach(usuario -> {
             try {
                 repositorioUsuario.inserir(usuario);
@@ -143,6 +147,7 @@ public class SGE {
             }
         }
     }
+
     }
 
 
