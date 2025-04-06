@@ -13,10 +13,11 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import com.sge.fachada.SGE;
+import com.sge.ui.*;
 
 import java.util.List;
 
-public class loginCadastro extends Application {
+public class LoginCadastro extends Application {
     private SGE fachada = SGE.getInstancia();
     private ValidarUsuario ValidarU = new ValidarUsuario();
     private Scene loginScene; // Variável de instância para a cena de login
@@ -24,6 +25,7 @@ public class loginCadastro extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        fachada.CarregarArquivos();
         primaryStage.setTitle("Login");
 
         // Criando o GridPane para a tela de login
@@ -55,13 +57,12 @@ public class loginCadastro extends Application {
 
         // Ação do botão de login
         loginButton.setOnAction(e -> {
-
             String nome = usuarioField.getText();
             String senha = senhaField.getText();
 
             try {
-                fachada.LoginUsuario(nome, senha);
-                System.out.println("Encontrado!");
+                Usuario usuario = fachada.LoginUsuario(nome, senha);
+                abrirTelaMenu(primaryStage, usuario);
             } catch (LoginFalhouException ex) {
                 Alert error = new Alert(Alert.AlertType.ERROR);
                 error.setContentText(ex.getMessage());
@@ -156,7 +157,7 @@ public class loginCadastro extends Application {
                 error.setContentText(ex.getMessage());
                 error.showAndWait();
             }
-            fachada.SalvarArquivos();
+            fachada.SalvarArquivoUsuario();
         });
 
         // Volta para a tela de login
@@ -165,7 +166,20 @@ public class loginCadastro extends Application {
         });
     }
 
+    // Novo metodo para abrir a tela de menu
+    private void abrirTelaMenu(Stage primaryStage, Usuario usuario) {
+        Menu menuApp = new Menu();
+        try {
+            menuApp.start(primaryStage); // Reutiliza o mesmo Stage
+            // Se quiser passar o usuário para o menu:
+         menuApp.setUsuarioLogado(usuario); // Você precisará criar este metodo na classe Menu
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
 }
+

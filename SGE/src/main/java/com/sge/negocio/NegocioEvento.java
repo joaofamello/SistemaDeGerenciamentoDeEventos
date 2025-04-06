@@ -46,7 +46,9 @@ public class NegocioEvento {
 
 
     public void inserir(Evento evento) throws FormularioEventoInvalidoException {
-        validador.validar(evento);
+        validador.validar( evento.getTitulo(),  evento.getDescricao(),  evento.getCategoria(),
+                 evento.getEndereco(),  evento.getData(),  evento.getHoraInicio(), evento.getHoraFim(),
+         evento.getQtdeIngressos(),  evento.getValorBase(), evento.getAnfitriao());
         repositorioEventos.inserir(evento);
     }
 

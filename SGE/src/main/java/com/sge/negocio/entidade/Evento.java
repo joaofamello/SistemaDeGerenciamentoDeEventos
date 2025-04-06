@@ -184,4 +184,7 @@ public class Evento {
     public void setQtdeIngressosVendidos(int qtdeIngressosVendidos) {
         this.qtdeIngressosVendidos = qtdeIngressosVendidos;
     }
+    public double getValorBase(){
+        return valorBaseIngresso;
+    }
 }

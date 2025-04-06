@@ -1,0 +1,4 @@
+titulo;descrição;categoria;estado,cidade,76584-000,Centro,rua,45;2025-04-10;2025-04-10T13:00;2025-04-10T14:00;10;100.0;1
+
+titulo;descrição;categoria;estado,cidade,76584-000,Centro,rua,45;2025-04-10;2025-04-10T02:00;2025-04-10T13:00;10;100.0;1
+
