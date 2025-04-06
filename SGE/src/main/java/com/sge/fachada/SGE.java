@@ -5,6 +5,7 @@ import com.sge.dados.arquivos.GerenciadorDeDados;
 import com.sge.dados.arquivos.PersistenciaDados;
 import com.sge.dados.usuarios.RepositorioUsuariosArrayList;
 import com.sge.dados.eventos.RepositorioEventosArrayList;
+import com.sge.negocio.entidade.Endereco;
 import com.sge.negocio.entidade.GerenciadorEntrada;
 import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.NegocioEvento;
@@ -12,6 +13,8 @@ import com.sge.negocio.NegocioUsuario;
 import com.sge.negocio.entidade.Evento;
 import com.sge.negocio.excecao.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +41,6 @@ public class SGE {
         return instancia;
     }
     public void cadastrarUsuario(String nomeCompleto, String nomeUsuario, String email, String telefone, String senha) throws FormularioUsuarioInvalidoException{
-        //gerenciadorEntrada.cadastrarUsuario(repositorioUsuario);
         Usuario usuario = new Usuario(nomeCompleto,nomeUsuario,email,telefone,senha);
         repositorioUsuario.inserir(usuario);
     }
@@ -61,6 +63,8 @@ public class SGE {
         return repositorioUsuario.listarTodosUsuarios();
     }
 
+    public List<Evento> ListarEventos() { return repositorioEvento.listarTodosEventos();}
+
     public void alterarUsuario(Usuario usuario) throws FormularioUsuarioInvalidoException, EmailJaExistenteException {
         repositorioUsuario.alterar(usuario);
     }
@@ -73,8 +77,9 @@ public class SGE {
         return repositorioUsuario.buscarUsuariosPorNome(nome);
     }
 
-    public void cadastrarEvento(Usuario usuario) throws FormularioEventoInvalidoException {
-        gerenciadorEntrada.criarEvento(usuario, repositorioEvento);
+    public void cadastrarEvento(String Titulo, String Descricao, String Categoria, Endereco endereco, LocalDate data, LocalDateTime HoraInicio, LocalDateTime HoraFim, int qtdeIngressos, double valorBase, Usuario anfitriao) throws FormularioEventoInvalidoException {
+       Evento evento = new Evento(Titulo, Descricao, Categoria, endereco, data, HoraInicio, HoraFim, qtdeIngressos, valorBase, anfitriao);
+       repositorioEvento.inserir(evento);
     }
 
     public void alterarEvento(Evento evento) throws FormularioEventoInvalidoException {
@@ -97,9 +102,12 @@ public class SGE {
         return repositorioEvento.buscarPorCategoria(categoria);
     }
 
-    public void SalvarArquivos(){
+    public void SalvarArquivoUsuario(){
         persistenciaDados.salvarUsuarios(repositorioUsuario.listarTodosUsuarios());
-        //persistenciaDados.salvarEventos(repositorioEvento.listarTodosEventos());
+    }
+
+    public void SalvarArquivoEvento(){
+        persistenciaDados.salvarEventos(repositorioEvento.listarTodosEventos());
     }
 
     public void CarregarArquivos() {

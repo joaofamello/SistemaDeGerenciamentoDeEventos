@@ -14,17 +14,16 @@ import java.util.List;
  * @author João Francisco
  */
 public class Usuario {
-    private final String nomeCompleto;
+    private String nomeCompleto;
     private String nomeUsuario;
     private String email;
     private String telefone;
+    private static int qtde = 1;
     private final int ID;
     private String senha;
     private static boolean ehAnfitriao = false;
     private static ArrayList<Evento> eventosCriados;
     ArrayList<Evento> eventosParticipando;
-    private static int proximoID = 1;
-    private static final List<Integer> idsUtilizados = new ArrayList<>();
 
     /**
      *Construtor da classe usuario.
@@ -42,35 +41,7 @@ public class Usuario {
         this.email = email;
         this.telefone = telefone;
         this.senha = senha;
-        this.ID = gerarID();
-    }
-
-    private static int gerarID() {
-        // Encontra o menor ID não utilizado
-        int novoID = proximoID;
-
-        while (idsUtilizados.contains(novoID)) {
-            novoID++;
-        }
-
-
-
-        idsUtilizados.add(novoID);
-        proximoID = novoID + 1;  //incrementa o proximo ID
-
-        return novoID;
-    }
-
-    /**
-     * Metodo para registrar IDs existentes (ao carregar do arquivo)
-     */
-    public static void registrarIDExistente(int id) {
-        if (!idsUtilizados.contains(id)) {
-            idsUtilizados.add(id);
-            if (id >= proximoID) {
-                proximoID = id + 1;
-            }
-        }
+        this.ID = qtde++;
     }
 
     /**
@@ -82,7 +53,6 @@ public class Usuario {
         System.out.println("--------------------------------------------");
         return ID + " " + nomeCompleto + " " + nomeUsuario + " " + email + " " + telefone + " " + senha;
     }
-
 
     /**
      *

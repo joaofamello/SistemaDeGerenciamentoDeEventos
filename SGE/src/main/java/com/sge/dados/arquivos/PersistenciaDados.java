@@ -41,6 +41,8 @@ public class PersistenciaDados implements IPersistenciaDados {
                 );
                 escritor.write(linha);
                 escritor.newLine();
+                escritor.newLine();
+
 
             }
         } catch (IOException e) {
@@ -56,7 +58,7 @@ public class PersistenciaDados implements IPersistenciaDados {
             String linha;
             while ((linha = leitor.readLine()) != null) {
                 String[] campos = linha.split(";");
-                // Agora esperando 6 campos (ID + 5 informações)
+ // Agora esperando 6 campos (ID + 5 informações)
                 if (campos.length == 6) {
                     int id = Integer.parseInt(campos[0].trim());
                     String nomeCompleto = campos[1];
@@ -64,9 +66,6 @@ public class PersistenciaDados implements IPersistenciaDados {
                     String email = campos[3];
                     String telefone = campos[4];
                     String senha = campos[5];
-
-                    // Registra o ID antes de criar o usuário
-                    Usuario.registrarIDExistente(id);
 
                     // Criando o usuário e adicionando ao vetor
                     Usuario usuario = new Usuario(nomeCompleto, nomeUsuario, email, telefone, senha);
@@ -87,8 +86,9 @@ public class PersistenciaDados implements IPersistenciaDados {
                 // Formantando o endereco em uma unica string
                 String enderecoFormatado = evento.getEndereco().getEstado() + "," + evento.getEndereco().getCidade() + "," + evento.getEndereco().getCep() + "," + evento.getEndereco().getBairro() + "," + evento.getEndereco().getRua() + "," + evento.getEndereco().getNumero();
 
-                String linha = evento.getTitulo() + ";" + evento.getDescricao() + ";" + evento.getCategoria() + ";" + enderecoFormatado + ";" + evento.getData() + ";" + evento.getHoraInicio() + ";" + evento.getHoraFim() + ";" + evento.getQtdeIngressos() + ";" + evento.getAnfitriao().getID();
+                String linha = String.join(";", evento.getTitulo() + ";" + evento.getDescricao() + ";" + evento.getCategoria() + ";" + enderecoFormatado + ";" + evento.getData() + ";" + evento.getHoraInicio() + ";" + evento.getHoraFim() + ";" + evento.getQtdeIngressos() + ";" + evento.getValorBase() + ";" + evento.getAnfitriao().getID());
                 escritor.write(linha);
+                escritor.newLine();
                 escritor.newLine();
             }
         } catch (IOException e) {

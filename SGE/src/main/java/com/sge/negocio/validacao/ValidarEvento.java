@@ -9,13 +9,15 @@ import java.time.LocalDateTime;
 
 public class ValidarEvento {
 
-    public void validar(Evento evento) throws FormularioEventoInvalidoException {
-        validarTitulo(evento.getTitulo());
-        validarDescricao(evento.getDescricao());
-        validarEndereco(evento.getEndereco());
-        validarDatas(evento.getData(), evento.getHoraInicio(), evento.getHoraFim());
-        validarIngressos(evento.getQtdeIngressos());
-        validarAnfitriao(evento.getAnfitriao());
+    public void validar(String titulo, String descricao, String categoria,
+                        Endereco endereco, LocalDate dataEvento, LocalDateTime horaInicio,  LocalDateTime horaFim,
+                        int qtdeIngressos, double valorBase,Usuario usuarioLogado) throws FormularioEventoInvalidoException {
+        validarTitulo(titulo);
+        validarDescricao(descricao);
+        validarEndereco(endereco);
+        validarDatas(dataEvento, horaInicio, horaFim);
+        validarIngressos(qtdeIngressos);
+        validarAnfitriao(usuarioLogado);
     }
 
     private void validarTitulo(String titulo) throws FormularioEventoInvalidoException {
@@ -74,17 +76,20 @@ public class ValidarEvento {
         }
 
         LocalDateTime agora = LocalDateTime.now();
-        LocalDateTime inicioCompleto = LocalDateTime.of(data, horaInicio.toLocalTime());
-        LocalDateTime fimCompleto = LocalDateTime.of(data, horaFim.toLocalTime());
 
-        if (inicioCompleto.isBefore(agora)) {
-            throw new FormularioEventoInvalidoException("data", "Data/hora deve ser futura");
+
+        if (horaInicio.isBefore(agora)) {
+            throw new FormularioEventoInvalidoException("horaInicio", "Data/hora deve ser futura");
         }
-        if (fimCompleto.isBefore(inicioCompleto)) {
+        if (horaFim.isBefore(horaInicio)) {
             throw new FormularioEventoInvalidoException("horaFim", "Hora de término deve ser após a hora de início");
         }
-        if (fimCompleto.isAfter(inicioCompleto.plusHours(12))) {
+        if (horaFim.isAfter(horaInicio.plusHours(12))) {
             throw new FormularioEventoInvalidoException("horaFim", "Evento não pode durar mais que 12 horas");
+        }
+        // Validação para horarios de inicio e fim iguais
+        if (horaInicio.equals(horaFim)) {
+            throw new FormularioEventoInvalidoException("horaFim", "Hora de término deve ser diferente da hora de início");
         }
     }
 
