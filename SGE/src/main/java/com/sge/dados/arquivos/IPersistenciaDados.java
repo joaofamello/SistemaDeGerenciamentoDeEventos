@@ -4,10 +4,11 @@ import com.sge.negocio.entidade.Evento;
 import com.sge.negocio.entidade.Usuario;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface IPersistenciaDados {
 
-    public void salvarUsuarios(ArrayList<Usuario> usuarios);
+    public void salvarUsuarios(List<Usuario> usuarios);
 
     public ArrayList<Usuario> carregarUsuarios();
 
