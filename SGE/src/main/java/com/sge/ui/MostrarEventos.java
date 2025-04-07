@@ -134,7 +134,7 @@ public class MostrarEventos extends Application {
                     VBox box = new VBox(5);
                     Label titulo;
                     if(!evento.getEstado()){
-                        titulo = new Label(evento.getTitulo());
+                        titulo = new Label(evento.getTitulo() + " (Cancelado)");
                         titulo.setStyle("-fx-text-fill: #C74C3FFF; -fx-font-weight: bold;");
                     }else {
                         titulo = new Label(evento.getTitulo());
