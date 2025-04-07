@@ -1,5 +1,7 @@
 package com.sge.negocio.entidade;
 
+import java.util.Objects;
+
 /**
  * Classe que representa o endereço de um evento.
  * Contém rua, bairro, numero, cep, cidade e estado.
@@ -89,5 +91,23 @@ public class Endereco {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Endereco endereco = (Endereco) o;
+        return numero == endereco.numero &&
+                Objects.equals(estado, endereco.estado) &&
+                Objects.equals(cidade, endereco.cidade) &&
+                Objects.equals(cep, endereco.cep) &&
+                Objects.equals(bairro, endereco.bairro) &&
+                Objects.equals(rua, endereco.rua);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(estado, cidade, cep, bairro, rua, numero);
     }
 }

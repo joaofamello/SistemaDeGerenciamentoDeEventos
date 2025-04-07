@@ -83,13 +83,6 @@ public class CriarEvento extends Application {
                 double valorBase = Double.parseDouble(txtValorBase.getText());
 
                 List<Evento> eventos = fachada.ListarEventos();
-                if (fachada.existeEventoComTitulo(titulo)) {
-                    Alert error = new Alert(Alert.AlertType.ERROR);
-                    error.setContentText("Já tem um evento com esse titulo registrado!");
-                    error.showAndWait();
-
-                }
-
                     fachada.validarConflitoPorEndereco(dataEvento, horaInicio, horaFim, endereco);
                     ValidarEvento.validar(titulo, descricao, categoria, endereco, dataEvento, horaInicio, horaFim, qtdeIngressos, valorBase, usuarioLogado);
                     fachada.cadastrarEvento(titulo, descricao, categoria, endereco, dataEvento, horaInicio, horaFim, qtdeIngressos, valorBase, usuarioLogado);
@@ -112,6 +105,7 @@ public class CriarEvento extends Application {
                 Alert error = new Alert(Alert.AlertType.ERROR);
                 error.setContentText(ex.getMessage());
                 error.showAndWait();
+                return;
             }
             fachada.SalvarArquivoEvento();
 
