@@ -10,6 +10,9 @@ public class IngressoMeia extends Ingresso {
     public IngressoMeia(Evento evento, double valorBase) {
         super(evento, valorBase);
     }
+    public IngressoMeia(double valorBase){
+        super(valorBase);
+    }
 
     @Override
     public boolean ehValido(){

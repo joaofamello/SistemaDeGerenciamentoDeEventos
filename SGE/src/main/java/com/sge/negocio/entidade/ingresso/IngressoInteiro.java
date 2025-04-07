@@ -10,6 +10,10 @@ public class IngressoInteiro extends Ingresso {
         super(evento, valorBase);
     }
 
+    public IngressoInteiro(double valorBase){
+        super(valorBase);
+    }
+
     @Override
     public double calcularValorFinal(){
         return getValorBase(); //Retorna o valor sem desconto

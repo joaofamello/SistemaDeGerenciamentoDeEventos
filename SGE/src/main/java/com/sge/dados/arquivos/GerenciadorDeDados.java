@@ -7,14 +7,17 @@ public class GerenciadorDeDados {
     private static final Path Diretorio = Paths.get(System.getProperty("user.dir"), "SGE/src/main/java/com/sge/dados/bancoDeDados");
     private static final Path Pasta_Usuarios = Diretorio.resolve("UsersData.txt");
     private static final Path Pasta_Eventos = Diretorio.resolve("EventsData.txt");
-    private static final Path Pasta_Avaliacoes = Diretorio.resolve("AvaliacoesData.txt");
+    private static final Path Pasta_Participantes = Diretorio.resolve("ParticipantesData.txt");
+    private static final Path Pasta_participado = Diretorio.resolve("ParticipadoData.txt");
+
 
     //Bloco para inicializar estaticamente os arquivos
     static {
         criarDiretorio();
         criarArquivo(Pasta_Usuarios);
         criarArquivo(Pasta_Eventos);
-        criarArquivo(Pasta_Avaliacoes);
+        criarArquivo(Pasta_Participantes);
+        criarArquivo(Pasta_participado);
     }
 
     private static void criarDiretorio() {
@@ -49,7 +52,11 @@ public class GerenciadorDeDados {
         return Paths.get("SGE/src/main/java/com/sge/dados/bancoDeDados/EventsData.txt");
     }
 
-    public static Path getPasta_Avaliacoes() {
-        return Pasta_Avaliacoes;
+    public static Path getPasta_Participantes() {
+        return Paths.get("SGE/src/main/java/com/sge/dados/bancoDeDados/ParticipantesData.txt");
+    }
+
+    public static Path getPasta_participado() {
+        return Paths.get("SGE/src/main/java/com/sge/dados/bancoDeDados/ParticipadoData.txt");
     }
 }

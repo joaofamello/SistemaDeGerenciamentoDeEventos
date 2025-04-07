@@ -22,8 +22,8 @@ public class Usuario {
     private static int qtde = 1;
     private final int ID;
     private String senha;
-    private static boolean ehAnfitriao = false;
-    private static ArrayList<Evento> eventosCriados;
+    private boolean ehAnfitriao = false;
+    private ArrayList<Evento> eventosCriados;
     private ArrayList<Ingresso> ingressos;
     private ArrayList<Evento> eventosParticipados;
 
@@ -65,12 +65,17 @@ public class Usuario {
      * @return Lista com os eventos criados pelo usuario.
      * @throws NenhumEventoCriadoException Se ocorrer o usuario não possui eventos cadastrados.
      */
-    public static List<Evento> getEventosCriados() throws NenhumEventoCriadoException {
-        if (eventosCriados == null){
+    public List<Evento> getEventosCriados() throws NenhumEventoCriadoException {
+        if (eventosCriados == null || eventosCriados.isEmpty()) {
             throw new NenhumEventoCriadoException();
         }
         return eventosCriados;
     }
+
+    public void adicionarIngresso(Ingresso ingresso){
+        this.ingressos.add(ingresso);
+    }
+
 
     //getters e setters
     public String getNomeCompleto() {
@@ -84,6 +89,10 @@ public class Usuario {
     public void setNomeUsuario(String nomeUsuario) {
         this.nomeUsuario = nomeUsuario;
 
+    }
+
+    public ArrayList<Ingresso> getIngressos() {
+        return ingressos;
     }
 
     public String getEmail() {
@@ -124,21 +133,21 @@ public class Usuario {
         return eventosParticipados;
     }
 
-    public static boolean getEhAnfitriao() {
+    public boolean getEhAnfitriao() {
         return ehAnfitriao;
     }
-
-    /**
-     *
-     * @param ehAnfitriao ehAnfitriao é atualizado para indicar se o usuario
-     *                    pode ou naõ realizar a criação ou gerenciamento de eventos.
-     */
-    public static void setEhAnfitriao(boolean ehAnfitriao) {
-        Usuario.ehAnfitriao = ehAnfitriao;
+    public void setEhAnfitriao(boolean ehAnfitriao) {
+        this.ehAnfitriao = ehAnfitriao;
     }
 
-    public boolean temIngressoValido(Evento evento){
+    public void participarDoEvento(Evento evento) {
+        if (!eventosParticipados.contains(evento)) {
+            eventosParticipados.add(evento);
+        }
+    }
+
+    /*public boolean temIngressoValido(Evento evento){
         return this.ingressos.stream().anyMatch(ingresso -> ingresso.pertenceAoEvento(evento) && ingresso.ehValido());
-    }
+    }*/
 
 }
