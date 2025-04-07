@@ -2,7 +2,6 @@ package com.sge.ui;
 
 import com.sge.fachada.SGE;
 import com.sge.negocio.excecao.EventoDuplicadoException;
-import com.sge.negocio.excecao.EventoNaoEncontradoException;
 import com.sge.negocio.excecao.FormularioEventoInvalidoException;
 import com.sge.negocio.validacao.ValidarEvento;
 import javafx.application.Application;

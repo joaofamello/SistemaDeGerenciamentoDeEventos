@@ -91,7 +91,7 @@ public class SGE {
         repositorioEvento.cancelarEvento(evento, usuario);
     }
 
-    public List<Evento> buscarEventoPortitulo(String titulo) throws EventoNaoEncontradoException {
+    public List<Evento> buscarEventoPorTitulo(String titulo) throws EventoNaoEncontradoException {
         return repositorioEvento.buscarPorTitulo(titulo);
     }
 

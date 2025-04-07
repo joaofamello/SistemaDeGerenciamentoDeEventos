@@ -242,7 +242,7 @@ public class ParticiparEvento extends Application {
                 switch (tipoFiltro) {
                     case "Titulo":
                         try {
-                            eventosFiltrados = fachada.buscarEventoPortitulo(termoBusca);
+                            eventosFiltrados = fachada.buscarEventoPorTitulo(termoBusca);
                         } catch (EventoNaoEncontradoException e) {
                             eventosFiltrados = new ArrayList<>();
                         }

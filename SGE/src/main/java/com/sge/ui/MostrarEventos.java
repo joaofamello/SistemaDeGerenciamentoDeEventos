@@ -3,6 +3,9 @@ package com.sge.ui;
 import com.sge.fachada.SGE;
 import com.sge.negocio.entidade.Evento;
 import com.sge.negocio.entidade.Usuario;
+import com.sge.negocio.excecao.CategoriaNaoEncontradaException;
+import com.sge.negocio.excecao.CidadeSemEventosException;
+import com.sge.negocio.excecao.EventoNaoEncontradoException;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -10,7 +13,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
+
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,9 +26,34 @@ public class MostrarEventos extends Application {
     private ListView<Evento> eventosListView;
     private TextField searchField;
     private TextArea detalhesArea;
+    private ComboBox<ComboBoxItem> tipoFiltroComboBox;
 
     public void setUsuarioLogado(Usuario usuario) {
         this.usuarioLogado = usuario;
+    }
+
+    // Classe auxiliar para os itens do ComboBox
+    public class ComboBoxItem {
+        private String value;
+        private String displayText;
+
+        public ComboBoxItem(String value, String displayText) {
+            this.value = value;
+            this.displayText = displayText;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public String getDisplayText() {
+            return displayText;
+        }
+
+        @Override
+        public String toString() {
+            return displayText;
+        }
     }
 
     @Override
@@ -39,7 +70,7 @@ public class MostrarEventos extends Application {
         topPanel.setPadding(new Insets(10));
 
         searchField = new TextField();
-        searchField.setPromptText("Buscar meus eventos...");
+        searchField.setPromptText("Digite o termo de busca...");
         searchField.setPrefWidth(300);
 
         Button refreshButton = new Button("Atualizar");
@@ -51,6 +82,42 @@ public class MostrarEventos extends Application {
                 refreshButton
         );
         root.setTop(topPanel);
+
+        // Menu lateral com tipos de filtro
+        VBox leftMenu = new VBox(10);
+        leftMenu.setPadding(new Insets(10));
+        leftMenu.setPrefWidth(200);
+
+        Label filtroLabel = new Label("Filtrar por:");
+        filtroLabel.setStyle("-fx-font-weight: bold;");
+
+        tipoFiltroComboBox = new ComboBox<>();
+        tipoFiltroComboBox.getItems().addAll(
+                new ComboBoxItem("Todos", "Todos os campos"),
+                new ComboBoxItem("Titulo", "Título do evento"),
+                new ComboBoxItem("Categoria", "Categoria do evento"),
+                new ComboBoxItem("Cidade", "Cidade do evento")
+        );
+
+        tipoFiltroComboBox.setConverter(new StringConverter<ComboBoxItem>() {
+            @Override
+            public String toString(ComboBoxItem item) {
+                return item.getDisplayText();
+            }
+
+            @Override
+            public ComboBoxItem fromString(String string) {
+                return tipoFiltroComboBox.getItems().stream()
+                        .filter(item -> item.getDisplayText().equals(string))
+                        .findFirst()
+                        .orElse(null);
+            }
+        });
+
+        tipoFiltroComboBox.getSelectionModel().selectFirst();
+
+        leftMenu.getChildren().addAll(filtroLabel, tipoFiltroComboBox);
+        root.setLeft(leftMenu);
 
         // Lista de eventos
         eventosListView = new ListView<>();
@@ -177,15 +244,58 @@ public class MostrarEventos extends Application {
     }
 
     private void filtrarEventos() {
-        String termoBusca = searchField.getText().toLowerCase();
+        try {
+            String termoBusca = searchField.getText().trim();
+            String tipoFiltro = tipoFiltroComboBox.getValue().getValue();
 
-        List<Evento> eventosFiltrados = fachada.ListarEventos().stream()
-                .filter(e -> e.getAnfitriao().equals(usuarioLogado))
-                .filter(e -> e.getTitulo().toLowerCase().contains(termoBusca) ||
-                        e.getDescricao().toLowerCase().contains(termoBusca))
-                .collect(Collectors.toList());
+            List<Evento> eventosFiltrados;
 
-        eventosListView.getItems().setAll(FXCollections.observableArrayList(eventosFiltrados));
+            if (termoBusca.isEmpty()) {
+                eventosFiltrados = fachada.ListarEventos();
+            } else {
+                switch (tipoFiltro) {
+                    case "Titulo":
+                        try {
+                            eventosFiltrados = fachada.buscarEventoPorTitulo(termoBusca);
+                        } catch (EventoNaoEncontradoException e) {
+                            eventosFiltrados = new ArrayList<>();
+                        }
+                        break;
+
+                    case "Categoria":
+                        try {
+                            eventosFiltrados = fachada.buscarEventoPorCategoria(termoBusca);
+                        } catch (CategoriaNaoEncontradaException e) {
+                            eventosFiltrados = new ArrayList<>();
+                        }
+                        break;
+
+                    case "Cidade":
+                        try {
+                            eventosFiltrados = fachada.buscarEventoPorCidade(termoBusca);
+                        } catch (CidadeSemEventosException e) {
+                            eventosFiltrados = new ArrayList<>();
+                        }
+                        break;
+
+                    default: // "Todos"
+                        eventosFiltrados = fachada.ListarEventos().stream()
+                                .filter(e -> e.getTitulo().toLowerCase().contains(termoBusca.toLowerCase()) ||
+                                        e.getDescricao().toLowerCase().contains(termoBusca.toLowerCase()) ||
+                                        e.getCategoria().toLowerCase().contains(termoBusca.toLowerCase()) ||
+                                        e.getEndereco().getCidade().toLowerCase().contains(termoBusca.toLowerCase()))
+                                .collect(Collectors.toList());
+                }
+            }
+
+            eventosListView.getItems().setAll(FXCollections.observableArrayList(eventosFiltrados));
+            eventosListView.setPlaceholder(eventosFiltrados.isEmpty() ?
+                    new Label("Nenhum evento encontrado com os critérios selecionados.") : null);
+
+        } catch (Exception e) {
+            eventosListView.setPlaceholder(new Label("Erro ao filtrar eventos."));
+            System.err.println("Erro ao filtrar eventos: " + e.getMessage());
+        }
     }
 
     private void mostrarDetalhesEvento(Evento evento) {

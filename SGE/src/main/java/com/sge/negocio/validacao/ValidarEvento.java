@@ -99,9 +99,6 @@ public class ValidarEvento {
         }
     }
 
-
-
-
     private void validarIngressos(int qtdeIngressos) throws FormularioEventoInvalidoException {
         if (qtdeIngressos <= 0) {
             throw new FormularioEventoInvalidoException("qtdeIngressos", "Quantidade de ingressos deve ser positiva");
