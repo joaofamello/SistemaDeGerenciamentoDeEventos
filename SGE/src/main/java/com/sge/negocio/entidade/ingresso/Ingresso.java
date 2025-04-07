@@ -14,7 +14,14 @@ public abstract class Ingresso {
     public Ingresso(Evento evento, double valorBase) {
         this.evento = evento;
         this.valorBase = valorBase;
-        this.ID = numero++;
+        this.ID = evento.getQtdeIngressosVendidos() + 1;
+        this.vendido = false;
+    }
+
+    public Ingresso(double valorBase) {
+        this.evento = null;
+        this.valorBase = valorBase;
+        this.ID = -1;
         this.vendido = false;
     }
 
@@ -37,6 +44,7 @@ public abstract class Ingresso {
     public void vender (Usuario comprador) {
         this.participante = comprador;
         this.vendido = true;
+
     }
 
     public Usuario getParticipante() {

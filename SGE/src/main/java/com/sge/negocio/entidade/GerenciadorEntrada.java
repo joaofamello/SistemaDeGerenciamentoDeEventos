@@ -6,6 +6,7 @@ import com.sge.dados.eventos.RepositorioEventosArrayList;
 import com.sge.negocio.NegocioEvento;
 import com.sge.negocio.NegocioUsuario;
 import com.sge.negocio.excecao.EmailJaExistenteException;
+import com.sge.negocio.excecao.EventoDuplicadoException;
 import com.sge.negocio.excecao.FormularioEventoInvalidoException;
 import com.sge.negocio.excecao.FormularioUsuarioInvalidoException;
 import java.time.LocalDate;
@@ -20,7 +21,7 @@ public class GerenciadorEntrada {
     public GerenciadorEntrada() {
     }
 
-    public void criarEvento(Usuario usuario, NegocioEvento evento) throws FormularioEventoInvalidoException {
+    public void criarEvento(Usuario usuario, NegocioEvento evento) throws FormularioEventoInvalidoException, EventoDuplicadoException {
         System.out.println("Qual será o título do seu evento?");
         String titulo = sc.nextLine();
 

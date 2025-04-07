@@ -12,6 +12,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import com.sge.negocio.entidade.Usuario;
+import com.sge.ui.*;
+
+import java.awt.event.ActionEvent;
 
 public class Menu extends Application {
     private Usuario usuarioLogado;
@@ -39,11 +42,11 @@ public class Menu extends Application {
 
         // Barra de menu estilizada
         MenuBar menuBar = new MenuBar();
-        menuBar.setStyle("-fx-background-color: #2c3e50; -fx-text-fill: white;");
+        menuBar.setStyle("-fx-background-color: #d7d7d7; -fx-text-fill: #000000;");
 
         // Menu Eventos
         javafx.scene.control.Menu menuEventos = new javafx.scene.control.Menu("Eventos");
-        menuEventos.setStyle("-fx-text-fill: white;");
+        menuEventos.setStyle("-fx-text-fill: white;  -fx-text-color: white; -fx-font-weight: bold;");
 
         MenuItem criarEvento = new MenuItem("Criar Evento");
         criarEvento.setStyle("-fx-font-weight: bold;");
@@ -52,19 +55,23 @@ public class Menu extends Application {
 
         // Menu Usuário
         javafx.scene.control.Menu menuUsuario = new javafx.scene.control.Menu("Usuário");
-        menuUsuario.setStyle("-fx-text-fill: white;");
+        menuUsuario.setStyle("-fx-text-fill: white; -fx-text-color: white; -fx-font-weight: bold;");
 
         MenuItem logoutItem = new MenuItem("Sair");
         logoutItem.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
 
-        // Adicionando ações (mantidas as originais)
+        MenuItem MostrarEventos = new MenuItem("Mostrar Eventos");
+        MostrarEventos.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
+
+        // Adicionando ações
         criarEvento.setOnAction(e -> criarEvento());
         participarEvento.setOnAction(e -> participarEvento());
         logoutItem.setOnAction(e -> fazerLogout(primaryStage));
+        MostrarEventos.setOnAction(e -> mostrarEventos());
 
         // Montando os menus
         menuEventos.getItems().addAll(criarEvento, participarEvento);
-        menuUsuario.getItems().add(logoutItem);
+        menuUsuario.getItems().addAll(MostrarEventos,logoutItem);
         menuBar.getMenus().addAll(menuEventos, menuUsuario);
 
         // Painel de boas-vindas
@@ -99,12 +106,13 @@ public class Menu extends Application {
     }
 
     private void fazerLogout(Stage primaryStage) {
-        LoginCadastro loginApp = new LoginCadastro();
         try {
-            loginApp.start(new Stage());
+            LoginCadastro loginApp = new LoginCadastro();
+            loginApp.abrirTelaLogin();
             primaryStage.close();
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Erro", "Não foi possível fazer logout");
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erro", "Não foi possível fazer logout: " + e.getMessage());
         }
     }
 
@@ -118,6 +126,7 @@ public class Menu extends Application {
         CriarEvento criarEventoApp = new CriarEvento();
         criarEventoApp.setUsuarioLogado(usuarioLogado);
         criarEventoApp.start(criarEventoStage);
+        //usuarioLogado.getEhAnfitriao(true).
     }
 
     private void participarEvento() {
@@ -130,6 +139,18 @@ public class Menu extends Application {
         ParticiparEvento participarEventoApp = new ParticiparEvento();
         participarEventoApp.setUsuarioLogado(usuarioLogado);
         participarEventoApp.start(participarEventoStage);
+    }
+
+    private void mostrarEventos(){
+        if (usuarioLogado == null) {
+            showAlert(Alert.AlertType.ERROR, "Erro", "Nenhum usuário logado. Faça login novamente.");
+            return;
+        }
+
+        Stage mostrarEventoStage = new Stage();
+        MostrarEventos mostrareventosApp = new MostrarEventos();
+        mostrareventosApp.setUsuarioLogado(usuarioLogado);
+        mostrareventosApp.start(mostrarEventoStage);
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {

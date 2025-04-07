@@ -14,8 +14,10 @@ import java.util.List;
 public class ValidarEvento {
 
     public void validar(String titulo, String descricao, String categoria,
-                        Endereco endereco, LocalDate dataEvento, LocalDateTime horaInicio,  LocalDateTime horaFim,
-                        int qtdeIngressos, double valorBase,Usuario usuarioLogado) throws FormularioEventoInvalidoException {
+                        Endereco endereco, LocalDate dataEvento, LocalDateTime horaInicio, LocalDateTime horaFim,
+                        int qtdeIngressos, double valorBase, Usuario usuarioLogado)
+            throws FormularioEventoInvalidoException, EventoDuplicadoException {
+
         validarTitulo(titulo);
         validarDescricao(descricao);
         validarEndereco(endereco);
@@ -79,34 +81,26 @@ public class ValidarEvento {
             throw new FormularioEventoInvalidoException("data", "Data e horários devem ser preenchidos");
         }
 
+        LocalDateTime inicioCompleto = horaInicio.with(data);
+        LocalDateTime fimCompleto = horaFim.with(data);
         LocalDateTime agora = LocalDateTime.now();
 
-
-        if (horaInicio.isBefore(agora)) {
+        if (inicioCompleto.isBefore(agora)) {
             throw new FormularioEventoInvalidoException("horaInicio", "Data/hora deve ser futura");
         }
-        if (horaFim.isBefore(horaInicio)) {
+        if (fimCompleto.isBefore(inicioCompleto)) {
             throw new FormularioEventoInvalidoException("horaFim", "Hora de término deve ser após a hora de início");
         }
-        if (horaFim.isAfter(horaInicio.plusHours(12))) {
+        if (fimCompleto.isAfter(inicioCompleto.plusHours(12))) {
             throw new FormularioEventoInvalidoException("horaFim", "Evento não pode durar mais que 12 horas");
         }
-        // Validação para horarios de inicio e fim iguais
-        if (horaInicio.equals(horaFim)) {
+        if (inicioCompleto.equals(fimCompleto)) {
             throw new FormularioEventoInvalidoException("horaFim", "Hora de término deve ser diferente da hora de início");
         }
     }
 
-    public void validarEventoUnicoNoDia(LocalDate dataEvento, List<Evento> eventosExistentes)
-            throws EventoDuplicadoException {
 
-        for (Evento evento : eventosExistentes) {
-            if (evento.getData().isEqual(dataEvento)) {
-                throw new EventoDuplicadoException("Já existe um evento agendado para esta data: "
-                        + dataEvento.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            }
-        }
-    }
+
 
     private void validarIngressos(int qtdeIngressos) throws FormularioEventoInvalidoException {
         if (qtdeIngressos <= 0) {

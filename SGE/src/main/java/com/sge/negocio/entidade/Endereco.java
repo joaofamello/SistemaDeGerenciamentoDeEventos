@@ -39,7 +39,7 @@ public class Endereco {
      * @return Endreço completp formatado.
      */
     public String enderecoFormatado() {
-        return rua + ";" + bairro + ";" + numero + ";" + cidade + ";" + estado + ";" + cep;
+        return rua + ", " + bairro + ", " + numero + ", " + cidade + ", " + estado + ", " + cep;
     }
 
     //getters e setters
