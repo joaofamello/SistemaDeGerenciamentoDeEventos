@@ -18,14 +18,6 @@ import java.util.List;
 
 
 public class PersistenciaDados implements IPersistenciaDados {
-    private final NegocioUsuario negocioUsuario;
-    private final NegocioEvento negocioEvento;
-
-
-    public PersistenciaDados() {
-        negocioUsuario = new NegocioUsuario(new RepositorioUsuariosArrayList());
-        negocioEvento = new NegocioEvento(new RepositorioEventosArrayList());
-    }
 
     //Salvar os usuários no arquivo .txt
     @Override
@@ -83,8 +75,7 @@ public class PersistenciaDados implements IPersistenciaDados {
 
    @Override
    public void salvarEventos(List<Evento> eventos) {
-       System.out.println("Salvando " + eventos.size() + " eventos...");
-       try (BufferedWriter escritor = Files.newBufferedWriter(
+           try (BufferedWriter escritor = Files.newBufferedWriter(
                Paths.get("SGE/src/main/java/com/sge/dados/bancoDeDados/EventsData.txt"),
                StandardOpenOption.CREATE,
                StandardOpenOption.TRUNCATE_EXISTING,  // Sobrescreve o arquivo
@@ -106,8 +97,9 @@ public class PersistenciaDados implements IPersistenciaDados {
                        evento.getHoraFim().toString(),
                        String.valueOf(evento.getQtdeIngressos()),
                        String.valueOf(evento.getValorBase()),
-                       String.valueOf(evento.getAnfitriao()),
+                       String.valueOf(evento.getAnfitriao().getID()),
                        evento.RetornarEstado()
+
                );
                System.out.println("Salvando linha: " + linha);
                escritor.write(linha);
@@ -136,7 +128,7 @@ public class PersistenciaDados implements IPersistenciaDados {
                 if (linha.isEmpty()) continue;
 
                 String[] campo = linha.split(";");
-                if (campo.length >= 12) {
+                if (campo.length >= 15) {
                     String Titulo = campo[0];
                     String Descricao = campo[1];
                     String Categoria = campo[2];
@@ -185,5 +177,127 @@ public class PersistenciaDados implements IPersistenciaDados {
         }
         return eventos;
     }
+
+    public void salvarParticipado(List<Usuario> usuarios) {
+        try (BufferedWriter escritor = Files.newBufferedWriter(GerenciadorDeDados.getPasta_participado())) {
+            for (Usuario usuario : usuarios) {
+                if (usuario.getEventosParticipados().isEmpty()) continue; // Pula usuários sem eventos
+
+                StringBuilder linha = new StringBuilder();
+                linha.append(usuario.getID());
+
+                for (Evento evento : usuario.getEventosParticipados()) {
+                    linha.append(";").append(evento.getTitulo());
+                }
+
+                escritor.write(linha.toString());
+                escritor.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao salvar participações: " + e.getMessage());
+        }
+    }
+
+    public void carregarParticipado(List<Usuario> usuarios, List<Evento> eventos) {
+        try (BufferedReader leitor = Files.newBufferedReader(GerenciadorDeDados.getPasta_participado())) {
+            String linha;
+            while ((linha = leitor.readLine()) != null) {
+                String[] campos = linha.split(";");
+
+                // Espera pelo menos um usuário e um evento
+                if (campos.length >= 2) {
+                    int usuarioID = Integer.parseInt(campos[0]);
+
+                    // Busca o usuário correspondente
+                    Usuario usuario = usuarios.stream()
+                            .filter(u -> u.getID() == usuarioID)
+                            .findFirst()
+                            .orElse(null);
+
+                    if (usuario == null) continue;
+
+                    // Associa cada evento ao usuário
+                    for (int i = 1; i < campos.length; i++) {
+                        String tituloEvento = campos[i];
+
+                        Evento evento = eventos.stream()
+                                .filter(e -> e.getTitulo().equalsIgnoreCase(tituloEvento))
+                                .findFirst()
+                                .orElse(null);
+
+                        if (evento != null) {
+                            usuario.participarDoEvento(evento);
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao carregar participações: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.err.println("ID de usuário inválido em Participado.txt: " + e.getMessage());
+        }
+    }
+
+    public void salvarParticipantes(List<Evento> eventos) {
+        try (BufferedWriter escritor = Files.newBufferedWriter(GerenciadorDeDados.getPasta_Participantes())) {
+            for (Evento evento : eventos) {
+                StringBuilder linha = new StringBuilder();
+                linha.append(evento.getTitulo());
+
+                for (Usuario usuario : evento.getParticipantes()) {
+                    linha.append(";").append(usuario.getID());
+                }
+
+                escritor.write(linha.toString());
+                escritor.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao salvar participações: " + e.getMessage());
+        }
+    }
+
+    public void carregarParticipantes(List<Evento> eventos, List<Usuario> usuarios) {
+        try (BufferedReader leitor = Files.newBufferedReader(GerenciadorDeDados.getPasta_Participantes())) {
+            String linha;
+
+            while ((linha = leitor.readLine()) != null) {
+                if (linha.trim().isEmpty()) continue;
+
+                String[] campos = linha.split(";");
+                if (campos.length < 2) continue; // Evento sem participantes
+
+                String tituloEvento = campos[0];
+
+                // Localiza o evento correspondente pelo título
+                Evento evento = eventos.stream()
+                        .filter(e -> e.getTitulo().equalsIgnoreCase(tituloEvento))
+                        .findFirst()
+                        .orElse(null);
+
+                if (evento == null) continue;
+
+                // Percorre os IDs dos participantes
+                for (int i = 1; i < campos.length; i++) {
+                    try {
+                        int usuarioId = Integer.parseInt(campos[i]);
+                        Usuario usuario = usuarios.stream()
+                                .filter(u -> u.getID() == usuarioId)
+                                .findFirst()
+                                .orElse(null);
+
+                        if (usuario != null) {
+                            evento.participarDoEventoADM(usuario);
+                        }
+                    } catch (NumberFormatException e) {
+                        System.err.println("ID de usuário inválido: " + campos[i]);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao carregar participações: " + e.getMessage());
+        }
+    }
+
+
 
 }

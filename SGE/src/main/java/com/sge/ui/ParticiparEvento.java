@@ -3,7 +3,9 @@ package com.sge.ui;
 import com.sge.fachada.SGE;
 import com.sge.negocio.entidade.Evento;
 import com.sge.negocio.entidade.Usuario;
-import com.sge.negocio.excecao.FormularioEventoInvalidoException;
+import com.sge.negocio.excecao.CategoriaNaoEncontradaException;
+import com.sge.negocio.excecao.CidadeSemEventosException;
+import com.sge.negocio.excecao.EventoNaoEncontradoException;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -13,20 +15,43 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.sge.negocio.entidade.*;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
 
 public class ParticiparEvento extends Application {
     private SGE fachada = SGE.getInstancia();
     private Usuario usuarioLogado;
     private ListView<Evento> eventosListView;
     private TextField searchField;
-    private ComboBox<String> categoriaComboBox;
+    private ComboBox<ComboBoxItem> tipoFiltroComboBox;
     private TextArea detalhesArea;
+
+    // Classe auxiliar para os itens do ComboBox
+    public class ComboBoxItem {
+        private String value;
+        private String displayText;
+
+        public ComboBoxItem(String value, String displayText) {
+            this.value = value;
+            this.displayText = displayText;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public String getDisplayText() {
+            return displayText;
+        }
+
+        @Override
+        public String toString() {
+            return displayText;
+        }
+    }
 
     public void setUsuarioLogado(Usuario usuario) {
         this.usuarioLogado = usuario;
@@ -37,12 +62,6 @@ public class ParticiparEvento extends Application {
         fachada.CarregarArquivos();
         primaryStage.setTitle("Participar de Eventos");
 
-        List<Evento> eventos = fachada.ListarEventos();
-        System.out.println("Eventos cadastrados:");
-        for (Evento ev : eventos) {
-            System.out.println(ev.getID() + "-" + ev.getTitulo() + " - " + ev.getDescricao() + " - " + ev.getID() + " - " + usuarioLogado.getNomeUsuario());
-        }
-
         // Layout principal
         BorderPane root = new BorderPane();
         root.setPadding(new Insets(10));
@@ -52,7 +71,7 @@ public class ParticiparEvento extends Application {
         topPanel.setPadding(new Insets(10));
 
         searchField = new TextField();
-        searchField.setPromptText("Buscar eventos...");
+        searchField.setPromptText("Digite o termo de busca...");
         searchField.setPrefWidth(300);
 
         Button refreshButton = new Button("Atualizar");
@@ -65,7 +84,7 @@ public class ParticiparEvento extends Application {
         );
         root.setTop(topPanel);
 
-        // Menu lateral com categorias
+        // Menu lateral com tipos de filtro
         VBox leftMenu = new VBox(10);
         leftMenu.setPadding(new Insets(10));
         leftMenu.setPrefWidth(200);
@@ -73,11 +92,32 @@ public class ParticiparEvento extends Application {
         Label filtroLabel = new Label("Filtrar por:");
         filtroLabel.setStyle("-fx-font-weight: bold;");
 
-        categoriaComboBox = new ComboBox<>();
-        categoriaComboBox.getItems().addAll("Todos", "Música", "Teatro", "Esportes", "Arte");
-        categoriaComboBox.getSelectionModel().selectFirst();
+        tipoFiltroComboBox = new ComboBox<>();
+        tipoFiltroComboBox.getItems().addAll(
+                new ComboBoxItem("Todos", "Todos os campos"),
+                new ComboBoxItem("Titulo", "Título do evento"),
+                new ComboBoxItem("Categoria", "Categoria do evento"),
+                new ComboBoxItem("Cidade", "Cidade do evento")
+        );
 
-        leftMenu.getChildren().addAll(filtroLabel, categoriaComboBox);
+        tipoFiltroComboBox.setConverter(new StringConverter<ComboBoxItem>() {
+            @Override
+            public String toString(ComboBoxItem item) {
+                return item.getDisplayText();
+            }
+
+            @Override
+            public ComboBoxItem fromString(String string) {
+                return tipoFiltroComboBox.getItems().stream()
+                        .filter(item -> item.getDisplayText().equals(string))
+                        .findFirst()
+                        .orElse(null);
+            }
+        });
+
+        tipoFiltroComboBox.getSelectionModel().selectFirst();
+
+        leftMenu.getChildren().addAll(filtroLabel, tipoFiltroComboBox);
         root.setLeft(leftMenu);
 
         // Lista de eventos
@@ -92,8 +132,14 @@ public class ParticiparEvento extends Application {
                     setGraphic(null);
                 } else {
                     VBox box = new VBox(5);
-                    Label titulo = new Label(evento.getTitulo());
-                    titulo.setStyle("-fx-font-weight: bold;");
+                    Label titulo;
+                    if(!evento.getEstado()){
+                        titulo = new Label(evento.getTitulo() + " (Cancelado)");
+                        titulo.setStyle("-fx-text-fill: #C74C3FFF; -fx-font-weight: bold;");
+                    } else {
+                        titulo = new Label(evento.getTitulo());
+                        titulo.setStyle("-fx-font-weight: bold;");
+                    }
 
                     Label detalhes = new Label(
                             String.format("%s | %s | %s",
@@ -148,8 +194,8 @@ public class ParticiparEvento extends Application {
             filtrarEventos();
         });
 
-        // Filtro de categoria
-        categoriaComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+        // Filtro de tipo
+        tipoFiltroComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             filtrarEventos();
         });
 
@@ -184,26 +230,68 @@ public class ParticiparEvento extends Application {
     }
 
     private void filtrarEventos() {
-        String termoBusca = searchField.getText().toLowerCase();
-        String categoriaSelecionada = categoriaComboBox.getValue();
+        try {
+            String termoBusca = searchField.getText().trim();
+            String tipoFiltro = tipoFiltroComboBox.getValue().getValue();
 
-        List<Evento> eventosFiltrados = fachada.ListarEventos().stream()
-                .filter(e -> e.getTitulo().toLowerCase().contains(termoBusca) ||
-                        e.getDescricao().toLowerCase().contains(termoBusca))
-                .filter(e -> categoriaSelecionada.equals("Todos") ||
-                        e.getCategoria().equalsIgnoreCase(categoriaSelecionada))
-                .collect(Collectors.toList());
+            List<Evento> eventosFiltrados;
 
-        eventosListView.getItems().setAll(FXCollections.observableArrayList(eventosFiltrados));
+            if (termoBusca.isEmpty()) {
+                eventosFiltrados = fachada.ListarEventos();
+            } else {
+                switch (tipoFiltro) {
+                    case "Titulo":
+                        try {
+                            eventosFiltrados = fachada.buscarEventoPorTitulo(termoBusca);
+                        } catch (EventoNaoEncontradoException e) {
+                            eventosFiltrados = new ArrayList<>();
+                        }
+                        break;
+
+                    case "Categoria":
+                        try {
+                            eventosFiltrados = fachada.buscarEventoPorCategoria(termoBusca);
+                        } catch (CategoriaNaoEncontradaException e) {
+                            eventosFiltrados = new ArrayList<>();
+                        }
+                        break;
+
+                    case "Cidade":
+                        try {
+                            eventosFiltrados = fachada.buscarEventoPorCidade(termoBusca);
+                        } catch (CidadeSemEventosException e) {
+                            eventosFiltrados = new ArrayList<>();
+                        }
+                        break;
+
+                    default: // "Todos"
+                        eventosFiltrados = fachada.ListarEventos().stream()
+                                .filter(e -> e.getTitulo().toLowerCase().contains(termoBusca.toLowerCase()) ||
+                                        e.getDescricao().toLowerCase().contains(termoBusca.toLowerCase()) ||
+                                        e.getCategoria().toLowerCase().contains(termoBusca.toLowerCase()) ||
+                                        e.getEndereco().getCidade().toLowerCase().contains(termoBusca.toLowerCase()))
+                                .collect(Collectors.toList());
+                }
+            }
+
+            eventosListView.getItems().setAll(FXCollections.observableArrayList(eventosFiltrados));
+            eventosListView.setPlaceholder(eventosFiltrados.isEmpty() ?
+                    new Label("Nenhum evento encontrado com os critérios selecionados.") : null);
+
+        } catch (Exception e) {
+            eventosListView.setPlaceholder(new Label("Erro ao filtrar eventos."));
+            System.err.println("Erro ao filtrar eventos: " + e.getMessage());
+        }
     }
 
     private void mostrarDetalhesEvento(Evento evento) {
         String detalhes = String.format(
-                "Título: %s\n\nDescrição: %s\n\nData: %s\nHorário: %s às %s\n\n" +
+                "Título: %s\n\nDescrição: %s\nCategoria: %s\n\nData: %s\nHorário: %s às %s\n\n" +
                         "Local: %s, %s\n\nIngressos disponíveis: %d\nValor: R$ %.2f\n\n" +
-                        "Organizador: %s",
+                        "Organizador: %s\n\nStatus: %s",
                 evento.getTitulo(),
                 evento.getDescricao(),
+                evento.getCategoria(),
                 evento.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                 evento.getHoraInicio().format(DateTimeFormatter.ofPattern("HH:mm")),
                 evento.getHoraFim().format(DateTimeFormatter.ofPattern("HH:mm")),
@@ -211,7 +299,8 @@ public class ParticiparEvento extends Application {
                 evento.getEndereco().getCidade(),
                 evento.getQtdeIngressos(),
                 evento.getValorBase(),
-                evento.getAnfitriao().getNomeCompleto()
+                evento.getAnfitriao().getNomeCompleto(),
+                evento.getEstado() ? "Ativo" : "Cancelado"
         );
 
         detalhesArea.setText(detalhes);
@@ -219,13 +308,29 @@ public class ParticiparEvento extends Application {
 
     private void participarEvento(Evento evento) {
         try {
-            //fachada.participarEvento(usuarioLogado, evento);
-            mostrarAlerta(Alert.AlertType.INFORMATION, "Sucesso",
-                    "Você está participando do evento: " + evento.getTitulo());
+            if(!evento.getEstado()){
+                mostrarAlerta(Alert.AlertType.ERROR, "Erro",
+                        "Não foi possível participar do evento, pois o mesmo está cancelado: " + evento.getTitulo());
+            } else {
+                ComprarIngresso(evento);
+            }
         } catch (Exception e) {
             mostrarAlerta(Alert.AlertType.ERROR, "Erro",
                     "Não foi possível participar do evento: " + e.getMessage());
         }
+    }
+
+    private void ComprarIngresso(Evento selecionado) {
+        if (usuarioLogado == null) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Nenhum usuário logado. Faça login novamente.");
+            return;
+        }
+
+        Stage ComprarIngressoStage = new Stage();
+        ComprarIngresso ComprarIngressoApp = new ComprarIngresso();
+        ComprarIngressoApp.setUsuarioLogado(usuarioLogado);
+        ComprarIngressoApp.setEventoSelecionado(selecionado);
+        ComprarIngressoApp.start(ComprarIngressoStage);
     }
 
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensagem) {

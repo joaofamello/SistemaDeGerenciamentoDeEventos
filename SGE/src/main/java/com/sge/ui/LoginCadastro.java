@@ -152,7 +152,7 @@ public class LoginCadastro extends Application {
                         senhaFieldCad.getText()
                 );
 
-                fachada.existeSistema(emailField.getText(), usuarioFieldCad.getText());
+                fachada.existeSistemaUsers(emailField.getText(), usuarioFieldCad.getText());
                 fachada.cadastrarUsuario(
                         nomeCompletoField.getText(),
                         usuarioFieldCad.getText(),
@@ -225,6 +225,11 @@ public class LoginCadastro extends Application {
         } catch (Exception e) {
             showErrorAlert("Erro ao abrir o menu: " + e.getMessage());
         }
+    }
+
+    public void abrirTelaLogin() {
+        Stage stage = new Stage();
+        start(stage);
     }
 
     public static void main(String[] args) {

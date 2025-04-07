@@ -36,14 +36,12 @@ public class GerenciadorEventos {
      */
     //Metodo para listar os eventos de um anfitriao.
     public ArrayList<Evento> listarEventosCriados(Usuario usuario) throws NenhumEventoCriadoException {
-       List<Evento> eventos = new ArrayList<>();
-       eventos = Usuario.getEventosCriados();
-       return (ArrayList<Evento>) eventos;
+        return new ArrayList<>(usuario.getEventosCriados());
     }
 
     /**
      *
-     * @param Titulo Titulo do evento.
+     * @param titulo Titulo do evento.
      * @param usuario Usuario criador do evento.
      * @return Evento com o titulo informado.
      * @throws EventoNaoEncontradoException Ocorre se não encontrar evento com a infomação passada.
@@ -51,19 +49,20 @@ public class GerenciadorEventos {
      * @throws TituloVazioException Ocorre se o campo para titulo estiver vazio.
      */
     //Metodo para o anfitriao buscar um de seus eventos por nome.
-    public Evento buscarEventoNome(String Titulo, Usuario usuario) throws EventoNaoEncontradoException, NenhumEventoCriadoException, TituloVazioException {
-        if(Titulo == null || Titulo.trim().isEmpty()){
+    public Evento buscarEventoNome(String titulo, Usuario usuario) throws EventoNaoEncontradoException, NenhumEventoCriadoException, TituloVazioException {
+        if (titulo == null || titulo.trim().isEmpty()) {
             throw new TituloVazioException();
         }
-        if(Usuario.getEventosCriados() == null){
-            throw new NenhumEventoCriadoException();
-        }
-        for(Evento evento : Usuario.getEventosCriados()){
-            if(evento.getTitulo().equals(Titulo)){
+
+        List<Evento> eventosCriados = usuario.getEventosCriados();
+
+        for (Evento evento : eventosCriados) {
+            if (evento.getTitulo().equalsIgnoreCase(titulo)) {
                 return evento;
             }
         }
-        throw new EventoNaoEncontradoException(Titulo);
+
+        throw new EventoNaoEncontradoException(titulo);
     }
 
     public void mudarTituloEvento(Evento evento, String novoTitulo) {

@@ -199,12 +199,24 @@ public class Evento {
         }
 
         // Verifica se o usuario tem um ingresso valido para este evento
-        if (!usuario.temIngressoValido(this)) {
+        /*if (!usuario.temIngressoValido(this)) {
             throw new IllegalArgumentException("Usuário não possui ingresso válido para este evento.");
-        }
+        }*/
 
         this.participantes.add(usuario);
-        this.qtdeIngressosVendidos++; // Atualiza a contagem
+        this.qtdeIngressosVendidos++;
+        usuario.participarDoEvento(this);
 
     }
+
+    public void participarDoEventoADM(Usuario usuario){
+        this.participantes.add(usuario);
+        this.qtdeIngressosVendidos++;
+        usuario.participarDoEvento(this);
+    }
+
+    public void setValorBase(double valorBase) {
+        this.valorBaseIngresso = valorBase;
+    }
+
 }

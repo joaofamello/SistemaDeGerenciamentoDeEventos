@@ -1,23 +1,22 @@
 package com.sge.ui;
 
-
 import com.sge.fachada.SGE;
+import com.sge.negocio.excecao.EventoDuplicadoException;
 import com.sge.negocio.excecao.FormularioEventoInvalidoException;
 import com.sge.negocio.validacao.ValidarEvento;
-import com.sge.negocio.validacao.ValidarUsuario;
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import com.sge.negocio.entidade.*;
-import java.time.LocalDateTime;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
-import com.sge.ui.*;
-
 
 public class CriarEvento extends Application {
     private ValidarEvento ValidarEvento = new ValidarEvento();
@@ -32,36 +31,39 @@ public class CriarEvento extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Criar Evento");
 
-        // Criando os campos do formulário
+        Label tituloPrincipal = new Label("Cadastro de Evento");
+        tituloPrincipal.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        tituloPrincipal.setPadding(new Insets(10, 0, 20, 0));
+
+        Button btnLogout = new Button("Fechar");
+        btnLogout.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;");
+        btnLogout.setOnAction(e -> primaryStage.close());
+
+        HBox topBar = new HBox(btnLogout);
+        topBar.setAlignment(Pos.TOP_RIGHT);
+        topBar.setPadding(new Insets(10));
+
         TextField txtTitulo = new TextField();
         TextArea txtDescricao = new TextArea();
         TextField txtCategoria = new TextField();
-
-        // Campos de endereço
         TextField txtEstado = new TextField();
         TextField txtCidade = new TextField();
         TextField txtRua = new TextField();
         TextField txtCep = new TextField();
         TextField txtBairro = new TextField();
         TextField txtNumero = new TextField();
-
-        // Campos de data e hora
         DatePicker datePicker = new DatePicker();
         TextField txtHoraInicio = new TextField();
         TextField txtHoraFim = new TextField();
-
-        // Campo para quantidade de ingressos
         Spinner<Integer> spinnerIngressos = new Spinner<>(1, 1000, 1);
-        spinnerIngressos.setEditable(true); // Permite edição manual
-
-        // Campo para valor base
+        spinnerIngressos.setEditable(true);
         TextField txtValorBase = new TextField();
 
-        // Botão para criar evento
         Button btnCriarEvento = new Button("Criar Evento");
+        btnCriarEvento.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
         btnCriarEvento.setOnAction(e -> {
+
             try {
-                //Coletar dados do formulário
                 String titulo = txtTitulo.getText();
                 String descricao = txtDescricao.getText();
                 String categoria = txtCategoria.getText();
@@ -79,72 +81,63 @@ public class CriarEvento extends Application {
                 int qtdeIngressos = spinnerIngressos.getValue();
                 double valorBase = Double.parseDouble(txtValorBase.getText());
 
-                ValidarEvento.validar(titulo, descricao, categoria,
-                        endereco, dataEvento, horaInicio, horaFim,
-                        qtdeIngressos, valorBase, usuarioLogado);
-                fachada.cadastrarEvento(titulo, descricao, categoria,
-                        endereco, dataEvento, horaInicio, horaFim,
-                        qtdeIngressos, valorBase, usuarioLogado);
-                ValidarEvento.validarEventoUnicoNoDia(dataEvento, eventos);
+                List<Evento> eventos = fachada.ListarEventos();
+                    fachada.validarConflitoPorEndereco(dataEvento, horaInicio, horaFim, endereco);
+                    ValidarEvento.validar(titulo, descricao, categoria, endereco, dataEvento, horaInicio, horaFim, qtdeIngressos, valorBase, usuarioLogado);
+                    fachada.cadastrarEvento(titulo, descricao, categoria, endereco, dataEvento, horaInicio, horaFim, qtdeIngressos, valorBase, usuarioLogado);
 
-                //Feedback ao usuário
-                eventos = fachada.ListarEventos();
-                System.out.println("Eventos cadastrados:");
-                for (Evento ev : eventos) {
-                    System.out.println(ev.getID() + "-" + ev.getTitulo() + " - " + ev.getDescricao() + " - " + ev.getID() + " - " + usuarioLogado.getNomeUsuario());
-                }
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Evento Criado");
-                alert.setHeaderText(null);
-                alert.setContentText("Evento '" + titulo + "' criado com sucesso!");
-                alert.showAndWait();
-            } catch (FormularioEventoInvalidoException ex) {
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Evento Criado");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Evento '" + titulo + "' criado com sucesso!");
+                    alert.showAndWait();
+
+
+                    usuarioLogado.setEhAnfitriao(true);
+
+
+
+
+
+            } catch (EventoDuplicadoException | FormularioEventoInvalidoException ex) {
                 Alert error = new Alert(Alert.AlertType.ERROR);
                 error.setContentText(ex.getMessage());
                 error.showAndWait();
+                return;
             }
             fachada.SalvarArquivoEvento();
+
         });
 
-        // Layout do formulário
         GridPane grid = new GridPane();
         grid.setVgap(10);
         grid.setHgap(10);
-        grid.add(new Label("Título:"), 1, 0);
-        grid.add(txtTitulo, 2, 0);
-        grid.add(new Label("Descrição:"), 1, 1);
-        grid.add(txtDescricao, 2, 1);
-        grid.add(new Label("Categoria:"), 1, 2);
-        grid.add(txtCategoria, 2, 2);
-        grid.add(new Label("Estado:"), 1, 3);
-        grid.add(txtEstado, 2, 3);
-        grid.add(new Label("Cidade:"), 1, 4);
-        grid.add(txtCidade, 2, 4);
-        grid.add(new Label("Rua:"), 1, 5);
-        grid.add(txtRua, 2, 5);
-        grid.add(new Label("CEP:"), 1, 6);
-        grid.add(txtCep, 2, 6);
-        grid.add(new Label("Bairro:"), 1, 7);
-        grid.add(txtBairro, 2, 7);
-        grid.add(new Label("Número:"), 1, 8);
-        grid.add(txtNumero, 2, 8);
-        grid.add(new Label("Data do Evento:"), 1, 9);
-        grid.add(datePicker, 2, 9);
-        grid.add(new Label("Hora Início:"), 1, 10);
-        grid.add(txtHoraInicio, 2, 10);
-        grid.add(new Label("Hora Fim:"), 1, 11);
-        grid.add(txtHoraFim, 2, 11);
-        grid.add(new Label("Qtde Ingressos:"), 1, 12);
-        grid.add(spinnerIngressos, 2, 12);
-        grid.add(new Label("Valor Base:"), 1, 13);
-        grid.add(txtValorBase, 2, 13);
-        grid.add(btnCriarEvento, 2, 14);
+        grid.setPadding(new Insets(20));
+        int row = 0;
+        grid.add(new Label("Título:"), 0, row); grid.add(txtTitulo, 1, row++);
+        grid.add(new Label("Descrição:"), 0, row); grid.add(txtDescricao, 1, row++);
+        grid.add(new Label("Categoria:"), 0, row); grid.add(txtCategoria, 1, row++);
+        grid.add(new Label("Estado:"), 0, row); grid.add(txtEstado, 1, row++);
+        grid.add(new Label("Cidade:"), 0, row); grid.add(txtCidade, 1, row++);
+        grid.add(new Label("Rua:"), 0, row); grid.add(txtRua, 1, row++);
+        grid.add(new Label("CEP:"), 0, row); grid.add(txtCep, 1, row++);
+        grid.add(new Label("Bairro:"), 0, row); grid.add(txtBairro, 1, row++);
+        grid.add(new Label("Número:"), 0, row); grid.add(txtNumero, 1, row++);
+        grid.add(new Label("Data do Evento:"), 0, row); grid.add(datePicker, 1, row++);
+        grid.add(new Label("Hora Início (HH:mm):"), 0, row); grid.add(txtHoraInicio, 1, row++);
+        grid.add(new Label("Hora Fim (HH:mm):"), 0, row); grid.add(txtHoraFim, 1, row++);
+        grid.add(new Label("Qtde Ingressos:"), 0, row); grid.add(spinnerIngressos, 1, row++);
+        grid.add(new Label("Valor Base (R$):"), 0, row); grid.add(txtValorBase, 1, row++);
+        grid.add(btnCriarEvento, 1, row);
 
-        // Configuração do layout principal
-        VBox vbox = new VBox(grid);
-        Scene scene = new Scene(vbox, 600, 800);
+        VBox layout = new VBox(10, topBar, tituloPrincipal, grid);
+        layout.setAlignment(Pos.TOP_CENTER);
+        layout.setPadding(new Insets(20));
+        layout.setStyle("-fx-background-color: #f4f4f4;");
+
+        Scene scene = new Scene(layout, 650, 800);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Criar Evento");
         primaryStage.show();
     }
 

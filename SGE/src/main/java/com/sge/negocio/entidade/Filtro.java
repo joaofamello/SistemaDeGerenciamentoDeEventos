@@ -30,7 +30,7 @@ public class Filtro {
     public static List<Evento> buscarPorTitulo(String Titulo) {
         List<Evento> eventosPorTitulo = new ArrayList<>();
         for(Evento evento : repositorio.getEventos()){
-            if(evento.getCategoria().equalsIgnoreCase(Titulo)){
+            if(evento.getTitulo().equalsIgnoreCase(Titulo)){
                 eventosPorTitulo.add(evento);
             }
         }

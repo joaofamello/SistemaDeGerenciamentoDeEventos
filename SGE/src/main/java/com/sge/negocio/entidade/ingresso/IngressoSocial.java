@@ -6,9 +6,14 @@ import java.time.LocalDate;
 
 public class IngressoSocial extends Ingresso {
     private static final double percentualDesconto = 0.15;
-    IngressoSocial(Evento evento, double valorBase, double percentualDesconto) {
+
+    public IngressoSocial(Evento evento, double valorBase) {
         super(evento, valorBase);
 
+    }
+
+    public IngressoSocial(double valorBase){
+        super(valorBase);
     }
 
     @Override

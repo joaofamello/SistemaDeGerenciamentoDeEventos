@@ -1,3 +1,32 @@
-tituo;descrição;categoria;estado;cidade;12345-000;bairro;rua;123;2025-04-08;2025-04-08T13:00;2025-04-08T17:00;50;1000.0;1;Ativo
-tituo;descrição;categoria;estado;cidade;12345-000;bairro;rua;123;2025-04-08;2025-04-08T13:00;2025-04-08T17:00;50;1000.0;1;Ativo
-tituo1;descrição1;categoria1;estado1;cidade1;12345-002;bairro1;rua1;1232;2025-04-08;2025-04-08T13:00;2025-04-08T17:00;50;145.0;1;Ativo
+tituto1;dsexc1;omaigo;gonga;absoluta;55292-760;bairro;rua;344;2025-04-25;2025-04-25T13:00;2025-04-25T17:00;16;80.0;1;Inativo
+tutititi;descricao2;categoria2;estafo;cidade;55292-760;bairro;ruamaliciosos;422;2025-04-10;2025-04-10T15:00;2025-04-10T21:00;15;56.0;1;Ativo
+Ferrados;Malignos coisados;Morocoto;Estado;Rua;55292-650;Bairro;Cidade;34;2025-05-10;2025-05-10T13:00;2025-05-10T17:00;6;60.0;1;Inativo
+Super Maliciosos;Maliciosidades;Maliciosa;Para;Parapolis;77565-888;Bairro Para;Rua Para;777;2025-05-02;2025-05-02T13:00;2025-05-02T17:00;17;13.0;4;Ativo
+Super Maliciosos;Maliciosidades;Maliciosa;Para;Parapolis;77565-888;Bairro Para;Rua Para;777;2025-05-02;2025-05-02T13:00;2025-05-02T17:00;17;13.0;4;Ativo
+Super Maliciosos;Maliciosidades;Maliciosa;Para;Parapolis;77565-888;Bairro Para;Rua Para;777;2025-05-02;2025-05-02T13:00;2025-05-02T17:00;17;13.0;4;Ativo
+Malucos;malucos e doidos;insanidade;xsadxc;karilo;55298-323;baris;njiex;778;2025-04-19;2025-04-19T13:00;2025-04-19T17:00;14;55.0;1;Ativo
+Malucos;malucos e doidos;insanidade;xsadxc;karilo;55298-323;baris;njiex;778;2025-04-19;2025-04-19T13:00;2025-04-19T17:00;14;55.0;1;Ativo
+Malucos;malucos e doidos;insanidade;xsadxc;karilo;55298-323;baris;njiex;778;2025-04-19;2025-04-19T13:00;2025-04-19T17:00;14;55.0;1;Inativo
+komolo;kalama;oiyup;nigeral;eieiei;43444-700;bairro dos malucos;rua dos malucos;123;2025-04-30;2025-04-30T13:00;2025-04-30T17:00;11;50.0;1;Ativo
+komolo;kalama;oiyup;nigeral;eieiei;43444-700;bairro dos malucos;rua dos malucos;123;2025-04-30;2025-04-30T13:00;2025-04-30T17:00;11;50.0;1;Ativo
+komolo;kamala;oiyup;nigeral;eieiei;43444-700;bairro dos malucos;rua dos malucos;113;2025-04-30;2025-04-30T13:00;2025-04-30T17:00;11;50.0;1;Ativo
+aaa;aaa;aaa;aaa;aaa;11111-111;aaa;aaa;111;2025-05-01;2025-05-01T13:00;2025-05-01T17:00;10;10.0;1;Ativo
+aaa;aaa;aaa;aaa;aaa;11111-111;aaa;aaa;111;2025-05-01;2025-05-01T13:00;2025-05-01T17:00;10;10.0;1;Ativo
+bbb;bbb;bbb;bbb;bbb;55292-760;bbb;bbb;123;2025-05-09;2025-05-09T13:00;2025-05-09T17:00;15;100.0;1;Ativo
+bbb;bbb;bbb;bbb;bbb;55292-760;bbb;bbb;123;2025-05-09;2025-05-09T13:00;2025-05-09T17:00;15;100.0;1;Ativo
+bbb;bbb;bbb;bbb;bbb;55292-760;bbb;bbb;123;2025-05-09;2025-05-09T13:00;2025-05-09T17:00;15;100.0;1;Ativo
+ccc;ccc;ccc;ccc;ccc;12345-678;ccc;ccc;123;2025-05-05;2025-05-05T13:00;2025-05-05T17:00;15;143.0;1;Ativo
+ccc;ccc;ccc;ccc;ccc;12345-678;ccc;ccc;123;2025-05-05;2025-05-05T13:00;2025-05-05T17:00;15;143.0;1;Ativo
+ddd;ddd;ddd;ddd;ddd;12345-678;ddd;ddd;345;2025-04-26;2025-04-26T13:00;2025-04-26T17:00;25;70.0;1;Ativo
+ddd;ddd;ddd;ddd;ddd;12345-678;ddd;ddd;345;2025-04-26;2025-04-26T13:00;2025-04-26T17:00;25;70.0;1;Ativo
+eee;eee;eee;eee;eee;12345-678;eee;eee;679;2026-04-10;2026-04-10T13:00;2026-04-10T17:00;10;30.0;1;Ativo
+eee;eee;eee;eee;eee;12345-678;eee;eee;679;2026-04-10;2026-04-10T13:00;2026-04-10T17:00;10;30.0;1;Ativo
+eee;eee;eee;eee;eee;12345-678;eee;eee;679;2026-04-10;2026-04-10T13:00;2026-04-10T17:00;40;13.0;1;Ativo
+rrr;rrr;rrr;rrr;rrr;12345-678;rrr;rrr;666;2025-04-07;2025-04-07T13:00;2025-04-07T17:00;12;50.0;1;Ativo
+rrr;rrr;rrr;rrr;rrr;12345-678;rrr;rrr;666;2025-04-07;2025-04-07T13:00;2025-04-07T17:00;12;50.0;1;Ativo
+ttt;ttt;ttt;ttt;ttt;12345-678;ttt;ttt;123;2025-04-17;2025-04-17T13:00;2025-04-17T17:00;70;40.0;1;Ativo
+ttt;ttt;ttt;ttt;ttt;12345-678;ttt;ttt;123;2025-04-17;2025-04-17T13:00;2025-04-17T17:00;70;40.0;1;Ativo
+ttt;asfasf;asfasf;asdasd;asdasd;12345-678;asdasd;asdasd;345;2025-05-01;2025-05-01T13:00;2025-05-01T17:00;50;45.0;1;Ativo
+ttt;ttt;ttt;ttt;ttt;12345-678;ttt;ttt;123;2025-04-17;2025-04-17T13:00;2025-04-17T17:00;55;130.0;1;Ativo
+ttt;ttt;ttt;ttt;ttt;12345-678;ttt;ttt;123;2025-04-17;2025-04-17T13:00;2025-04-17T17:00;55;100.0;1;Ativo
+ttt;ttt;ttt;ttt;ttt;12345-678;ttt;123;123;2025-04-17;2025-04-17T13:00;2025-04-17T17:00;1;10.0;1;Ativo
