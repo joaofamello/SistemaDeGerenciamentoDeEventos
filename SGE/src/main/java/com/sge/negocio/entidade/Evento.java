@@ -218,4 +218,5 @@ public class Evento {
     public void setValorBase(double valorBase) {
         this.valorBaseIngresso = valorBase;
     }
+
 }

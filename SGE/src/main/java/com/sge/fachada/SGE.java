@@ -192,13 +192,6 @@ public class SGE {
         ingresso.vender(usuarioLogado);
     }
 
-    public boolean existeEventoComTitulo(String titulo) throws FormularioEventoInvalidoException {
-        if (titulo == null || titulo.trim().isEmpty()) {
-        throw new FormularioEventoInvalidoException("titulo", "Título não pode ser vazio");
-    }
-        return repositorioEvento.listarTodosEventos().stream()
-                .anyMatch(e -> e.getTitulo().equalsIgnoreCase(titulo));
-    }
 
 }
 
