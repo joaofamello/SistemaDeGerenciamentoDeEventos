@@ -99,36 +99,4 @@ public class NegocioEvento {
         gerenciador.cancelarEvento(evento);
     }
 
-    public void mudarHoraEvento(Evento evento, LocalDateTime novoInicio, LocalDateTime novoFim, Usuario solicitante) throws PermissaoNegadaException, CancelamentoProibidoException {
-        if(!evento.getAnfitriao().equals(solicitante)){
-            throw new PermissaoNegadaException("Permissão Negada!");
-        }
-        gerenciador.mudarHoraEvento(evento, novoInicio, novoFim);
-
-    }
-
-    public void alterarTitulo(Evento evento, String titulo) throws FormularioEventoInvalidoException {
-        gerenciador.mudarTituloEvento(evento, titulo);
-    }
-
-    public void alterarDescricao(Evento evento, String descricao) throws FormularioEventoInvalidoException {
-        gerenciador.mudarDescricaoEvento(evento, descricao);
-    }
-
-    public void alterarData(Evento evento, LocalDate novaData) throws FormularioEventoInvalidoException {
-        gerenciador.mudarDataEvento(evento, novaData);
-    }
-
-    public void alterarEndereco(Evento evento, Endereco endereco) throws FormularioEventoInvalidoException {
-        gerenciador.mudarEnderecoEvento(evento, endereco);
-    }
-
-    public void alterarCategoria(Evento evento, String novaCategoria) throws FormularioEventoInvalidoException {
-        gerenciador.mudarCategoriaEvento(evento, novaCategoria);
-    }
-
-    public void alterarQtdeIngressos(Evento evento, int NovaQtdeIngressos) throws FormularioEventoInvalidoException {
-        gerenciador.mudarQtdeIngressosEvento(evento, NovaQtdeIngressos);
-    }
-
 }

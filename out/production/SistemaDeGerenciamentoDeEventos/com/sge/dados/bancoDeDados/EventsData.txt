@@ -1,1 +1,2 @@
-aaa;aaa;aaa;aaa;aaa;55292-760;aaa;aaa;123;2025-04-10;2025-04-10T13:00;2025-04-10T17:00;1;20.0;2;Lotado
+aaa;aaa;aaa;aaa;aaa;55292-760;aaa;aaa;123;2025-04-10;2025-04-10T13:00;2025-04-10T17:00;1;20.0;2;Inativo
+EventoRoot;Sejam bem vindos;Rock;Pernambuco;GUS;55299-311;Josias melo;Rua Sebastiao Nabuco;12;2025-04-20;2025-04-20T13:00;2025-04-20T17:00;1;20.0;1;Lotado
