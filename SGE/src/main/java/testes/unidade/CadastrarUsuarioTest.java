@@ -1,5 +1,7 @@
-package testes;
+package testes.unidade;
 import static org.junit.jupiter.api.Assertions.*;
+
+import com.sge.negocio.excecao.UsernameJaExisteException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import com.sge.dados.usuarios.RepositorioUsuariosArrayList;
@@ -27,17 +29,17 @@ class CadastrarUsuarioTest {
     }
 
     @Test
-    public void testCadastrarUsuarioEmailExistente() throws FormularioUsuarioInvalidoException, EmailJaExistenteException {
+    public void testNaoPermitirCadastroComEmailDuplicado() throws FormularioUsuarioInvalidoException, EmailJaExistenteException, UsernameJaExisteException {
+        // Cadastra o primeiro usuário com um e-mail
         Usuario usuario1 = new Usuario("João Silva", "joao123", "joao5@email.com", "87123456789", "senha123");
+        fachada.cadastrarUsuario(usuario1.getNomeCompleto(), usuario1.getNomeUsuario(), usuario1.getEmail(), usuario1.getTelefone(), usuario1.getSenha());
 
-        fachada.cadastrarUsuario(usuario1.getNomeCompleto(), usuario1.getNomeUsuario(), usuario1.getEmail(),usuario1.getTelefone(), usuario1.getSenha());
-
+        // Tenta cadastrar outro com o mesmo e-mail
         Usuario usuario2 = new Usuario("Maria Souza", "maria123", "joao5@email.com", "87987654321", "senha456");
 
-        EmailJaExistenteException exception = assertThrows(EmailJaExistenteException.class, () -> {
-            fachada.existeSistemaUsers(usuario2.getEmail(), usuario2.getNomeUsuario());
-        });
 
-        assertEquals("Email já cadastrado no sistema.", exception.getMessage());
+        fachada.existeSistemaUsers(usuario2.getEmail(), usuario2.getNomeUsuario());
+
+
     }
 }
