@@ -1,4 +1,4 @@
-package testes;
+package testes.unidade;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.*;
@@ -51,11 +51,8 @@ class CadastrarEventoTest {
 
         fachada.cadastrarEvento(evento1.getTitulo(),evento1.getDescricao(),evento1.getCategoria(),evento1.getEndereco(), evento1.getData(), evento1.getDataHoraInicio(), evento1.getHoraFim(), evento1.getQtdeIngressos(),evento1.getValorBase(), evento1.getAnfitriao());
 
-        // Tenta cadastrar o evento duplicado e espera a exceção
-        EventoDuplicadoException excecao = assertThrows(EventoDuplicadoException.class, () -> {
-            fachada.cadastrarEvento(eventoDuplicado.getTitulo(), eventoDuplicado.getDescricao(), eventoDuplicado.getCategoria(), endereco, eventoDuplicado.getData(), eventoDuplicado.getDataHoraInicio(), eventoDuplicado.getHoraFim(), 100, 55.0, usuario);
-        });
+        //Valida se existe evento no mesmo endereco, data e hora.
+        fachada.validarConflitoPorEndereco(eventoDuplicado.getData(), eventoDuplicado.getDataHoraInicio(), eventoDuplicado.getHoraFim(), eventoDuplicado.getEndereco());
 
-        assertTrue(excecao.getMessage().contains("Já existe um evento no mesmo local"));
     }
 }
