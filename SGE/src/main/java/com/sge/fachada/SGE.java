@@ -314,6 +314,10 @@ public class SGE {
         return eventosDoUsuario;
     }
 
+    public List<Usuario> listarUsuarios(){
+        return repositorioUsuario.listarTodosUsuarios();
+    }
+
 
 }
 
