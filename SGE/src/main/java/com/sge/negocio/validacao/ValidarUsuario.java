@@ -13,7 +13,7 @@ public class ValidarUsuario {
     private static final int tamanhoMaximoNomeUsuario = 20;
 
     /**
-     * Método de validação geral
+     * Metodo de validação geral
      *
      * @param nomeCompleto nome completo do usuário
      * @param nomeUsuario username do usuário

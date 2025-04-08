@@ -133,12 +133,15 @@ public class MostrarEventos extends Application {
                     //Botar vermelho
                     VBox box = new VBox(5);
                     Label titulo;
-                    if(!evento.getEstado()){
+                    String Estado = evento.RetornarEstado();
+                    if(Estado.equalsIgnoreCase("Inativo")){
                         titulo = new Label(evento.getTitulo() + " (Cancelado)");
                         titulo.setStyle("-fx-text-fill: #C74C3FFF; -fx-font-weight: bold;");
-                    }else {
+                    } else if(Estado.equalsIgnoreCase("Lotado")){
+                        titulo = new Label(evento.getTitulo() + " (Lotado)");
+                        titulo.setStyle("-fx-text-fill: #355ab8; -fx-font-weight: bold;");
+                    } else{
                         titulo = new Label(evento.getTitulo());
-                        titulo.setStyle("-fx-font-weight: bold;");
                     }
 
                     Label detalhes = new Label(
@@ -313,10 +316,10 @@ public class MostrarEventos extends Application {
                 evento.getHoraFim().format(DateTimeFormatter.ofPattern("HH:mm")),
                 evento.getEndereco().getBairro(),
                 evento.getEndereco().getCidade(),
-                evento.getQtdeIngressos(),
+                evento.getIngressosDisponiveis(),
                 evento.getValorBase(),
                 evento.getAnfitriao().getNomeCompleto(),
-                evento.getEstado() ? "Ativo" : "Cancelado"
+                evento.RetornarEstado()
         );
 
         detalhesArea.setText(detalhes);

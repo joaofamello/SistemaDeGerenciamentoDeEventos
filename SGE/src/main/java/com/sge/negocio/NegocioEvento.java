@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Classe  representa os Negocios do evento.
  * Contém gerenciador, repositorioEventos e filtro.
  *
- * @author José Gustavo e Jurandir
+ * @author Guilherme, José Gustavo e Jurandir
  */
 public class NegocioEvento {
     private final GerenciadorEventos gerenciador;
