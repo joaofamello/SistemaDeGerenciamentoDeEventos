@@ -14,7 +14,7 @@ public class Filtro {
     private static RepositorioEventosArrayList repositorio;
 
     /**
-     *Construtor da classe filtro.
+     * Construtor da classe filtro.
      *
      * @param repositorio Repositorio com os eventos.
      */
@@ -40,7 +40,7 @@ public class Filtro {
     /**
      *
      * @param categoria Categoria do evento.
-     * @return Lista com os eventos da categoria recebida.
+     * @return Lista os eventos que possuem a mesma categoria que a buscada.
      */
     public static List<Evento> buscarPorCategoria(String categoria) {
         List<Evento> eventos = new ArrayList<>();
@@ -55,7 +55,7 @@ public class Filtro {
     /**
      *
      * @param cidade Cidade do evento.
-     * @return Lista com os eventos na cidade recebida.
+     * @return Lista os eventos cuja cidade seja a mesma da buscada.
      */
     public static List<Evento> buscarPorCidade(String cidade) {
         List<Evento> eventosEncontrados = new ArrayList<>();

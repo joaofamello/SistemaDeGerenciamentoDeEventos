@@ -10,9 +10,26 @@ import com.sge.negocio.excecao.EventoDuplicadoException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-
+/**
+ * Classe que valida se os dados passados pelo usuário estão de acordo com a norma do sistema.
+ * @author Jurandir, Guilherme
+ */
 public class ValidarEvento {
-
+    /**
+     * Verifica tudo
+     * @param titulo título do evento
+     * @param descricao descrição do evento
+     * @param categoria categoria do evento
+     * @param endereco endereço que será sediado o evento
+     * @param dataEvento data do evento
+     * @param horaInicio hora em que o evento começa
+     * @param horaFim hora que o evento termina
+     * @param qtdeIngressos quantidade de ingressos para aquele evento
+     * @param valorBase valor base do ingresso
+     * @param usuarioLogado usuário que está logado e operando o sistema
+     * @throws FormularioEventoInvalidoException caso os parâmetros não estejam de acordo com as esperadas pelo sistema
+     * @throws EventoDuplicadoException caso o evento já exista no repositório, evitando duplicações
+     */
     public void validar(String titulo, String descricao, String categoria,
                         Endereco endereco, LocalDate dataEvento, LocalDateTime horaInicio, LocalDateTime horaFim,
                         int qtdeIngressos, double valorBase, Usuario usuarioLogado)
@@ -26,6 +43,11 @@ public class ValidarEvento {
         validarAnfitriao(usuarioLogado);
     }
 
+    /**
+     * Valida o título para garantir que o parâmetro segue o padrão do sistema
+     * @param titulo título do evento
+     * @throws FormularioEventoInvalidoException caso o parâmetro não esteja de acordo
+     */
     private void validarTitulo(String titulo) throws FormularioEventoInvalidoException {
         if (titulo == null || titulo.trim().isEmpty()) {
             throw new FormularioEventoInvalidoException("titulo", "Título não pode ser vazio");
@@ -35,6 +57,11 @@ public class ValidarEvento {
         }
     }
 
+    /**
+     * Valida a descrição do evento para garantir que esteja seguindo o padrão do sistema
+     * @param descricao descrição do evento
+     * @throws FormularioEventoInvalidoException caso o parâmetro não esteja de acordo
+     */
     private void validarDescricao(String descricao) throws FormularioEventoInvalidoException {
         if (descricao == null || descricao.trim().isEmpty()) {
             throw new FormularioEventoInvalidoException("descricao", "Descrição não pode ser vazia");
@@ -44,6 +71,11 @@ public class ValidarEvento {
         }
     }
 
+    /**
+     * Verifica se o endereço segue o padrão estipulado pelo sistema
+     * @param endereco endereço do evento
+     * @throws FormularioEventoInvalidoException caso o parâmetro não esteja de acordo
+     */
     private void validarEndereco(Endereco endereco) throws FormularioEventoInvalidoException {
         if (endereco == null) {
             throw new FormularioEventoInvalidoException("endereco", "Endereço completo é obrigatório");
@@ -74,6 +106,13 @@ public class ValidarEvento {
         }
     }
 
+    /**
+     * Verifica se a data passada como parâmetro segue o padrão do sistema
+     * @param data data do evento
+     * @param horaInicio horário do início do evento
+     * @param horaFim horário em que o evento termina
+     * @throws FormularioEventoInvalidoException caso os parâmetros não estejam de acordo
+     */
     private void validarDatas(LocalDate data, LocalDateTime horaInicio, LocalDateTime horaFim)
             throws FormularioEventoInvalidoException {
 
@@ -99,6 +138,11 @@ public class ValidarEvento {
         }
     }
 
+    /**
+     * Verifica se a quantidade de ingressos passada como parâmetro está de acordo com as regras do sistema
+     * @param qtdeIngressos quantidade de ingressos para o evento
+     * @throws FormularioEventoInvalidoException caso o parâmetro passado não esteja de acordo com o que se espera
+     */
     private void validarIngressos(int qtdeIngressos) throws FormularioEventoInvalidoException {
         if (qtdeIngressos <= 0) {
             throw new FormularioEventoInvalidoException("qtdeIngressos", "Quantidade de ingressos deve ser positiva");
@@ -108,6 +152,11 @@ public class ValidarEvento {
         }
     }
 
+    /**
+     * Verifica se o usuário anfitrião está sendo passado da maneira correta para o sistema
+     * @param anfitriao usuário anfitrião do evento
+     * @throws FormularioEventoInvalidoException caso o parâmetro não esteja de acordo com as normas do sistema
+      */
     private void validarAnfitriao(Usuario anfitriao) throws FormularioEventoInvalidoException {
         if (anfitriao == null) {
             throw new FormularioEventoInvalidoException("anfitriao", "Anfitrião não pode ser nulo");

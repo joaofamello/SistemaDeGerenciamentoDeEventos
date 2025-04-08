@@ -20,7 +20,7 @@ public class GerenciadorEventos {
     private static final int limiteDeTempoParaCancelamento = 48;
 
     /**
-     *Construtor da classe gerenciadorEventos.
+     * Construtor da classe gerenciadorEventos.
      *
      * @param repositorio Repositorio com os eventos cadastrados.
      */
@@ -31,10 +31,9 @@ public class GerenciadorEventos {
     /**
      *
      * @param usuario Criador do evento.
-     * @return Lista com todos os eventos cadastrados pelo anfitrião.
+     * @return Lista todos os eventos cadastrados pelo anfitrião.
      * @throws NenhumEventoCriadoException Se ocorrer o anfitrião não possui eventos cadastrados.
      */
-    //Metodo para listar os eventos de um anfitriao.
     public ArrayList<Evento> listarEventosCriados(Usuario usuario) throws NenhumEventoCriadoException {
         return new ArrayList<>(usuario.getEventosCriados());
     }
@@ -100,9 +99,9 @@ public class GerenciadorEventos {
 
     /**
      *
-     * @param evento Evento para ser editado.
+     * @param evento Evento que será editado.
      *
-     * Esse metodo muda o estado do evento para representar se o evento esta ativo ou não.
+     * Muda o estado do evento para inativo e altera, também, seu estado no repositório.
      */
     public void cancelarEvento(Evento evento) {
         evento.setEstado(false); // Marca como inativo
@@ -114,7 +113,7 @@ public class GerenciadorEventos {
      * @param evento Evento para ser analizado.
      * @throws CancelamentoProibidoException Ocorre se o evento estiver a menos de 48 horas para o dia da realização.
      *
-     * Esse metodo verifica se falta pelo menos 48 horas ate o evento para ser possivel validar o cancelamento.
+     * Verifica se falta pelo menos 48 horas até o evento para ser possivel validar o cancelamento.
      */
     public void validarCancelamento(Evento evento) throws CancelamentoProibidoException {
         long horasRestantes = ChronoUnit.HOURS.between(LocalDateTime.now(), evento.getHoraInicio());

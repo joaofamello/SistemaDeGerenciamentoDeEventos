@@ -1,16 +1,27 @@
 package com.sge.negocio.validacao;
 
-import com.sge.fachada.SGE;
-import com.sge.negocio.entidade.Usuario;
-import com.sge.negocio.excecao.EmailJaExistenteException;
 import com.sge.negocio.excecao.FormularioUsuarioInvalidoException;
 
-import java.util.List;
-
+/**
+ * Classe responsável pelas validações do usuário
+ *
+ * Contém tamanhoMinimoSenha e tamanhoMaximoNomeUsuario.
+ * @author Jurandir
+ */
 public class ValidarUsuario {
     private static final int tamanhoMinimoSenha= 6;
     private static final int tamanhoMaximoNomeUsuario = 20;
 
+    /**
+     * Método de validação geral
+     *
+     * @param nomeCompleto nome completo do usuário
+     * @param nomeUsuario username do usuário
+     * @param email e-mail do usuário
+     * @param telefone telefone do usuário
+     * @param senha senha do usuário
+     * @throws FormularioUsuarioInvalidoException caso os parâmetros não estejam de acordo com as normas do sistema
+     */
     public void validar(String nomeCompleto, String nomeUsuario, String email, String telefone, String senha) throws FormularioUsuarioInvalidoException{
         validarNomeCompleto(nomeCompleto);
         validarNomeUsuario(nomeUsuario);
@@ -19,6 +30,11 @@ public class ValidarUsuario {
         validarSenha(senha);
     }
 
+    /**
+     * Verifica se o nome completo do usuário passado como parâmetro segue os padrões estipulados pelo sistema
+     * @param nomeCompleto nome completo do usuário
+     * @throws FormularioUsuarioInvalidoException caso o parâmetro não esteja no padrão esperado
+     */
     public void validarNomeCompleto(String nomeCompleto) throws FormularioUsuarioInvalidoException {
         if (nomeCompleto == null || nomeCompleto.trim().isEmpty()) {
             throw new FormularioUsuarioInvalidoException("nomeCompleto", "Nome completo obrigatório");
@@ -28,6 +44,11 @@ public class ValidarUsuario {
         }
     }
 
+    /**
+     * Verifica se o username do usuário está de acordo com as regras do sistema
+     * @param nomeUsuario username do usuário
+     * @throws FormularioUsuarioInvalidoException caso o parâmetro não esteja de acordo
+     */
     public void validarNomeUsuario(String nomeUsuario) throws FormularioUsuarioInvalidoException {
         if (nomeUsuario == null || nomeUsuario.trim().isEmpty()) {
             throw new FormularioUsuarioInvalidoException("nomeUsuario", "Nome de usuário obrigatório");
@@ -42,6 +63,11 @@ public class ValidarUsuario {
         }
     }
 
+    /**
+     * Verifica se o e-mail segue as normas esperadas pelo sistema
+     * @param email e-mail do usuário
+     * @throws FormularioUsuarioInvalidoException caso o parâmetro não esteja de acordo
+     */
     public void validarEmail(String email) throws FormularioUsuarioInvalidoException{
         if (email == null || email.trim().isEmpty()) {
             throw new FormularioUsuarioInvalidoException("email", "E-mail obrigatório");
@@ -55,6 +81,11 @@ public class ValidarUsuario {
 
     }
 
+    /**
+     * Verifica se o telefone passado está de acordo com o esperado pelo sistema
+     * @param telefone telefone do usuário
+     * @throws FormularioUsuarioInvalidoException caso o parâmetro não esteja de acordo com o esperado
+     */
     public void validarTelefone(String telefone) throws FormularioUsuarioInvalidoException {
         if (telefone == null || telefone.trim().isEmpty()) {
             throw new FormularioUsuarioInvalidoException("telefone", "Telefone obrigatório");
@@ -66,12 +97,15 @@ public class ValidarUsuario {
         }
     }
 
+    /**
+     * Verifica se a senha está de acordo com o esperado pelo sistema
+     * @param senha senha de acesso do usuário
+     * @throws FormularioUsuarioInvalidoException caso o parâmetro passado não esteja de acordo com o esperado pelo sistema
+     */
     public void validarSenha(String senha) throws FormularioUsuarioInvalidoException {
         if (senha == null || senha.length() < tamanhoMinimoSenha) {
             throw new FormularioUsuarioInvalidoException("senha",
                     "Senha deve ter no mínimo " + tamanhoMinimoSenha + " caracteres");
         }
     }
-
-
 }
