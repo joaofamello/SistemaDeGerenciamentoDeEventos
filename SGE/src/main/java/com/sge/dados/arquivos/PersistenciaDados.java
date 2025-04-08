@@ -22,7 +22,10 @@ public class PersistenciaDados implements IPersistenciaDados {
     //Salvar os usuários no arquivo .txt
     @Override
     public void salvarUsuarios(List<Usuario> usuarios) {
-        try (BufferedWriter escritor = Files.newBufferedWriter(Paths.get("SGE/src/main/java/com/sge/dados/bancoDeDados/UsersData.txt"))) {
+        try (BufferedWriter escritor = Files.newBufferedWriter(Paths.get("SGE/src/main/java/com/sge/dados/bancoDeDados/UsersData.txt"),
+                StandardOpenOption.CREATE,
+                StandardOpenOption.TRUNCATE_EXISTING,
+                StandardOpenOption.WRITE)) {
             for (Usuario usuario : usuarios) {
                 String linha = String.join(";",
                         String.valueOf(usuario.getID()),
@@ -32,6 +35,7 @@ public class PersistenciaDados implements IPersistenciaDados {
                         usuario.getTelefone(),
                         usuario.getSenha()
                 );
+                System.out.println("Salvando linha: " + linha);
                 escritor.write(linha);
                 escritor.newLine();
                 escritor.newLine();
@@ -41,6 +45,7 @@ public class PersistenciaDados implements IPersistenciaDados {
         } catch (IOException e) {
             System.err.println("Erro ao salvar usuários: " + e.getMessage());
         }
+        System.out.println("Usuarios salvos com sucesso!");
     }
 
     //Carregar os usuarios do arquivo no Array

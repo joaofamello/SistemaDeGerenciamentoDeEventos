@@ -31,6 +31,7 @@ public class IntegracaoCadastroEventoTest {
         LocalDateTime horaFim = LocalDateTime.of(2025, 5, 22, 17, 0);
         Evento evento = new Evento("Show", "Show de rock", "Música", endereco, dataEvento,horaInicio,horaFim, 100, 55, usuario);
         // Cadastrando um evento
+        //fachada.cadastrarUsuario(usuario.getNomeCompleto(), usuario.getNomeUsuario(), usuario.getEmail());
         fachada.cadastrarEvento(evento.getTitulo(),evento.getDescricao(), evento.getCategoria(), evento.getEndereco(),evento.getData(),evento.getHoraInicio(),evento.getHoraFim(),evento.getQtdeIngressos(),evento.getValorBase(),evento.getAnfitriao());
 
         // Listando eventos
