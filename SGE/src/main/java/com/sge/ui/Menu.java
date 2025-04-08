@@ -12,9 +12,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import com.sge.negocio.entidade.Usuario;
-import com.sge.ui.*;
-
-import java.awt.event.ActionEvent;
 
 public class Menu extends Application {
     private Usuario usuarioLogado;

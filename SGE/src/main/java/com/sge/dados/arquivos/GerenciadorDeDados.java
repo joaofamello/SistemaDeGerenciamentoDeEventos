@@ -22,8 +22,8 @@ public class GerenciadorDeDados {
 
     private static void criarDiretorio() {
         try{
-            if(!Files.exists(GerenciadorDeDados.Diretorio)) {
-                Files.createDirectories(GerenciadorDeDados.Diretorio);
+            if(!Files.exists(GerenciadorDeDados.getDiretorio())) {
+                Files.createDirectories(GerenciadorDeDados.getDiretorio());
             }
         } catch(IOException e){
             System.err.println("Erro ao criar diretório: " + e.getMessage());

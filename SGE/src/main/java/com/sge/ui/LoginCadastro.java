@@ -82,7 +82,7 @@ public class LoginCadastro extends Application {
         primaryStage.setScene(loginScene);
         primaryStage.show();
 
-        // ========== TELA DE CADASTRO ==========
+        //Tela de cadastro
         GridPane cadastroGrid = new GridPane();
         cadastroGrid.setAlignment(Pos.CENTER);
         cadastroGrid.setPadding(new Insets(25, 25, 25, 25));
@@ -116,8 +116,8 @@ public class LoginCadastro extends Application {
 
         Scene cadastroScene = new Scene(cadastroGrid, 500, 400);
 
-        // ========== MANTENDO AS AÇÕES ORIGINAIS ==========
-        // Ação do botão de login (mantido igual)
+
+        // Ação do botão de login
         loginButton.setOnAction(e -> {
             String nome = usuarioField.getText();
             String senha = senhaField.getText();
@@ -130,7 +130,7 @@ public class LoginCadastro extends Application {
             }
         });
 
-        // Ação do botão de cadastro (abre tela de cadastro)
+        // Ação do botão de cadastro
         cadastrarButton.setOnAction(e -> {
             primaryStage.setScene(cadastroScene);
         });

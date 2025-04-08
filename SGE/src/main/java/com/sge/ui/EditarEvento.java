@@ -4,6 +4,7 @@ import com.sge.fachada.SGE;
 import com.sge.negocio.entidade.Endereco;
 import com.sge.negocio.entidade.Evento;
 import com.sge.negocio.entidade.Usuario;
+import com.sge.negocio.excecao.EventoDuplicadoException;
 import com.sge.negocio.excecao.FormularioEventoInvalidoException;
 import com.sge.negocio.validacao.ValidarEvento;
 import javafx.application.Application;
@@ -72,18 +73,35 @@ public class EditarEvento extends Application {
                 String titulo = txtTitulo.getText();
                 String descricao = txtDescricao.getText();
                 String categoria = txtCategoria.getText();
+
                 Endereco endereco = new Endereco(
                         txtEstado.getText(), txtCidade.getText(), txtCep.getText(),
                         txtBairro.getText(), txtRua.getText(), Integer.parseInt(txtNumero.getText())
                 );
+
                 LocalDate dataEvento = datePicker.getValue();
                 LocalDateTime horaInicio = LocalDateTime.parse(dataEvento + "T" + txtHoraInicio.getText());
                 LocalDateTime horaFim = LocalDateTime.parse(dataEvento + "T" + txtHoraFim.getText());
                 int qtdeIngressos = spinnerIngressos.getValue();
-                double valorBase = Double.parseDouble(txtValorBase.getText());
+
+                // Validação do valor base caso tenha uma string vazia
+                String valorBaseStr = txtValorBase.getText();
+                if (valorBaseStr == null || valorBaseStr.trim().isEmpty()) {
+                    showAlert(Alert.AlertType.ERROR, "Erro", "O campo 'Valor Base' não pode estar vazio.");
+                    return;
+                }
+
+                double valorBase;
+                try {
+                    valorBase = Double.parseDouble(valorBaseStr);
+                } catch (NumberFormatException ex) {
+                    showAlert(Alert.AlertType.ERROR, "Erro", "Valor base inválido. Insira um número decimal.");
+                    return;
+                }
+
                 List<Evento> eventos = fachada.ListarEventos();
                 ValidarEvento validador = new ValidarEvento();
-                validador.validar(titulo, descricao, categoria, endereco, dataEvento, horaInicio, horaFim, qtdeIngressos, valorBase, usuarioLogado);
+                validador.validar(titulo, descricao, endereco, dataEvento, categoria, horaInicio, horaFim, qtdeIngressos, valorBase, usuarioLogado);
 
                 //Atualiza os dados do evento selecionado
                 eventoSelecionado.setTitulo(titulo);
@@ -101,7 +119,7 @@ public class EditarEvento extends Application {
                 showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Evento atualizado com sucesso!");
                 primaryStage.close();
 
-            } catch (Exception ex) {
+            } catch (FormularioEventoInvalidoException | EventoDuplicadoException ex) {
                 showAlert(Alert.AlertType.ERROR, "Erro ao salvar", ex.getMessage());
             }
         });

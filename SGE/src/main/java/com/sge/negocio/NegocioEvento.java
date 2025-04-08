@@ -10,9 +10,6 @@ import com.sge.negocio.excecao.CategoriaNaoEncontradaException;
 import com.sge.negocio.excecao.CidadeSemEventosException;
 import com.sge.negocio.excecao.EventoNaoEncontradoException;
 import com.sge.negocio.validacao.ValidarEvento;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -50,8 +47,8 @@ public class NegocioEvento {
 
 
     public void inserir(Evento evento) throws FormularioEventoInvalidoException, EventoDuplicadoException {
-        validador.validar( evento.getTitulo(),  evento.getDescricao(),  evento.getCategoria(),
-                 evento.getEndereco(),  evento.getData(),  evento.getHoraInicio(), evento.getHoraFim(),
+        validador.validar( evento.getTitulo(),  evento.getDescricao(),
+                 evento.getEndereco(),  evento.getData(), evento.getCategoria(), evento.getHoraInicio(), evento.getHoraFim(),
          evento.getQtdeIngressos(),  evento.getValorBase(), evento.getAnfitriao());
         repositorioEventos.inserir(evento);
     }
@@ -89,7 +86,7 @@ public class NegocioEvento {
      * @throws CancelamentoProibidoException  Se tentar cancelar um evento com menos de 48 horas para o dia da realização.
      * @throws PermissaoNegadaException Se o usuario não for o criador do evento.
      */
-    public void cancelarEvento(Evento evento, Usuario solicitante) //Lembrar de passar o usuario que esta requisitando o metodo.
+    public void cancelarEvento(Evento evento, Usuario solicitante)
             throws CancelamentoProibidoException, PermissaoNegadaException {
 
         if (!evento.getAnfitriao().equals(solicitante)) {

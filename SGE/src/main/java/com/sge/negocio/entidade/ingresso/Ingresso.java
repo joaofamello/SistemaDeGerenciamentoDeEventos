@@ -25,18 +25,8 @@ public abstract class Ingresso {
         this.vendido = false;
     }
 
-    public abstract boolean ehValido();
-
-    public boolean pertenceAoEvento(Evento evento) {
-        return this.evento.equals(evento) && !vendido;
-    }
-
     public boolean isUsado(){
         return vendido;
-    }
-
-    public void usarIngresso(){
-        this.vendido = true;
     }
 
     public abstract double calcularValorFinal();
@@ -63,18 +53,6 @@ public abstract class Ingresso {
         return ID;
     }
 
-    public boolean isVendido() {
-        return vendido;
-    }
 
-    public void exibirDetalhes() {
-        System.out.println("------------------------");
-        System.out.println("Ingresso #" + ID);
-        System.out.println("Evento: " + evento.getTitulo());
-        System.out.println("Tipo: " + this.getClass().getSimpleName());
-        System.out.println("Valor: R$" + calcularValorFinal());
-        System.out.println("Status: " + (vendido ? "Vendido" : "Disponível"));
-        System.out.println("------------------------");
-    }
 
 }

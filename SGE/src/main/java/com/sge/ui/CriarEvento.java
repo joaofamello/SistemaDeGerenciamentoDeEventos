@@ -35,8 +35,8 @@ public class CriarEvento extends Application {
         tituloPrincipal.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         tituloPrincipal.setPadding(new Insets(10, 0, 20, 0));
 
-        Button btnLogout = new Button("Fechar");
-        btnLogout.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;");
+        Button btnLogout = new Button("Voltar");
+        btnLogout.setStyle("-fx-background-color: #e4564b; -fx-text-fill: white; -fx-font-weight: bold;");
         btnLogout.setOnAction(e -> primaryStage.close());
 
         HBox topBar = new HBox(btnLogout);
@@ -83,7 +83,7 @@ public class CriarEvento extends Application {
 
                 List<Evento> eventos = fachada.ListarEventos();
                     fachada.validarConflitoPorEndereco(dataEvento, horaInicio, horaFim, endereco);
-                    ValidarEvento.validar(titulo, descricao, categoria, endereco, dataEvento, horaInicio, horaFim, qtdeIngressos, valorBase, usuarioLogado);
+                    ValidarEvento.validar(titulo, descricao, endereco, dataEvento, categoria, horaInicio, horaFim, qtdeIngressos, valorBase, usuarioLogado);
                     fachada.cadastrarEvento(titulo, descricao, categoria, endereco, dataEvento, horaInicio, horaFim, qtdeIngressos, valorBase, usuarioLogado);
 
 

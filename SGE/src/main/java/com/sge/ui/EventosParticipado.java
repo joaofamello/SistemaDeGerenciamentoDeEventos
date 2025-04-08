@@ -2,13 +2,13 @@ package com.sge.ui;
 
 import com.sge.fachada.SGE;
 import com.sge.negocio.entidade.Evento;
+import com.sge.negocio.entidade.GerenciadorEventos;
 import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.excecao.CategoriaNaoEncontradaException;
 import com.sge.negocio.excecao.CidadeSemEventosException;
 import com.sge.negocio.excecao.ErroCancelarInscricaoException;
 import com.sge.negocio.excecao.EventoNaoEncontradoException;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -16,11 +16,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class EventosParticipado extends Application {
@@ -61,7 +59,6 @@ public class EventosParticipado extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        //fachada.CarregarArquivos();
         primaryStage.setTitle("Eventos que estou participando");
 
         // Layout principal
@@ -135,7 +132,7 @@ public class EventosParticipado extends Application {
                 } else {
                     VBox box = new VBox(5);
                     Label titulo;
-                    String Estado = evento.RetornarEstado();
+                    String Estado = GerenciadorEventos.RetornarEstado(evento);
                     if(Estado.equalsIgnoreCase("Inativo")){
                         titulo = new Label(evento.getTitulo() + " (Cancelado)");
                         titulo.setStyle("-fx-text-fill: #C74C3FFF; -fx-font-weight: bold;");
@@ -204,9 +201,6 @@ public class EventosParticipado extends Application {
         eventosListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 mostrarDetalhesEvento(newVal);
-                // Verifica se o usuário está realmente participando deste evento
-               // boolean participando = fachada.verificarParticipacaoEvento(usuarioLogado, newVal);
-               // cancelarParticipacaoButton.setDisable(!participando);
             }
         });
 
@@ -273,7 +267,7 @@ public class EventosParticipado extends Application {
                         }
                         break;
 
-                    default: // "Todos"
+                    default: //Todos
                         eventosFiltrados = fachada.ListarEventos().stream()
                                 .filter(e -> e.getTitulo().toLowerCase().contains(termoBusca.toLowerCase()) ||
                                         e.getDescricao().toLowerCase().contains(termoBusca.toLowerCase()) ||
@@ -309,7 +303,7 @@ public class EventosParticipado extends Application {
                 evento.getIngressosDisponiveis(),
                 evento.getValorBase(),
                 evento.getAnfitriao().getNomeCompleto(),
-                evento.RetornarEstado()
+                GerenciadorEventos.RetornarEstado(evento)
         );
 
         detalhesArea.setText(detalhes);
