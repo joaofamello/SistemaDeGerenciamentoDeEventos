@@ -310,7 +310,10 @@ public class SGE {
      * @param evento evento do ingresso
      * @param ingresso ingresso adquirido
      */
-    public void comprarIngresso(Usuario usuarioLogado, Evento evento, Ingresso ingresso){
+    public void comprarIngresso(Usuario usuarioLogado, Evento evento, Ingresso ingresso)  throws IngressosEsgotadoException{
+        if(evento.getIngressosDisponiveis() == 0){
+            throw new IngressosEsgotadoException(evento.getTitulo());
+        }
         usuarioLogado.adicionarIngresso(ingresso);
         usuarioLogado.participarDoEvento(evento);
         evento.participarDoEvento(usuarioLogado);

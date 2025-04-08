@@ -2,11 +2,10 @@ package com.sge.negocio;
 
 import com.sge.dados.usuarios.IRepositorioUsuarios;
 import com.sge.negocio.entidade.Usuario;
-import com.sge.negocio.excecao.EmailJaExistenteException;
 import com.sge.negocio.excecao.FormularioUsuarioInvalidoException;
 import com.sge.negocio.validacao.ValidarUsuario;
 import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * Classe representa os negocios de um usuario.

@@ -6,6 +6,7 @@ import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.excecao.CategoriaNaoEncontradaException;
 import com.sge.negocio.excecao.CidadeSemEventosException;
 import com.sge.negocio.excecao.EventoNaoEncontradoException;
+import com.sge.negocio.excecao.IngressosEsgotadoException;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -329,16 +330,19 @@ public class ParticiparEvento extends Application {
         }
     }
 
-    private void ComprarIngresso(Evento selecionado) {
+    private void ComprarIngresso(Evento eventoSelecionado) throws IngressosEsgotadoException {
         if (usuarioLogado == null) {
             mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Nenhum usuário logado. Faça login novamente.");
             return;
+        }
+        if(eventoSelecionado.getIngressosDisponiveis() == 0){
+            throw new IngressosEsgotadoException(eventoSelecionado.getTitulo());
         }
 
         Stage ComprarIngressoStage = new Stage();
         ComprarIngresso ComprarIngressoApp = new ComprarIngresso();
         ComprarIngressoApp.setUsuarioLogado(usuarioLogado);
-        ComprarIngressoApp.setEventoSelecionado(selecionado);
+        ComprarIngressoApp.setEventoSelecionado(eventoSelecionado);
         ComprarIngressoApp.start(ComprarIngressoStage);
     }
 
