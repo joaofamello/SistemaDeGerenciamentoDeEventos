@@ -58,7 +58,7 @@ public class MostrarEventos extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        fachada.CarregarArquivos();
+        //fachada.CarregarArquivos();
         primaryStage.setTitle("Meus Eventos");
 
         // Layout principal
@@ -193,6 +193,7 @@ public class MostrarEventos extends Application {
     }
 
     private void configurarEventos(Stage stage, Button editarButton, Button cancelarButton) {
+        carregarEventos();
         // Filtro de busca
         searchField.textProperty().addListener((obs, oldVal, newVal) -> {
             filtrarEventos();
@@ -201,6 +202,7 @@ public class MostrarEventos extends Application {
         // Seleção de evento
         eventosListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
+
                 mostrarDetalhesEvento(newVal);
                 // Habilita/desabilita botões conforme seleção
                 boolean meuEvento = newVal.getAnfitriao().equals(usuarioLogado);
