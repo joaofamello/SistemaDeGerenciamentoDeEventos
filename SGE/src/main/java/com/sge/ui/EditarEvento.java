@@ -127,6 +127,8 @@ public class EditarEvento extends Application {
         primaryStage.show();
     }
 
+
+
     private void showAlert(Alert.AlertType type, String title, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

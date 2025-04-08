@@ -36,7 +36,7 @@ public class LoginCadastro extends Application {
 
         primaryStage.setTitle("Sistema de Gerenciamento de Eventos");
 
-        // ========== TELA DE LOGIN ==========
+        //Tela de Login
         GridPane loginGrid = new GridPane();
         loginGrid.setAlignment(Pos.CENTER);
         loginGrid.setPadding(new Insets(25, 25, 25, 25));
@@ -135,7 +135,7 @@ public class LoginCadastro extends Application {
             primaryStage.setScene(cadastroScene);
         });
 
-        // Ação do botão de confirmar cadastro (mantido igual)
+        // Ação do botão de confirmar cadastro
         confirmarCadastroButton.setOnAction(e -> {
             try {
                 TextField nomeCompletoField = (TextField) getNodeFromGrid(cadastroGrid, 1, 1);
@@ -178,13 +178,13 @@ public class LoginCadastro extends Application {
             fachada.SalvarArquivoUsuario();
         });
 
-        // Ação do botão voltar (mantido igual)
+        // Ação do botão voltar
         voltarButton.setOnAction(e -> {
             primaryStage.setScene(loginScene);
         });
     }
 
-    // ========== MÉTODOS AUXILIARES ==========
+    //metodo auxiliares
     private void addFormField(GridPane grid, String labelText, Control field, int row) {
         Label label = new Label(labelText);
         label.setFont(Font.font("Arial", FontWeight.BOLD, 12));
