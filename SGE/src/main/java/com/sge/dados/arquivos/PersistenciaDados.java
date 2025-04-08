@@ -1,10 +1,8 @@
 package com.sge.dados.arquivos;
 
-import com.sge.dados.eventos.RepositorioEventosArrayList;
-import com.sge.dados.usuarios.RepositorioUsuariosArrayList;
-import com.sge.negocio.NegocioUsuario;
-import com.sge.negocio.NegocioEvento;
 import com.sge.negocio.entidade.*;
+import com.sge.negocio.excecao.NenhumEventoCriadoException;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -77,7 +75,6 @@ public class PersistenciaDados implements IPersistenciaDados {
     }
 
    //Salvar os eventos no arquivo .txt
-
    @Override
    public void salvarEventos(List<Evento> eventos) {
            try (BufferedWriter escritor = Files.newBufferedWriter(
@@ -103,7 +100,7 @@ public class PersistenciaDados implements IPersistenciaDados {
                        String.valueOf(evento.getQtdeIngressos()),
                        String.valueOf(evento.getValorBase()),
                        String.valueOf(evento.getAnfitriao().getID()),
-                       evento.RetornarEstado()
+                       GerenciadorEventos.RetornarEstado(evento)
 
                );
                System.out.println("Salvando linha: " + linha);
@@ -183,6 +180,7 @@ public class PersistenciaDados implements IPersistenciaDados {
         return eventos;
     }
 
+    //Salvar no arquivo .txt a lista de eventos que o usuario participa
     public void salvarParticipado(List<Usuario> usuarios) {
         try (BufferedWriter escritor = Files.newBufferedWriter(GerenciadorDeDados.getPasta_participado())) {
             for (Usuario usuario : usuarios) {
@@ -203,6 +201,7 @@ public class PersistenciaDados implements IPersistenciaDados {
         }
     }
 
+    //Carrega no array a lista de eventos que o usuario participa
     public void carregarParticipado(List<Usuario> usuarios, List<Evento> eventos) {
         try (BufferedReader leitor = Files.newBufferedReader(GerenciadorDeDados.getPasta_participado())) {
             String linha;
@@ -243,6 +242,7 @@ public class PersistenciaDados implements IPersistenciaDados {
         }
     }
 
+    //Salva no arquivo .txt a lista dos usuarios participantes do evento
     public void salvarParticipantes(List<Evento> eventos) {
         try (BufferedWriter escritor = Files.newBufferedWriter(GerenciadorDeDados.getPasta_Participantes())) {
             for (Evento evento : eventos) {
@@ -261,6 +261,7 @@ public class PersistenciaDados implements IPersistenciaDados {
         }
     }
 
+    //Carrega a lista de participantes de cada evento no array
     public void carregarParticipantes(List<Evento> eventos, List<Usuario> usuarios) {
         try (BufferedReader leitor = Files.newBufferedReader(GerenciadorDeDados.getPasta_Participantes())) {
             String linha;
@@ -291,7 +292,11 @@ public class PersistenciaDados implements IPersistenciaDados {
                                 .orElse(null);
 
                         if (usuario != null) {
-                            evento.participarDoEventoADM(usuario);
+                            try {
+                                GerenciadorEventos.participarDoEventoADM(usuario, evento);
+                            } catch (NenhumEventoCriadoException ex) {
+                                System.err.println("Erro nenhum evento encontrado: " + ex.getMessage());
+                            }
                         }
                     } catch (NumberFormatException e) {
                         System.err.println("ID de usuário inválido: " + campos[i]);

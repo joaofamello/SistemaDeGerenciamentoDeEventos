@@ -2,12 +2,8 @@ package com.sge.negocio.entidade;
 
 import com.sge.dados.eventos.IRepositorioEventos;
 import com.sge.negocio.excecao.*;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Classe representa um gerenciador de eventos.
@@ -26,75 +22,6 @@ public class GerenciadorEventos {
      */
     public GerenciadorEventos(IRepositorioEventos repositorio) {
         this.repositorio = repositorio;
-    }
-
-    /**
-     *
-     * @param usuario Criador do evento.
-     * @return Lista todos os eventos cadastrados pelo anfitrião.
-     * @throws NenhumEventoCriadoException Se ocorrer o anfitrião não possui eventos cadastrados.
-     */
-    public ArrayList<Evento> listarEventosCriados(Usuario usuario) throws NenhumEventoCriadoException {
-        return new ArrayList<>(usuario.getEventosCriados());
-    }
-
-    /**
-     *
-     * @param titulo Titulo do evento.
-     * @param usuario Usuario criador do evento.
-     * @return Evento com o titulo informado.
-     * @throws EventoNaoEncontradoException Ocorre se não encontrar evento com a infomação passada.
-     * @throws NenhumEventoCriadoException Se ocorrer o anfitrião não possui eventos cadastrados.
-     * @throws TituloVazioException Ocorre se o campo para titulo estiver vazio.
-     */
-    //Metodo para o anfitriao buscar um de seus eventos por nome.
-    public Evento buscarEventoNome(String titulo, Usuario usuario) throws EventoNaoEncontradoException, NenhumEventoCriadoException, TituloVazioException {
-        if (titulo == null || titulo.trim().isEmpty()) {
-            throw new TituloVazioException();
-        }
-
-        List<Evento> eventosCriados = usuario.getEventosCriados();
-
-        for (Evento evento : eventosCriados) {
-            if (evento.getTitulo().equalsIgnoreCase(titulo)) {
-                return evento;
-            }
-        }
-
-        throw new EventoNaoEncontradoException(titulo);
-    }
-
-    public void mudarTituloEvento(Evento evento, String novoTitulo) {
-        evento.setTitulo(novoTitulo);
-    }
-
-    public void mudarDescricaoEvento(Evento evento, String novaDescricao) {
-        evento.setDescricao(novaDescricao);
-    }
-
-    public void mudarDataEvento(Evento evento, LocalDate novaData){
-        evento.setData(novaData);
-    }
-
-    public void mudarHoraEvento(Evento evento, LocalDateTime novoInicio, LocalDateTime novoFim) throws CancelamentoProibidoException {
-        long horasRestantes = ChronoUnit.HOURS.between(LocalDateTime.now(), evento.getHoraInicio());
-        if(horasRestantes < limiteDeTempoParaCancelamento){
-            throw new CancelamentoProibidoException(evento.getHoraInicio());
-        }
-        evento.setHoraInicio(novoInicio);
-        evento.setHoraFim(novoFim);
-    }
-
-    public void mudarEnderecoEvento(Evento evento, Endereco endereco) {
-        evento.setEndereco(endereco);
-    }
-
-    public void mudarCategoriaEvento(Evento evento, String categoria) {
-        evento.setCategoria(categoria);
-    }
-
-    public void mudarQtdeIngressosEvento(Evento evento, int qtdeIngressos) {
-        evento.setQtdeIngressos(qtdeIngressos);
     }
 
     /**
@@ -123,20 +50,45 @@ public class GerenciadorEventos {
     }
 
     /**
+     * Usado pelo repositório para adicionar os participantes de volta ao repositório sem fazer verificações.
      *
-     * @param evento Evento para ser analizado.
-     * @throws FormularioEventoInvalidoException Ocorre se algum campo na criação do evento for invalido.
-     *
-     * Esse metodo valida se o evento recebeu todos os atributos corretamento.
+     * @param usuario usuário que será adicionado ao repositório de participantes do evento
      */
-    public void validarEvento(Evento evento) throws FormularioEventoInvalidoException {
-        if (evento.getTitulo() == null || evento.getTitulo().trim().isEmpty()) {
-            throw new FormularioEventoInvalidoException("titulo", "Título não pode ser vazio");
-        }
-        if (evento.getHoraInicio().isBefore(LocalDateTime.now())) {
-            throw new FormularioEventoInvalidoException("data", "Data/hora deve ser futura");
-        }
+    public static void participarDoEventoADM(Usuario usuario, Evento evento) throws NenhumEventoCriadoException {
+        evento.setParticipantes(usuario);
+        evento.incrementaIngressosVendidos();
+        usuario.participarDoEvento(evento);
     }
 
+    /**
+     * Realiza uma verificação do estado do evento e insere o usuário no repositório de participantes.
+     * @param usuario Usuário logado quem irá interagir com o evento
+     */
+    public static void participarDoEvento(Usuario usuario, Evento evento) {
+        if (!evento.getEstado()) {
+            throw new IllegalStateException("Evento inativo. Participação cancelada.");
+        }
+
+        if (evento.getIngressosDisponiveis() <= 0) {
+            throw new IllegalStateException("Evento lotado!");
+        }
+
+        evento.setParticipantes(usuario);
+        evento.incrementaIngressosVendidos();
+        usuario.participarDoEvento(evento);
+
+    }
+
+    public static String RetornarEstado(Evento evento) {
+        boolean estado = evento.getEstado();
+        int ingressosDisponiveis = evento.getIngressosDisponiveis();
+        if (!estado) {
+            return "Inativo";
+        } else if (ingressosDisponiveis == 0) {
+            return "Lotado";
+        } else {
+            return "Ativo";
+        }
+    }
 
 }

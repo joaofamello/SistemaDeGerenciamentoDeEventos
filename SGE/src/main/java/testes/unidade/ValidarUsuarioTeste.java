@@ -6,7 +6,7 @@ import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.validacao.ValidarUsuario;
 import com.sge.negocio.excecao.FormularioUsuarioInvalidoException;
 
-class ValidarUsuarioTest {
+class ValidarUsuarioTeste {
 
     @Test
     public void testValidarUsuarioValido() {

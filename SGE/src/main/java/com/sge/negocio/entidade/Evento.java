@@ -1,7 +1,5 @@
 package com.sge.negocio.entidade;
 
-import com.sge.negocio.entidade.ingresso.Ingresso;
-
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -59,16 +57,6 @@ public class Evento {
         this.qtdeIngressosVendidos = 0;
         this.estado = true;
         this.participantes = new ArrayList<>();
-    }
-
-    /**
-     * Retorna o evento formatado em uma unica string.
-     *
-     * @return Evento completo formatado.
-     */
-    public String getEventoFormatado(){
-        System.out.println("--------------------------------------------");
-        return titulo + "; " + descricao + "; " + categoria + "; " + endereco.enderecoFormatado() + "; " + data + "; " + horaInicio + "; " + horaFim + "; " + qtdeIngressos + "; " + anfitriao.getNomeCompleto() + "; ";
     }
 
     //getters e setters
@@ -152,6 +140,10 @@ public class Evento {
         return participantes;
     }
 
+    public void setParticipantes(Usuario participante) {
+        this.participantes.add(participante);
+    }
+
     public LocalDateTime getDataHoraInicio() {
         return horaInicio;
     }
@@ -171,6 +163,12 @@ public class Evento {
          this.qtdeIngressosVendidos = this.qtdeIngressosVendidos - qtde;
     }
 
+    public void incrementaIngressosVendidos() {
+        this.qtdeIngressosVendidos += 1;
+    }
+    public void setValorBase(double valorBase) {
+        this.valorBaseIngresso = valorBase;
+    }
 
     public int getIngressosDisponiveis() {
         return qtdeIngressos - qtdeIngressosVendidos;
@@ -178,52 +176,6 @@ public class Evento {
 
     public double getValorBase(){
         return valorBaseIngresso;
-    }
-
-    public String RetornarEstado(){
-        boolean estado = getEstado();
-        int ingressosDisponiveis = getIngressosDisponiveis();
-        if (!estado) {
-            return "Inativo";
-        } else if (ingressosDisponiveis == 0) {
-            return "Lotado";
-        } else {
-            return "Ativo";
-        }
-    }
-
-    /**
-     * Realiza uma verificação do estado do evento e insere o usuário no repositório de participantes.
-     * @param usuario Usuário logado quem irá interagir com o evento
-     */
-    public void participarDoEvento(Usuario usuario) {
-        if (!this.estado) {
-            throw new IllegalStateException("Evento inativo. Participação cancelada.");
-        }
-
-        if (this.getIngressosDisponiveis() <= 0) {
-            throw new IllegalStateException("Evento lotado!");
-        }
-
-        this.participantes.add(usuario);
-        this.qtdeIngressosVendidos++;
-        usuario.participarDoEvento(this);
-
-    }
-
-    /**
-     * Usado pelo repositório para adicionar os participantes de volta ao repositório sem fazer verificações.
-     *
-     * @param usuario usuário que será adicionado ao repositório de participantes do evento
-     */
-    public void participarDoEventoADM(Usuario usuario){
-        this.participantes.add(usuario);
-        this.qtdeIngressosVendidos++;
-        usuario.participarDoEvento(this);
-    }
-
-    public void setValorBase(double valorBase) {
-        this.valorBaseIngresso = valorBase;
     }
 
 }

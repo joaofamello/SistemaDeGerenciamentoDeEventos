@@ -42,7 +42,7 @@ public class CadastroUsuarioECriacaoEventoTest {
     }
 
     @Test
-    public void CadastroUsuarioFalhaTest() throws FormularioUsuarioInvalidoException, FormularioEventoInvalidoException, EventoDuplicadoException, LoginFalhouException {
+    public void CadastroUsuarioECriacaoEventoFalhaTest() throws FormularioUsuarioInvalidoException, FormularioEventoInvalidoException, EventoDuplicadoException, LoginFalhouException {
 
         // Cadastrar usuário
         fachada.cadastrarUsuario("Jurandir Teste", "JurandirTest", "Jura@test.com", "87912345678", "senha123");
@@ -61,23 +61,4 @@ public class CadastroUsuarioECriacaoEventoTest {
         assertTrue(eventos.stream().anyMatch(e -> e.getTitulo().equals("Festa Teste")));
     }
 
-    @Test
-    public void CriacaoEventoFalhaTest() throws FormularioUsuarioInvalidoException, FormularioEventoInvalidoException, EventoDuplicadoException, LoginFalhouException {
-
-        // Cadastrar usuário
-        fachada.cadastrarUsuario("Jurandir Teste", "JurandirTest", "Jura@test.com", "87912345678", "senha123");
-        Usuario jurandir = fachada.LoginUsuario("JurandirTest", "senha123");
-
-        // Criar evento
-        Endereco endereco = new Endereco("PE", "Garanhuns", "12345-000", "Centro", "Rua São Sebastião", 10);
-        LocalDate data = LocalDate.now().plusDays(5);
-        LocalDateTime inicio = LocalDateTime.of(data, LocalTime.of(22, 0));
-        LocalDateTime fim = LocalDateTime.of(data, LocalTime.of(22, 0));
-
-        fachada.cadastrarEvento("Festa Teste", "Aniversário", "Festa", endereco, data, inicio, fim, 50, 20.0, jurandir);
-
-        // Verificar se o evento foi cadastrado
-        List<Evento> eventos = fachada.ListarEventos();
-        assertTrue(eventos.stream().anyMatch(e -> e.getTitulo().equals("Festa Teste")));
-    }
 }
