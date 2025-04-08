@@ -29,9 +29,14 @@ public class LoginCadastro extends Application {
         fachada.CarregarArquivos();
 
         List<Evento> eventos = fachada.ListarEventos();
+        List<Usuario> usuarios = fachada.listarUsuarios();
         System.out.println("Eventos cadastrados:");
         for (Evento ev : eventos) {
-            System.out.println(ev.getID() + "-" + ev.getTitulo() + " - " + ev.getDescricao() + " - " + ev.getID() + " - ");
+            System.out.println(ev.getID() + "-" + ev.getTitulo() + " - " + ev.getCategoria());
+        }
+        System.out.println("Usuarios cadastrados:");
+        for (Usuario u : usuarios) {
+            System.out.println(u.getID() + "-" + u.getNomeUsuario() + " - " + u.getEmail());
         }
 
         primaryStage.setTitle("Sistema de Gerenciamento de Eventos");
@@ -168,6 +173,7 @@ public class LoginCadastro extends Application {
                 telefoneField.clear();
                 senhaFieldCad.clear();
 
+                fachada.SalvarArquivoUsuario();
                 showSuccessAlert("Cadastro realizado com sucesso!");
 
             } catch (FormularioUsuarioInvalidoException |
@@ -175,7 +181,6 @@ public class LoginCadastro extends Application {
                      UsernameJaExisteException ex) {
                 showErrorAlert(ex.getMessage());
             }
-            fachada.SalvarArquivoUsuario();
         });
 
         // Ação do botão voltar
