@@ -36,7 +36,6 @@ public class PersistenciaDados implements IPersistenciaDados {
                 System.out.println("Salvando linha: " + linha);
                 escritor.write(linha);
                 escritor.newLine();
-                escritor.newLine();
 
 
             }

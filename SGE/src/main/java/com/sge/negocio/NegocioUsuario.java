@@ -42,6 +42,12 @@ public class NegocioUsuario {
      * @throws FormularioUsuarioInvalidoException caso algum campo obrigatório seja inválido ou nulo
      */
     public void inserir(Usuario usuario) throws FormularioUsuarioInvalidoException{
+        boolean jaExiste = listarTodosUsuarios().stream()
+                .anyMatch(u -> u.getEmail().equalsIgnoreCase(usuario.getEmail()) ||
+                        u.getNomeUsuario().equalsIgnoreCase(usuario.getNomeUsuario()));
+
+        if (jaExiste) return;
+
         validarUsuario.validar(usuario.getNomeCompleto(), usuario.getNomeUsuario(), usuario.getEmail(), usuario.getTelefone(), usuario.getSenha());
         repositorioUsuarios.inserir(usuario);
     }
