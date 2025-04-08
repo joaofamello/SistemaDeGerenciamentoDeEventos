@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 /**
  * Classe que representa um evento.
- * Contém numero, ID, titulo, descrição, categoria, endereço, data, horaInicio, horaFim, qtdIngressos, valorIngresso, Anfritrião, participantes e estado.
+ * Contém numero, ID, titulo, descrição, categoria, endereço, data, horaInicio, horaFim, qtdIngressos, qtdeIngressosVendidos, valorBaseIngresso, participantes e estado.
  *
  * @author João Francisco
  */
@@ -19,9 +19,9 @@ public class Evento {
     private String descricao;
     private String categoria;
     private Endereco endereco;
-    private LocalDate data; //Data do evento
-    private LocalDateTime horaInicio; //Horario que comeca
-    private LocalDateTime horaFim; //Horario que termina
+    private LocalDate data;
+    private LocalDateTime horaInicio;
+    private LocalDateTime horaFim;
     private int qtdeIngressos;
     private int qtdeIngressosVendidos;
     private Usuario anfitriao;
@@ -40,8 +40,8 @@ public class Evento {
      * @param horaInicio Hora de inicio do evento.
      * @param horaFim Hora do fim do evento.
      * @param qtdeIngressos Quantidade de ingreços do evento.
-     * @param anfitriao Anfitrião do evento.
      * @param valorBase Valor base para o ingresso.
+     * @param anfitriao Quem está sediando o evento
      */
     //construtor
     public Evento(String titulo, String descricao, String categoria, Endereco endereco, LocalDate data, LocalDateTime horaInicio, LocalDateTime horaFim, int qtdeIngressos, double valorBase ,Usuario anfitriao) {
@@ -66,8 +66,6 @@ public class Evento {
      *
      * @return Evento completo formatado.
      */
-
-    //formatação do evento
     public String getEventoFormatado(){
         System.out.println("--------------------------------------------");
         return titulo + "; " + descricao + "; " + categoria + "; " + endereco.enderecoFormatado() + "; " + data + "; " + horaInicio + "; " + horaFim + "; " + qtdeIngressos + "; " + anfitriao.getNomeCompleto() + "; ";
@@ -181,6 +179,7 @@ public class Evento {
     public double getValorBase(){
         return valorBaseIngresso;
     }
+
     public String RetornarEstado(){
         boolean estado = getEstado();
         int ingressosDisponiveis = getIngressosDisponiveis();
@@ -193,6 +192,10 @@ public class Evento {
         }
     }
 
+    /**
+     * Realiza uma verificação do estado do evento e insere o usuário no repositório de participantes.
+     * @param usuario Usuário logado quem irá interagir com o evento
+     */
     public void participarDoEvento(Usuario usuario) {
         if (!this.estado) {
             throw new IllegalStateException("Evento inativo. Participação cancelada.");
@@ -208,6 +211,11 @@ public class Evento {
 
     }
 
+    /**
+     * Usado pelo repositório para adicionar os participantes de volta ao repositório sem fazer verificações.
+     *
+     * @param usuario usuário que será adicionado ao repositório de participantes do evento
+     */
     public void participarDoEventoADM(Usuario usuario){
         this.participantes.add(usuario);
         this.qtdeIngressosVendidos++;

@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Classe que representa um usuario.
- * Contém nomeCompleto, nomeUsuario, email, telefone, qtde, ID, sanha,
- *         ehAnfitriao, eventosCriados, eventosParticipando.
+ * Classe que representa um usuário.
+ * Contém nomeCompleto, nomeUsuario, email, telefone, qtde, ID, senha,
+ *         ehAnfitriao, eventosCriados, ingressos, eventosParticipando.
  *
  * @author João Francisco
  */
@@ -31,13 +31,12 @@ public class Usuario {
     /**
      *Construtor da classe usuario.
      *
-     * @param nomeCompleto NomeCompleto do Usuario.
-     * @param nomeUsuario Nome de usuario do Usuario.
-     * @param email Email do Usuario.
-     * @param telefone Telefone do Usuario.
-     * @param senha Senha do Usuario
+     * @param nomeCompleto Nome completo do usuário.
+     * @param nomeUsuario Username do usuário
+     * @param email E-mail do usuário.
+     * @param telefone Telefone do usuário.
+     * @param senha senha de acesso do usuário.
      */
-    //Construtor
     public Usuario(String nomeCompleto, String nomeUsuario, String email, String telefone, String senha) {
         this.nomeCompleto = nomeCompleto;
         this.nomeUsuario = nomeUsuario;
@@ -51,9 +50,9 @@ public class Usuario {
     }
 
     /**
-     * Retorna o usuario formatado em uma unica string.
+     * Retorna os dados do usuário formatado como uma String.
      *
-     * @return Usuario completo formatado.
+     * @return usuário formatado.
      */
     public String usuarioFormatado() {
         System.out.println("--------------------------------------------");
@@ -62,8 +61,8 @@ public class Usuario {
 
     /**
      *
-     * @return Lista com os eventos criados pelo usuario.
-     * @throws NenhumEventoCriadoException Se ocorrer o usuario não possui eventos cadastrados.
+     * @return Lista os eventos criados pelo usuário.
+     * @throws NenhumEventoCriadoException Caso o usuário não tenha eventos criados.
      */
     public List<Evento> getEventosCriados() throws NenhumEventoCriadoException {
         if (eventosCriados == null || eventosCriados.isEmpty()) {
@@ -72,6 +71,10 @@ public class Usuario {
         return eventosCriados;
     }
 
+    /**
+     * Adiciona um ingresso no ArrayList de ingressos
+     * @param ingresso ingresso a ser adicionado
+     */
     public void adicionarIngresso(Ingresso ingresso){
         this.ingressos.add(ingresso);
     }
@@ -111,8 +114,6 @@ public class Usuario {
         this.telefone = telefone;
     }
 
-
-
     public int getID() {
         return ID;
     }
@@ -140,14 +141,13 @@ public class Usuario {
         this.ehAnfitriao = ehAnfitriao;
     }
 
+    /**
+     * Adiciona um evento no ArrayList dos eventos que o usuário participa, caso esse evento exista
+     * @param evento evento a ser adicionado
+     */
     public void participarDoEvento(Evento evento) {
         if (!eventosParticipados.contains(evento)) {
             eventosParticipados.add(evento);
         }
     }
-
-    /*public boolean temIngressoValido(Evento evento){
-        return this.ingressos.stream().anyMatch(ingresso -> ingresso.pertenceAoEvento(evento) && ingresso.ehValido());
-    }*/
-
 }

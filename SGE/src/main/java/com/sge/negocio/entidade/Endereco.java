@@ -38,7 +38,7 @@ public class Endereco {
     /**
      * Retorna o endereço formatado em uma única string.
      *
-     * @return Endreço completp formatado.
+     * @return Endereço completo formatado.
      */
     public String enderecoFormatado() {
         return rua + ", " + bairro + ", " + numero + ", " + cidade + ", " + estado + ", " + cep;

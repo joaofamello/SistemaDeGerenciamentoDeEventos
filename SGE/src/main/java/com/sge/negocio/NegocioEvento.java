@@ -29,7 +29,7 @@ public class NegocioEvento {
     private Filtro filtro;
 
     /**
-     *Construtor da classe NegocioEvento.
+     * Construtor da classe NegocioEvento.
      *
      * @param repositorioEventos repositorio com os eventos cadastrados.
      */
@@ -40,6 +40,10 @@ public class NegocioEvento {
         this.validador = new ValidarEvento();
     }
 
+    /**
+     * Lista todos os eventos cadastrados
+     * @return lista com todos os eventos do repositório
+     */
     public ArrayList<Evento> listarTodosEventos() {
         return repositorioEventos.listar();
     }

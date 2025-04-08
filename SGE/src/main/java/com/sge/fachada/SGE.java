@@ -184,15 +184,6 @@ public class SGE {
         }
     }
 
-    public List<Evento> buscarEventosPorEnderecoEData(Endereco endereco, LocalDate dataEvento, List<Evento> eventosExistentes) {
-        List<Evento> filtrados = new ArrayList<>();
-        for (Evento evento : eventosExistentes) {
-            if (evento.getData().isEqual(dataEvento) && evento.getEndereco().equals(endereco)) {
-                filtrados.add(evento);
-            }
-        }
-        return filtrados;
-    }
 
     public void comprarIngresso(Usuario usuarioLogado, Evento evento, Ingresso ingresso){
         usuarioLogado.adicionarIngresso(ingresso);
