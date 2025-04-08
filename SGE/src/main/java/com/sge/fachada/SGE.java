@@ -91,6 +91,15 @@ public class SGE {
         repositorioEvento.cancelarEvento(evento, usuario);
     }
 
+    public void cancelarInscricao(Usuario usuarioLogado, Evento eventoSelecionado) throws ErroCancelarInscricaoException {
+        if (usuarioLogado.getEventosParticipados().contains(eventoSelecionado)) {
+            usuarioLogado.getEventosParticipados().remove(eventoSelecionado);
+            eventoSelecionado.getParticipantes().remove(usuarioLogado);
+        } else {
+            throw new ErroCancelarInscricaoException("Usuário não está participando deste evento.");
+        }
+    }
+
     public List<Evento> buscarEventoPorTitulo(String titulo) throws EventoNaoEncontradoException {
         return repositorioEvento.buscarPorTitulo(titulo);
     }
@@ -190,6 +199,18 @@ public class SGE {
         usuarioLogado.participarDoEvento(evento);
         evento.participarDoEvento(usuarioLogado);
         ingresso.vender(usuarioLogado);
+    }
+
+    public List<Evento> listarEventosParticipantes(Usuario usuario) {
+        List<Evento> eventosDoUsuario = new ArrayList<>();
+
+        for (Evento evento : repositorioEvento.listarTodosEventos()) {
+            if (evento.getParticipantes().contains(usuario)) {
+                eventosDoUsuario.add(evento);
+            }
+        }
+
+        return eventosDoUsuario;
     }
 
 

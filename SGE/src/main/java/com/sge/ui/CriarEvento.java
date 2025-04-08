@@ -92,13 +92,7 @@ public class CriarEvento extends Application {
                     alert.setHeaderText(null);
                     alert.setContentText("Evento '" + titulo + "' criado com sucesso!");
                     alert.showAndWait();
-
-
                     usuarioLogado.setEhAnfitriao(true);
-
-
-
-
 
             } catch (EventoDuplicadoException | FormularioEventoInvalidoException ex) {
                 Alert error = new Alert(Alert.AlertType.ERROR);

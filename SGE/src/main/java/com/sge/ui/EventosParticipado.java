@@ -5,29 +5,35 @@ import com.sge.negocio.entidade.Evento;
 import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.excecao.CategoriaNaoEncontradaException;
 import com.sge.negocio.excecao.CidadeSemEventosException;
+import com.sge.negocio.excecao.ErroCancelarInscricaoException;
 import com.sge.negocio.excecao.EventoNaoEncontradoException;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ParticiparEvento extends Application {
+public class EventosParticipado extends Application {
     private SGE fachada = SGE.getInstancia();
     private Usuario usuarioLogado;
     private ListView<Evento> eventosListView;
     private TextField searchField;
-    private ComboBox<ComboBoxItem> tipoFiltroComboBox;
     private TextArea detalhesArea;
+    private ComboBox<ComboBoxItem> tipoFiltroComboBox;
+
+    public void setUsuarioLogado(Usuario usuario) {
+        this.usuarioLogado = usuario;
+    }
 
     // Classe auxiliar para os itens do ComboBox
     public class ComboBoxItem {
@@ -53,14 +59,10 @@ public class ParticiparEvento extends Application {
         }
     }
 
-    public void setUsuarioLogado(Usuario usuario) {
-        this.usuarioLogado = usuario;
-    }
-
     @Override
     public void start(Stage primaryStage) {
         //fachada.CarregarArquivos();
-        primaryStage.setTitle("Participar de Eventos");
+        primaryStage.setTitle("Eventos que estou participando");
 
         // Layout principal
         BorderPane root = new BorderPane();
@@ -136,7 +138,7 @@ public class ParticiparEvento extends Application {
                     if(!evento.getEstado()){
                         titulo = new Label(evento.getTitulo() + " (Cancelado)");
                         titulo.setStyle("-fx-text-fill: #C74C3FFF; -fx-font-weight: bold;");
-                    } else {
+                    }else {
                         titulo = new Label(evento.getTitulo());
                         titulo.setStyle("-fx-font-weight: bold;");
                     }
@@ -154,7 +156,7 @@ public class ParticiparEvento extends Application {
             }
         });
 
-        // Painel de detalhes à direita
+        // Painel de detalhes e botões à direita
         VBox rightPanel = new VBox(10);
         rightPanel.setPadding(new Insets(10));
         rightPanel.setPrefWidth(300);
@@ -166,15 +168,16 @@ public class ParticiparEvento extends Application {
         detalhesArea.setEditable(false);
         detalhesArea.setWrapText(true);
 
-        Button participarButton = new Button("Participar do Evento");
-        participarButton.setStyle("-fx-base: #4CAF50; -fx-text-fill: white;");
-        participarButton.setMaxWidth(Double.MAX_VALUE);
 
-        rightPanel.getChildren().addAll(detalhesLabel, detalhesArea, participarButton);
+        Button cancelarParticipacaoButton = new Button("Cancelar Participação");
+        cancelarParticipacaoButton.setStyle("-fx-base: #f44336; -fx-text-fill: white;");
+        cancelarParticipacaoButton.setMaxWidth(Double.MAX_VALUE);
+
+        rightPanel.getChildren().addAll(detalhesLabel, detalhesArea , cancelarParticipacaoButton);
         root.setRight(rightPanel);
 
         // Configura eventos
-        configurarEventos(primaryStage, participarButton);
+        configurarEventos(primaryStage, cancelarParticipacaoButton);
 
         // Carrega os eventos imediatamente
         carregarEventos();
@@ -188,14 +191,9 @@ public class ParticiparEvento extends Application {
         primaryStage.show();
     }
 
-    private void configurarEventos(Stage stage, Button participarButton) {
+    private void configurarEventos(Stage stage, Button cancelarParticipacaoButton) {
         // Filtro de busca
         searchField.textProperty().addListener((obs, oldVal, newVal) -> {
-            filtrarEventos();
-        });
-
-        // Filtro de tipo
-        tipoFiltroComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             filtrarEventos();
         });
 
@@ -203,23 +201,31 @@ public class ParticiparEvento extends Application {
         eventosListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 mostrarDetalhesEvento(newVal);
+                // Verifica se o usuário está realmente participando deste evento
+               // boolean participando = fachada.verificarParticipacaoEvento(usuarioLogado, newVal);
+               // cancelarParticipacaoButton.setDisable(!participando);
             }
         });
 
-        // Botão participar
-        participarButton.setOnAction(e -> {
+        // Botão cancelar participação
+        cancelarParticipacaoButton.setOnAction(e -> {
             Evento selecionado = eventosListView.getSelectionModel().getSelectedItem();
             if (selecionado != null) {
-                participarEvento(selecionado);
+                try {
+                    cancelarParticipacao(selecionado);
+                } catch (ErroCancelarInscricaoException ex) {
+                    System.err.println(ex.getMessage());
+                }
             }
         });
     }
 
     private void carregarEventos() {
         try {
-            List<Evento> eventos = fachada.ListarEventos();
+            List<Evento> eventos = fachada.listarEventosParticipantes(usuarioLogado);
+
             if (eventos.isEmpty()) {
-                eventosListView.setPlaceholder(new Label("Nenhum evento cadastrado."));
+                eventosListView.setPlaceholder(new Label("Você não está participando de nenhum evento."));
             } else {
                 eventosListView.getItems().setAll(FXCollections.observableArrayList(eventos));
             }
@@ -288,7 +294,7 @@ public class ParticiparEvento extends Application {
         String detalhes = String.format(
                 "Título: %s\n\nDescrição: %s\nCategoria: %s\n\nData: %s\nHorário: %s às %s\n\n" +
                         "Local: %s, %s\n\nIngressos disponíveis: %d\nValor: R$ %.2f\n\n" +
-                        "Organizador: %s\n\nStatus: %s",
+                        "Organizador: %s\n\nEstado: %s",
                 evento.getTitulo(),
                 evento.getDescricao(),
                 evento.getCategoria(),
@@ -306,35 +312,20 @@ public class ParticiparEvento extends Application {
         detalhesArea.setText(detalhes);
     }
 
-    private void participarEvento(Evento evento) {
-        try {
-            if(!evento.getEstado()){
-                mostrarAlerta(Alert.AlertType.ERROR, "Erro",
-                        "Não foi possível participar do evento, pois o mesmo está cancelado: " + evento.getTitulo());
-            }else if(evento.getAnfitriao().equals(usuarioLogado)){
-                mostrarAlerta(Alert.AlertType.ERROR, "Erro",
-                        "Não foi possível participar do evento, você é o anfitrião: " + evento.getTitulo());
-            }
-            else {
-                ComprarIngresso(evento);
-            }
-        } catch (Exception e) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Erro",
-                    "Não foi possível participar do evento: " + e.getMessage());
-        }
-    }
+    private void cancelarParticipacao(Evento evento) throws ErroCancelarInscricaoException {
+        Alert confirmacao = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmacao.setTitle("Confirmar Cancelamento");
+        confirmacao.setHeaderText("Cancelar Participação");
+        confirmacao.setContentText("Tem certeza que deseja cancelar sua participação no evento '" + evento.getTitulo() + "'?");
 
-    private void ComprarIngresso(Evento selecionado) {
-        if (usuarioLogado == null) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Nenhum usuário logado. Faça login novamente.");
-            return;
+        if (confirmacao.showAndWait().get() == ButtonType.OK){
+            fachada.cancelarInscricao(usuarioLogado, evento);
+            fachada.SalvarArquivoUsuario();
+            fachada.SalvarArquivoEvento();
+            evento.setQtdeIngressosVendidos(1);
+            carregarEventos(); // Atualiza a lista
+            mostrarAlerta(Alert.AlertType.INFORMATION, "Sucesso", "Participação cancelada com sucesso!");
         }
-
-        Stage ComprarIngressoStage = new Stage();
-        ComprarIngresso ComprarIngressoApp = new ComprarIngresso();
-        ComprarIngressoApp.setUsuarioLogado(usuarioLogado);
-        ComprarIngressoApp.setEventoSelecionado(selecionado);
-        ComprarIngressoApp.start(ComprarIngressoStage);
     }
 
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensagem) {

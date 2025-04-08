@@ -169,6 +169,10 @@ public class Evento {
     public int getQtdeIngressosVendidos() {
         return qtdeIngressosVendidos;
     }
+    public void setQtdeIngressosVendidos(int qtde) {
+         this.qtdeIngressosVendidos = this.qtdeIngressosVendidos - qtde;
+    }
+
 
     public int getIngressosDisponiveis() {
         return qtdeIngressos - qtdeIngressosVendidos;
@@ -197,11 +201,6 @@ public class Evento {
         if (this.getIngressosDisponiveis() <= 0) {
             throw new IllegalStateException("Evento lotado!");
         }
-
-        // Verifica se o usuario tem um ingresso valido para este evento
-        /*if (!usuario.temIngressoValido(this)) {
-            throw new IllegalArgumentException("Usuário não possui ingresso válido para este evento.");
-        }*/
 
         this.participantes.add(usuario);
         this.qtdeIngressosVendidos++;

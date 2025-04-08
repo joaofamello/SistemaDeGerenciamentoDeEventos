@@ -60,18 +60,22 @@ public class Menu extends Application {
         MenuItem logoutItem = new MenuItem("Sair");
         logoutItem.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
 
-        MenuItem MostrarEventos = new MenuItem("Mostrar Eventos");
+        MenuItem MostrarEventos = new MenuItem("Gerenciar meus eventos");
         MostrarEventos.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
+
+        MenuItem EventosParticipado = new MenuItem("Eventos participando");
+        EventosParticipado.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
 
         // Adicionando ações
         criarEvento.setOnAction(e -> criarEvento());
         participarEvento.setOnAction(e -> participarEvento());
         logoutItem.setOnAction(e -> fazerLogout(primaryStage));
         MostrarEventos.setOnAction(e -> mostrarEventos());
+        EventosParticipado.setOnAction(e -> eventosParticipado());
 
         // Montando os menus
         menuEventos.getItems().addAll(criarEvento, participarEvento);
-        menuUsuario.getItems().addAll(MostrarEventos,logoutItem);
+        menuUsuario.getItems().addAll(MostrarEventos,EventosParticipado,logoutItem);
         menuBar.getMenus().addAll(menuEventos, menuUsuario);
 
         // Painel de boas-vindas
@@ -126,7 +130,6 @@ public class Menu extends Application {
         CriarEvento criarEventoApp = new CriarEvento();
         criarEventoApp.setUsuarioLogado(usuarioLogado);
         criarEventoApp.start(criarEventoStage);
-        //usuarioLogado.getEhAnfitriao(true).
     }
 
     private void participarEvento() {
@@ -151,6 +154,18 @@ public class Menu extends Application {
         MostrarEventos mostrareventosApp = new MostrarEventos();
         mostrareventosApp.setUsuarioLogado(usuarioLogado);
         mostrareventosApp.start(mostrarEventoStage);
+    }
+
+    private void eventosParticipado(){
+        if (usuarioLogado == null) {
+            showAlert(Alert.AlertType.ERROR, "Erro", "Nenhum usuário logado. Faça login novamente.");
+            return;
+        }
+        Stage eventosParticipadoStage = new Stage();
+        EventosParticipado eventosParticipadoApp = new EventosParticipado();
+        eventosParticipadoApp.setUsuarioLogado(usuarioLogado);
+        eventosParticipadoApp.start(eventosParticipadoStage);
+
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {
