@@ -5,6 +5,7 @@ import com.sge.dados.arquivos.PersistenciaDados;
 import com.sge.dados.usuarios.RepositorioUsuariosArrayList;
 import com.sge.dados.eventos.RepositorioEventosArrayList;
 import com.sge.negocio.entidade.Endereco;
+import com.sge.negocio.entidade.GerenciadorEventos;
 import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.NegocioEvento;
 import com.sge.negocio.NegocioUsuario;
@@ -82,13 +83,6 @@ public class SGE {
 
         throw new LoginFalhouException();
     }
-    /**
-     * Lista todos os usuários cadastrados.
-     * @return lista de usuários
-     */
-    public List<Usuario> ListarUsuarios() {
-        return repositorioUsuario.listarTodosUsuarios();
-    }
 
     /**
      * Lista todos os eventos cadastrados.
@@ -98,17 +92,6 @@ public class SGE {
         return repositorioEvento.listarTodosEventos();
     }
 
-    public void alterarUsuario(Usuario usuario) throws FormularioUsuarioInvalidoException, EmailJaExistenteException {
-        repositorioUsuario.alterar(usuario);
-    }
-
-    public Usuario buscarUsuarioPorId(int id) throws UsuarioNaoEncontradoException {
-        return repositorioUsuario.buscarUsuariosPorID(id);
-    }
-
-    public Usuario buscarUsuarioPorNome(String nome) throws UsuarioNaoEncontradoException {
-        return repositorioUsuario.buscarUsuariosPorNome(nome);
-    }
 
     /**
      * Cadastra um novo evento.
@@ -131,9 +114,6 @@ public class SGE {
         repositorioEvento.inserir(evento);
     }
 
-    public void alterarEvento(Evento evento) throws FormularioEventoInvalidoException {
-        //gerenciadorEntrada.AlterarEvento(evento, repositorioEvento);
-    }
 
     /**
      * Cancela um evento, desde que as regras de permissão e prazo permitam.
@@ -194,10 +174,6 @@ public class SGE {
      */
     public List<Evento> buscarEventoPorCategoria(String categoria) throws CategoriaNaoEncontradaException {
         return repositorioEvento.buscarPorCategoria(categoria);
-    }
-
-    public void participarEvento(Usuario usuario, Evento evento) {
-
     }
 
     /**
@@ -316,7 +292,7 @@ public class SGE {
         }
         usuarioLogado.adicionarIngresso(ingresso);
         usuarioLogado.participarDoEvento(evento);
-        evento.participarDoEvento(usuarioLogado);
+        GerenciadorEventos.participarDoEvento(usuarioLogado, evento);
         ingresso.vender(usuarioLogado);
     }
 

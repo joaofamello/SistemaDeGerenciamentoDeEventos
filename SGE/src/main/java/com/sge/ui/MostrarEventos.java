@@ -2,6 +2,7 @@ package com.sge.ui;
 
 import com.sge.fachada.SGE;
 import com.sge.negocio.entidade.Evento;
+import com.sge.negocio.entidade.GerenciadorEventos;
 import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.excecao.CategoriaNaoEncontradaException;
 import com.sge.negocio.excecao.CidadeSemEventosException;
@@ -14,7 +15,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +58,6 @@ public class MostrarEventos extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        //fachada.CarregarArquivos();
         primaryStage.setTitle("Meus Eventos");
 
         // Layout principal
@@ -133,7 +132,7 @@ public class MostrarEventos extends Application {
                     //Botar vermelho
                     VBox box = new VBox(5);
                     Label titulo;
-                    String Estado = evento.RetornarEstado();
+                    String Estado = GerenciadorEventos.RetornarEstado(evento);
                     if(Estado.equalsIgnoreCase("Inativo")){
                         titulo = new Label(evento.getTitulo() + " (Cancelado)");
                         titulo.setStyle("-fx-text-fill: #C74C3FFF; -fx-font-weight: bold;");
@@ -319,7 +318,7 @@ public class MostrarEventos extends Application {
                 evento.getIngressosDisponiveis(),
                 evento.getValorBase(),
                 evento.getAnfitriao().getNomeCompleto(),
-                evento.RetornarEstado()
+               GerenciadorEventos.RetornarEstado(evento)
         );
 
         detalhesArea.setText(detalhes);
@@ -336,8 +335,6 @@ public class MostrarEventos extends Application {
                 editarApp.setEventoSelecionado(evento);
                 editarApp.start(editarStage);
 
-                // Fecha a janela atual
-                //((Stage) eventosListView.getScene().getWindow()).close();
             } catch (Exception e) {
                 mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Não foi possível editar o evento: " + e.getMessage());
             }

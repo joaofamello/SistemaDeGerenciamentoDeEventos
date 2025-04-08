@@ -2,6 +2,7 @@ package com.sge.ui;
 
 import com.sge.fachada.SGE;
 import com.sge.negocio.entidade.Evento;
+import com.sge.negocio.entidade.GerenciadorEventos;
 import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.excecao.CategoriaNaoEncontradaException;
 import com.sge.negocio.excecao.CidadeSemEventosException;
@@ -60,7 +61,6 @@ public class ParticiparEvento extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        //fachada.CarregarArquivos();
         primaryStage.setTitle("Participar de Eventos");
 
         // Layout principal
@@ -134,7 +134,7 @@ public class ParticiparEvento extends Application {
                 } else {
                     VBox box = new VBox(5);
                     Label titulo;
-                    String Estado = evento.RetornarEstado();
+                    String Estado = GerenciadorEventos.RetornarEstado(evento);
                     if(Estado.equalsIgnoreCase("Inativo")){
                         titulo = new Label(evento.getTitulo() + " (Cancelado)");
                         titulo.setStyle("-fx-text-fill: #C74C3FFF; -fx-font-weight: bold;");
@@ -306,7 +306,7 @@ public class ParticiparEvento extends Application {
                 evento.getIngressosDisponiveis(),
                 evento.getValorBase(),
                 evento.getAnfitriao().getNomeCompleto(),
-                evento.RetornarEstado()
+                GerenciadorEventos.RetornarEstado(evento)
         );
 
         detalhesArea.setText(detalhes);

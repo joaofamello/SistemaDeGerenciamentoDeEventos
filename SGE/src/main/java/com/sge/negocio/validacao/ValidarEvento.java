@@ -1,14 +1,10 @@
 package com.sge.negocio.validacao;
 import com.sge.negocio.entidade.Endereco;
-import com.sge.negocio.entidade.Evento;
 import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.excecao.FormularioEventoInvalidoException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import com.sge.negocio.excecao.EventoDuplicadoException;
-
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 /**
  * Classe que valida se os dados passados pelo usuário estão de acordo com a norma do sistema.
@@ -19,27 +15,27 @@ public class ValidarEvento {
      * Verifica tudo
      * @param titulo título do evento
      * @param descricao descrição do evento
-     * @param categoria categoria do evento
      * @param endereco endereço que será sediado o evento
      * @param dataEvento data do evento
      * @param horaInicio hora em que o evento começa
      * @param horaFim hora que o evento termina
      * @param qtdeIngressos quantidade de ingressos para aquele evento
-     * @param valorBase valor base do ingresso
      * @param usuarioLogado usuário que está logado e operando o sistema
      * @throws FormularioEventoInvalidoException caso os parâmetros não estejam de acordo com as esperadas pelo sistema
      * @throws EventoDuplicadoException caso o evento já exista no repositório, evitando duplicações
      */
-    public void validar(String titulo, String descricao, String categoria,
-                        Endereco endereco, LocalDate dataEvento, LocalDateTime horaInicio, LocalDateTime horaFim,
+    public void validar(String titulo, String descricao,
+                        Endereco endereco, LocalDate dataEvento, String categoria, LocalDateTime horaInicio, LocalDateTime horaFim,
                         int qtdeIngressos, double valorBase, Usuario usuarioLogado)
             throws FormularioEventoInvalidoException, EventoDuplicadoException {
 
         validarTitulo(titulo);
         validarDescricao(descricao);
+        validarCategoria(categoria);
         validarEndereco(endereco);
         validarDatas(dataEvento, horaInicio, horaFim);
         validarIngressos(qtdeIngressos);
+        validarValorIngresso(valorBase);
         validarAnfitriao(usuarioLogado);
     }
 
@@ -70,6 +66,25 @@ public class ValidarEvento {
             throw new FormularioEventoInvalidoException("descricao", "Descrição deve ter no máximo 500 caracteres");
         }
     }
+
+    /**
+     * Valida se a categoria foi preenchida corretamente
+     * @param categoria recebe a categoria do evento
+     * @throws FormularioEventoInvalidoException caso o parâmetro seja vazio
+     */
+    private void validarCategoria(String categoria) throws FormularioEventoInvalidoException {
+        if (categoria == null || categoria.trim().isEmpty()) {
+            throw new FormularioEventoInvalidoException("categoria", "Categoria não pode ser vazio");
+        }
+
+    }
+
+    private void validarValorIngresso(double valorIngresso) throws FormularioEventoInvalidoException {
+        if (valorIngresso <= 0) {
+                throw new FormularioEventoInvalidoException("valorBase", "Valor do ingresso deve ser maior que zero.");
+        }
+    }
+
 
     /**
      * Verifica se o endereço segue o padrão estipulado pelo sistema

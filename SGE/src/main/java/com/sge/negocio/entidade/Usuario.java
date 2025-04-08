@@ -2,9 +2,7 @@ package com.sge.negocio.entidade;
 
 import com.sge.negocio.entidade.ingresso.Ingresso;
 import com.sge.negocio.excecao.NenhumEventoCriadoException;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -49,15 +47,6 @@ public class Usuario {
         this.ingressos = new ArrayList<>();
     }
 
-    /**
-     * Retorna os dados do usuário formatado como uma String.
-     *
-     * @return usuário formatado.
-     */
-    public String usuarioFormatado() {
-        System.out.println("--------------------------------------------");
-        return ID + " " + nomeCompleto + " " + nomeUsuario + " " + email + " " + telefone + " " + senha;
-    }
 
     /**
      *
@@ -126,17 +115,11 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public ArrayList<Ingresso> getMeusIngressos() {
-        return ingressos;
-    }
 
     public  ArrayList<Evento> getEventosParticipados(){
         return eventosParticipados;
     }
 
-    public boolean getEhAnfitriao() {
-        return ehAnfitriao;
-    }
     public void setEhAnfitriao(boolean ehAnfitriao) {
         this.ehAnfitriao = ehAnfitriao;
     }

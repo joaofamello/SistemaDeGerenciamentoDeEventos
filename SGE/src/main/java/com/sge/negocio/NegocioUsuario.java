@@ -15,7 +15,6 @@ import java.util.ArrayList;
  */
 public class NegocioUsuario {
     private IRepositorioUsuarios repositorioUsuarios;
-    private static final int tamMinSenha = 5;
     ValidarUsuario validarUsuario = new ValidarUsuario();
 
     /**
@@ -47,36 +46,4 @@ public class NegocioUsuario {
         repositorioUsuarios.inserir(usuario);
     }
 
-    /**
-     * Altera os dados de um usuário já existente no sistema.
-     *
-     * @param usuario objeto do usuário com dados atualizados
-     * @throws FormularioUsuarioInvalidoException caso algum campo atualizado seja inválido
-     */
-    public void alterar(Usuario usuario) throws FormularioUsuarioInvalidoException{
-        validarUsuario.validar(usuario.getNomeCompleto(), usuario.getNomeUsuario(), usuario.getEmail(), usuario.getTelefone(), usuario.getSenha());
-        repositorioUsuarios.alterar(usuario);
-    }
-
-
-    /**
-     * Busca um usuário pelo seu ID.
-     *
-     * @param ID identificador único do usuário
-     * @return o usuário correspondente ou null se não for encontrado
-     */
-    public Usuario buscarUsuariosPorID(int ID) {
-        return repositorioUsuarios.buscarUsuariosPorID(ID);
-    }
-
-    /**
-     * Busca um usuário pelo seu nome de usuário.
-     *
-     * @param nome nome de usuário
-     * @return o usuário correspondente ou null se não for encontrado
-     */
-    public Usuario buscarUsuariosPorNome(String nome) {
-        Usuario usuario = repositorioUsuarios.buscarUsuariosPorNome(nome);
-        return usuario;
-    }
 }

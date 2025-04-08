@@ -11,9 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import com.sge.ui.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class ComprarIngresso extends Application {
@@ -199,14 +196,7 @@ public class ComprarIngresso extends Application {
             }
 
             // Realiza a venda do ingresso
-            //ingresso.vender(usuarioLogado);
-            //fachada.getRepositorioIngresso().inserir(ingresso);
-
             fachada.comprarIngresso(usuarioLogado, eventoSelecionado, ingresso);
-            //ingresso, usuario e evento
-
-            // Adiciona o usuário como participante do evento
-            //eventoSelecionado.participarDoEvento(usuarioLogado);
 
             List<Usuario> usuarios = eventoSelecionado.getParticipantes();
             for (Usuario usuario : usuarios) {

@@ -4,7 +4,6 @@ import com.sge.negocio.excecao.FormularioUsuarioInvalidoException;
 
 /**
  * Classe responsável pelas validações do usuário
- *
  * Contém tamanhoMinimoSenha e tamanhoMaximoNomeUsuario.
  * @author Jurandir
  */
@@ -77,7 +76,7 @@ public class ValidarUsuario {
         if (partes.length != 2 || partes[0].isEmpty() || partes[1].isEmpty()) {
             throw new FormularioUsuarioInvalidoException("email", "Formato inválido (exemplo: usuario@dominio.com)");
         }
-        //fachada.existeEmail(email);
+
 
     }
 
