@@ -5,7 +5,8 @@ import com.sge.negocio.entidade.Usuario;
 import com.sge.negocio.excecao.EmailJaExistenteException;
 import com.sge.negocio.excecao.FormularioUsuarioInvalidoException;
 import com.sge.negocio.validacao.ValidarUsuario;
-
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Classe representa os negocios de um usuario.
@@ -13,10 +14,6 @@ import com.sge.negocio.validacao.ValidarUsuario;
  *
  * @author Jurandir e Guilherme Henrique.
  */
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class NegocioUsuario {
     private IRepositorioUsuarios repositorioUsuarios;
     private static final int tamMinSenha = 5;
