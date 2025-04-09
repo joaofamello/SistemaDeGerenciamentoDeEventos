@@ -47,7 +47,7 @@ public class CompraDeIngressoAtualizacaoParticipantesTest {
     }
 
     @Test
-    public void CompraIngressoEventoLotadoFalhaTest() throws FormularioUsuarioInvalidoException, LoginFalhouException, FormularioEventoInvalidoException, EventoDuplicadoException, IngressosEsgotadoException {
+    public void CompraIngressoEventoLotadoFalhaTest() throws FormularioUsuarioInvalidoException, LoginFalhouException, FormularioEventoInvalidoException, EventoDuplicadoException, IngressosEsgotadoException, EventoEncerradoException {
 
         fachada.cadastrarUsuario("João", "joao123", "joao@email.com", "87999999999", "123456");
         fachada.cadastrarUsuario("Jura", "jurandir", "jurandir@email.com", "87999999999", "123456");

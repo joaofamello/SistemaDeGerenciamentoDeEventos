@@ -162,7 +162,7 @@ public class PersistenciaDados implements IPersistenciaDados {
                             data, horaInicio, horaFim, qtdeIngressos, valorBase, anfitriao);
 
                     // Configura estado adicional se necessário
-                    if (estadoStr.equals("Inativo")) {
+                    if (estadoStr.equals("Inativo") || GerenciadorEventos.RetornarEstado(evento).equals("Encerrado")) {
                         evento.setEstado(false);
                     }
 
