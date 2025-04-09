@@ -122,6 +122,8 @@ public class EventosParticipado extends Application {
         // Lista de eventos
         eventosListView = new ListView<>();
         eventosListView.setPlaceholder(new Label("Carregando eventos..."));
+        eventosListView.setPrefHeight(600);
+        eventosListView.setPrefWidth(500);
         eventosListView.setCellFactory(param -> new ListCell<Evento>() {
             @Override
             protected void updateItem(Evento evento, boolean empty) {
@@ -170,6 +172,7 @@ public class EventosParticipado extends Application {
         detalhesArea = new TextArea();
         detalhesArea.setEditable(false);
         detalhesArea.setWrapText(true);
+
 
 
         Button cancelarParticipacaoButton = new Button("Cancelar Participação");
