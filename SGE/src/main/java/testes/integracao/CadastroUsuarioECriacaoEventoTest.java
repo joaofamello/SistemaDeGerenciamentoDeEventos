@@ -22,11 +22,11 @@ public class CadastroUsuarioECriacaoEventoTest {
     }
 
     @Test
-        public void CadastroUsuarioECriacaoEventoTest() throws FormularioUsuarioInvalidoException, FormularioEventoInvalidoException, EventoDuplicadoException, LoginFalhouException {
+        public void CadastroUsuarioECriacaoEventoTestECadastroDeUsuarioEmEvento() throws FormularioUsuarioInvalidoException, FormularioEventoInvalidoException, EventoDuplicadoException, LoginFalhouException {
 
         // Cadastrar usuário
         fachada.cadastrarUsuario("Guilherme Teste", "guilhermeTest", "guilherme@test.com", "87912345678", "senha123");
-        Usuario maria = fachada.LoginUsuario("guilhermeTest", "senha123");
+        Usuario guilherme = fachada.LoginUsuario("guilhermeTest", "senha123");
 
         // Criar evento
         Endereco endereco = new Endereco("PE", "Garanhuns", "12345-000", "Centro", "Rua São Sebastião", 10);
@@ -34,12 +34,14 @@ public class CadastroUsuarioECriacaoEventoTest {
         LocalDateTime inicio = LocalDateTime.of(data, LocalTime.of(18, 0));
         LocalDateTime fim = LocalDateTime.of(data, LocalTime.of(22, 0));
 
-        fachada.cadastrarEvento("Festa Teste", "Aniversário", "Festa", endereco, data, inicio, fim, 50, 20.0, maria);
+        fachada.cadastrarEvento("Festa Teste", "Aniversário", "Festa", endereco, data, inicio, fim, 50, 20.0, guilherme);
 
         // Verificar se o evento foi cadastrado
         List<Evento> eventos = fachada.ListarEventos();
         assertTrue(eventos.stream().anyMatch(e -> e.getTitulo().equals("Festa Teste")));
+
     }
+
 
     @Test
     public void CadastroUsuarioECriacaoEventoFalhaTest() throws FormularioUsuarioInvalidoException, FormularioEventoInvalidoException, EventoDuplicadoException, LoginFalhouException {

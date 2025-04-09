@@ -226,11 +226,7 @@ public class SGE {
         });
 
         eventos.forEach(evento -> {
-            try {
-                repositorioEvento.inserir(evento);
-            } catch (FormularioEventoInvalidoException | EventoDuplicadoException e) {
-                System.err.println("Erro ao carregar evento " + evento.getTitulo() + ": " + e.getMessage());
-            }
+                repositorioEvento.inserirADM(evento);
         });
     }
 
@@ -286,9 +282,12 @@ public class SGE {
      * @param evento evento do ingresso
      * @param ingresso ingresso adquirido
      */
-    public void comprarIngresso(Usuario usuarioLogado, Evento evento, Ingresso ingresso)  throws IngressosEsgotadoException{
+    public void comprarIngresso(Usuario usuarioLogado, Evento evento, Ingresso ingresso) throws IngressosEsgotadoException, EventoEncerradoException {
         if(evento.getIngressosDisponiveis() == 0){
             throw new IngressosEsgotadoException(evento.getTitulo());
+        }
+        if (GerenciadorEventos.RetornarEstado(evento).equals("Encerrado")){
+            throw new EventoEncerradoException("Este evento já foi encerrado. Compra de ingresso não é permitida.");
         }
         usuarioLogado.adicionarIngresso(ingresso);
         usuarioLogado.participarDoEvento(evento);

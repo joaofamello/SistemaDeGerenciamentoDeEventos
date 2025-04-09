@@ -124,6 +124,8 @@ public class ParticiparEvento extends Application {
         // Lista de eventos
         eventosListView = new ListView<>();
         eventosListView.setPlaceholder(new Label("Carregando eventos..."));
+        eventosListView.setPrefHeight(600);
+        eventosListView.setPrefWidth(500);
         eventosListView.setCellFactory(param -> new ListCell<Evento>() {
             @Override
             protected void updateItem(Evento evento, boolean empty) {
@@ -141,6 +143,9 @@ public class ParticiparEvento extends Application {
                     } else if(Estado.equalsIgnoreCase("Lotado")){
                         titulo = new Label(evento.getTitulo() + " (Lotado)");
                         titulo.setStyle("-fx-text-fill: #355ab8; -fx-font-weight: bold;");
+                    }else if(Estado.equalsIgnoreCase("Encerrado")){
+                        titulo = new Label(evento.getTitulo() + " (Encerrado)");
+                        titulo.setStyle("-fx-text-fill: #52ca3a; -fx-font-weight: bold;");
                     } else{
                         titulo = new Label(evento.getTitulo());
                     }
@@ -314,7 +319,7 @@ public class ParticiparEvento extends Application {
 
     private void participarEvento(Evento evento) {
         try {
-            if(!evento.getEstado()){
+            if(GerenciadorEventos.RetornarEstado(evento).equals("Inativo")){
                 mostrarAlerta(Alert.AlertType.ERROR, "Erro",
                         "Não foi possível participar do evento, pois o mesmo está cancelado: " + evento.getTitulo());
             }else if(evento.getAnfitriao().equals(usuarioLogado)){

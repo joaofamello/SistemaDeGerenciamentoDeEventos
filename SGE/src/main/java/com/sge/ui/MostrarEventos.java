@@ -121,6 +121,8 @@ public class MostrarEventos extends Application {
         // Lista de eventos
         eventosListView = new ListView<>();
         eventosListView.setPlaceholder(new Label("Carregando meus eventos..."));
+        eventosListView.setPrefHeight(600);
+        eventosListView.setPrefWidth(500);
         eventosListView.setCellFactory(param -> new ListCell<Evento>() {
             @Override
             protected void updateItem(Evento evento, boolean empty) {
@@ -139,6 +141,9 @@ public class MostrarEventos extends Application {
                     } else if(Estado.equalsIgnoreCase("Lotado")){
                         titulo = new Label(evento.getTitulo() + " (Lotado)");
                         titulo.setStyle("-fx-text-fill: #355ab8; -fx-font-weight: bold;");
+                    }else if(Estado.equalsIgnoreCase("Encerrado")){
+                        titulo = new Label(evento.getTitulo() + " (Encerrado)");
+                        titulo.setStyle("-fx-text-fill: #52ca3a; -fx-font-weight: bold;");
                     } else{
                         titulo = new Label(evento.getTitulo());
                     }
@@ -159,7 +164,6 @@ public class MostrarEventos extends Application {
         // Painel de detalhes e botões à direita
         VBox rightPanel = new VBox(10);
         rightPanel.setPadding(new Insets(10));
-        rightPanel.setPrefWidth(300);
 
         Label detalhesLabel = new Label("Detalhes do Evento");
         detalhesLabel.setStyle("-fx-font-weight: bold;");
@@ -167,6 +171,7 @@ public class MostrarEventos extends Application {
         detalhesArea = new TextArea();
         detalhesArea.setEditable(false);
         detalhesArea.setWrapText(true);
+        detalhesArea.setPrefHeight(200);
 
         Button editarButton = new Button("Editar Evento");
         editarButton.setStyle("-fx-base: #2196F3; -fx-text-fill: white;");

@@ -60,6 +60,8 @@ public class GerenciadorEventos {
         usuario.participarDoEvento(evento);
     }
 
+    //public static void
+
     /**
      * Realiza uma verificação do estado do evento e insere o usuário no repositório de participantes.
      * @param usuario Usuário logado quem irá interagir com o evento
@@ -82,13 +84,25 @@ public class GerenciadorEventos {
     public static String RetornarEstado(Evento evento) {
         boolean estado = evento.getEstado();
         int ingressosDisponiveis = evento.getIngressosDisponiveis();
+        LocalDateTime agora = LocalDateTime.now();
+        // Se o evento já passou (início antes de agora)
+        if (evento.getHoraFim().isBefore(agora)) {
+            return "Encerrado";
+        }
+
+        // Se o evento foi manualmente cancelado
         if (!estado) {
             return "Inativo";
-        } else if (ingressosDisponiveis == 0) {
-            return "Lotado";
-        } else {
-            return "Ativo";
         }
+
+        // Se não há mais ingressos disponíveis
+        if (ingressosDisponiveis == 0) {
+            return "Lotado";
+        }
+
+
+        return "Ativo";
     }
+
 
 }

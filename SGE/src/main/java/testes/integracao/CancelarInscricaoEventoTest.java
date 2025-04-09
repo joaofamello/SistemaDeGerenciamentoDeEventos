@@ -26,7 +26,7 @@ public class CancelarInscricaoEventoTest {
     }
 
     @Test
-    public void CancelarInscricaoEventoTest() throws FormularioUsuarioInvalidoException, LoginFalhouException, IngressosEsgotadoException, ErroCancelarInscricaoException, FormularioEventoInvalidoException, EventoDuplicadoException {
+    public void CancelarInscricaoEventoTest() throws FormularioUsuarioInvalidoException, LoginFalhouException, IngressosEsgotadoException, ErroCancelarInscricaoException, FormularioEventoInvalidoException, EventoDuplicadoException, EventoEncerradoException {
         // Cadastro de usuário
         fachada.cadastrarUsuario("Lucas", "lucas123", "lucas@email.com", "87911112222", "senha123");
         Usuario lucas = fachada.LoginUsuario("lucas123", "senha123");

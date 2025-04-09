@@ -53,6 +53,10 @@ public class NegocioEvento {
         repositorioEventos.inserir(evento);
     }
 
+    public void inserirADM(Evento evento){
+        repositorioEventos.inserir(evento);
+    }
+
     public List<Evento> buscarPorTitulo(String Titulo) throws EventoNaoEncontradoException{
         List<Evento> eventosEncontrados = filtro.buscarPorTitulo(Titulo);
         if(eventosEncontrados.isEmpty()){

@@ -1,0 +1,3 @@
+1;raiz;root;root@gmail.com;87123456789;123456
+2;gui;01;01@gmail.com;87987654321;123456
+3;suspeito;sus;sus@gmail.com;87129876543;123456
